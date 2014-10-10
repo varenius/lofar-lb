@@ -1,0 +1,1757 @@
+\svnInfo $Id: examples.tex 4940 2010-05-25 12:00:09Z pizzo $
+
+\section[Practical examples]{Practical examples\footnote{The authors of this Chapter are John McKean ({\tt mckean[at]astron[dot]nl}) and Wendy WIlliams  (wwilliams[at]strw[dot]leidenuniv[dot]nl). Contribution was also given by many commissioners: Alicia Berciano Alba, Valentina Vacca, Poppy Martin, Maciej Ceglowski, and Carmen Toribio.}}
+\label{practicalexamples}
+
+In this Chapter, examples of how to inspect and analyze LOFAR data are given. The aim of these exercises is for the User to become familiar with the software used to process LOFAR data and to be able to apply this knowledge to other data sets. Please note that each LOFAR data set is different and special care should be taken when directly applying the methods given in these exercises to other LOFAR data sets.
+
+It is assumed here that the User has already gone through the ``Getting Started" procedure described in Chapter~\ref{sec:gettingstarted}. 
+
+\subsection{Cygnus A: a bright source at the centre of the map}
+\label{sec:cyga}
+
+In this exercise, the User will calibrate an HBA dataset for Cygnus A. By the end of the exercise the User should be able to
+\begin{itemize}
+\item inspect raw LOFAR data,
+\item automatically and manually flag data within NDPPP,
+\item calibrate the data with BBS,
+\item produce maps with CASA,
+\item create a sky model from the data, and,
+\item iterate using the skills that have been learnt to self-calibrate the data to make a final image.
+\end{itemize}
+
+
+The raw data set for this exercise can be found at
+\begin{verbatim}
+/data/scratch/tutorials/cyga/L24921_SB005_uv.MS
+\end{verbatim}
+on the compute nodes lce055, lce056, lce057. The unique LOFAR observation number is \texttt{L24921} and the sub-band that will be used is \texttt{SB005} The data set is in Measurement Set (MS) format.
+
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsubsection{Inspecting raw data}
+
+Log into one of the compute nodes above, and make a new directory, for example (you can substitute \texttt{\$USERNAME} by your username),
+\begin{verbatim}
+> ssh lce055 -Y
+> cd /data/scratch/$USERNAME/
+> mkdir TUTORIAL/
+> cd TUTORIAL/
+> pwd
+/data/scratch/$USERNAME/TUTORIAL
+\end{verbatim}
+
+You will be using the LOFAR software tools. To initialize these, use
+\begin{verbatim}
+>  use LofIm
+\end{verbatim}
+
+It is always useful to find out what the details of the observation are (frequency, integration time, number of stations) before starting on the data reduction. This is done using the command
+\begin{verbatim}
+> msoverview in=/data/scratch/tutorials/cyga/L24921_SB005_uv.MS verbose=T  
+\end{verbatim}
+
+From here, you should see that 27 stations were used for this observation, the frequency is 133~MHz and that there are 64 spectral channels. This gives a useful first look at the data, but we will take a closer look after the data have been converted from the raw correlator visibilities to a proper Measurement Set.
+
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsubsection{Flagging and data compression}
+
+The data set that we are using is uncompressed and unflagged; the total size of the data set is 11 Gb. Typically, LOFAR data will be flagged and compressed (in time and frequency) by the Radio Observatory, but in this exercise we shall do this process ourselves.
+
+The data flagging and compression are carried out using NDPPP (see Chapter \ref{sec:DPPP} for details). Typically, the Radio Observatory will compress the data to 3 and 10 s in time for the LBA and HBA data, respectively, and to 16 spectral channels. Since we are only interested in the bright source at the centre of the field we will compress the sub-band to 1 channel in frequency and 15 s in time. Note that the limitation on the compression in time is set by the changes in the ionosphere, which we will return to later in the reduction process.
+
+The parset file for the flagging and compression\footnote{Note that in this example we are flagging the data using the madflagger algorithm. Good results could also be obtained by using the aoflagger algorithm as standalone (Sect.~\ref{aoflagger}) or within NDPPP (Sect.~\ref{sec:DPPP})} should be copied to your working directory,
+
+\begin{verbatim}
+> cp /home/mckean/TUTORIALS/CYGA/NDPPP.1.parset .
+> more NDPPP.1.parset
+\end{verbatim}
+\begin{lstlisting}
+msin = /data/scratch/tutorials/cyga/L24921_SB005_uv.MS
+msin.startchan = 1
+msin.nchan = 62
+msin.datacolumn = DATA
+
+msout = "L24921_SB005_uv.MS"
+msout.datacolumn = DATA
+
+steps = [preflag,flag1,count,avg1,flag2,avg2,count]
+
+preflag.type=preflagger
+preflag.corrtype=auto # flags the autocorrelations
+
+flag1.type=madflagger
+flag1.threshold=4
+flag1.freqwindow=31
+flag1.timewindow=5
+flag1.correlations=[0,3] # flags the XX and YY polarizations
+
+avg1.type = squash
+avg1.freqstep = 64
+avg1.timestep = 1        # compresses to 1 channel
+
+flag2.type=madflagger
+flag2.threshold=3
+flag2.timewindow=51
+
+avg2.type = squash
+avg2.timestep = 5        # compresses 5 time-slots i.e. 15 s
+\end{lstlisting}
+
+This parset file will take the data set, flag and compress and then make a new copy in your working area. The windows in frequency and time that are used to generate the statistics needed to find outliers have been determined from extensive testing and on average, should give good results. Edit the {msin} and {msout} fields to point at your working directory. To run NDPPP, use
+\begin{verbatim}
+> NDPPP NDPPP.1.parset > ndppp.txt
+\end{verbatim}
+
+Depending on the use of the cluster, it will take about $\sim10$ minutes to compress and flag the data (see the percentage progress bar). You can inspect the output log file by using
+\begin{verbatim}
+> more ndppp.txt
+\end{verbatim}
+
+The log file lists the input and output parameters, the level of flagging at each step and the total amount of data flagged. You will see that the autocorrelations have been flagged (those baselines with 100\% flagging) and that the total data flagged for this data set is 22.7\%; this is actually quite large for a LOFAR dataset. As we will see later, several hours of data were flagged by the correlator in some baselines.
+
+The flagged and compressed data set should now be in your working directory and have a total size of 113 Mb, which is much more manageable than before. You can look at a summary of this data set using
+\begin{verbatim}
+> msoverview in=L24921_SB005_uv.MS
+\end{verbatim}
+\begin{lstlisting}
+msoverview: Version 20110407GvD
+=======================================================================
+           MeasurementSet Name:  L24921_SB005_uv.MS       MS Version 2
+=======================================================================
+ Observer: unknown     Project: MSSS  
+Observation: LOFAR
+Antenna-set: HBA_ZERO
+
+Data records: 996786       Total integration time = 39610 seconds
+   Observed from   02-Apr-2011/01:00:00.0   to   02-Apr-2011/12:00:10.0 (UTC)
+
+Fields: 1
+  ID   Code Name         RA            Decl           Epoch   
+  0         BEAM_0       19:59:28.2900 +40.44.02.0000 J2000   
+   (nVis = Total number of time/baseline visibilities per field) 
+
+Spectral Windows:  (1 unique spectral windows and 1 unique polarization setups)
+SpwID  #Chans Frame Ch1(MHz)    ChanWid(kHz)TotBW(kHz)  Ref(MHz)    Corrs           
+0      1 TOPO  133.398438  189.208984  189.208984  133.398438  XX  XY  YX  YY  
+\end{lstlisting}
+
+Some of the tasks that are used will make changes to the MS file, so let's make a copy of the compressed data set for safety:
+\begin{verbatim}
+> cp -rf L24921_SB005_uv.MS L24921_SB005_uv.MS.copy
+\end{verbatim}
+
+
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+\subsubsection{Post-compression inspection and flagging}
+
+A good way to visualize the data is to use the CASA task plotms. Only limited information for using plotms is given here, the user is directed to the \href{http://casa.nrao.edu/Doc/Cookbook/casa_cookbook.pdf}{CASA cookbook}\footnote{http://casa.nrao.edu/Doc/Cookbook/casa\_cookbook.pdf} for full details,
+\begin{verbatim}
+> use Casa
+> casaplotms
+\end{verbatim}
+
+A GUI will open that will allow you to plot the various properties of a data set (Amp vs. Time, Phase vs. Time, Amp vs. UV Distance, etc.). The tabs on the left can be used to load the data set and select which parts of the data are plotted (data), change the axes that are being plotted (axes), and change the colours of the data, for clarity (display).
+
+It is often useful to only plot the ``corr= xx, yy". Different antenna pairs (i.e. baselines) can be plotted using ``antenna=21\&22; 5\&6".
+
+In the data tab select ``browse" and choose the Measurement Set. In the display tab select ``colorize by: Antenna 2". Press plot. You will see a plot of all of the visibility amplitudes as a function of time (see Fig.~\ref{ex:casa}), with each colour representing a different baseline.
+
+It is also useful to look at the visibility amplitude as a function of uv distance. This can be done by pressing the axes tab and selecting ``UVDist\_L" in the X-axis tab.
+
+Try selecting different correlations, colours and axes to plot against each other to become familiar with plotms.
+
+Return to the plot of visibility amplitudes as a function of time (see Figure~\ref{ex:casa}; top left). We see that one of the baselines shows a large amplitude. From a plot of the visibility amplitude as a function of uv distance we see that this baseline has an unusually large amplitude with respect to the other baselines. It may be possible to correct this during the calibration process, but lets identify and flag this baseline as an example.
+
+At the bottom of the plotms window are some action buttons. Select the box with the green mark (see Fig.~\ref{ex:casa}; top right) and mark a box around the visibilities with the large amplitudes. Select the action button with the magnifying glass; the one on the right. This will display the information about these visibilities to your xterm.
+\begin{verbatim}
+PlotMS::locate+ Scan=0 Field=BEAM_0(0)
+Time=2011/04/02/09:51:21.8 BL=RS106HBA-RS205HBA(20-21) 
+Spw=0 Chan=0 Freq=0.133411 Corr=XX X=2361.09 Y=19.1714
+\end{verbatim}
+
+This is only an example of a single visibility; this action will print the information for all of the visibilities in the box. In this case, we see that the problematic baseline is RS106HBA-RS205HBA or antenna 20\&21. Lets select only that baseline by inserting ``antenna=20\&21" in the data tab (see Fig.~\ref{ex:casa}; bottom left). To flag this baseline, select all of the visibilities using the box with the green mark action button and then flag using the flag action button. Select ``antenna= " in the data tab and replot to see the data set with the flags applied. This manual method is most useful for making small flags to a small data set.
+%
+%
+\begin{figure*}[!ht]
+\begin{center}
+    \includegraphics[scale=0.56]{CasaFlag.pdf}
+  \caption{Top left: Plotting the visibility amplitude against time. Top right: Plotting the visibility amplitude against UV distance and selecting the baseline with an unusually large amplitude. Bottom left: Selecting only the visibilities for the baseline 20\&21 and flagging. Bottom right: The data set without the flagged baseline 20\&21.}
+  \label{ex:casa}
+  \end{center}
+\end{figure*}
+%
+%
+Alternatively, we may have 244 sub-bands of data that we want to apply flags to which would take quite a long time to do manually. These types of flags can also be done using NDPPP. So, lets flag this problematic baseline with NDPPP. First copy the parset file to your working directory:
+\begin{verbatim}
+> cp /home/mckean/TUTORIALS/CYGA/NDPPP.flag.parset .
+> more NDPPP.flag.parset
+\end{verbatim}
+\begin{lstlisting}
+msin = L24921_SB005_uv.MS.copy       # A copy of our compressed data set
+msin.startchan = 0
+msin.nchan = 1
+msin.datacolumn = DATA
+
+msout = "L24921_SB005_uv_flag.MS"      
+msout.datacolumn = DATA
+
+steps = [flag1,count]
+
+flag1.type=preflagger
+flag1.baseline=RS106HBA&RS205HBA
+
+> NDPPP NDPPP.flag.parset > ndppp.flag.txt
+> more ndppp.flag.txt
+\end{lstlisting}
+
+From the output you should see that the baseline RS106HBA\&RS205HBA is 100\% flagged. You can also verify this by plotting the data set within plotms.
+
+
+%\subsubsection{Making a sky model}
+
+%The calibration process needs some estimate for what the sky brightness distribution is like. The Black Board Self-calibration software that is used to calibrate LOFAR data can accept a sky model that is made up of point-sources (i.e. delta function of clean components), Gaussians and shapelets. Here, we will use an image of Cygnus A made at low frequencies to build up a sky model made up of Gaussian and point source components.
+
+%The initial sky image should be copied to your working directory,
+
+%\begin{verbatim}
+%> cp /home/mckean/TUTORIALS/CYGA/cyga133mhz_model.fits .
+%> ds9 cyga133mhz_model.fits
+%\end{verbatim}
+
+%The program ds9 is useful for inspecting fits images. You should see the model image of Cygnus A at 133 MHz. The Gaussian model for the sky is constructed using  BDSM (see Chapter 8 of the Cook Book for details).
+
+%\begin{verbatim}
+%> source /home/rafferty/PyBDSM/init_pybdsm
+%> ipython
+
+%Python 2.5.2 (r252:60911, Jan 20 2010, 23:14:04)
+%Type "copyright", "credits" or "license" for more information.
+%IPython 0.8.1 -- An enhanced Interactive Python.
+%? -> Introduction to IPython's features.
+%magic -> Information about IPython's 'magic' % functions.
+%help -> Python's own help system.
+%object? -> Details about 'object'. ?object also works, ?? prints more.
+
+%In [1]: import bdsm
+
+%In [2]: img_cyga133 = bdsm.process_image("cyga133mhz_model.fits", 
+ %                       thresh_isl=3.0,extended=True)
+%\end{verbatim}
+
+%This set up uses the extended feature of BDSM to calculate the rms so that the threshold is set properly. A high threshold of 10$\sigma$ has also been used because the image has some large negative side-lobes due to the limited dynamic range. The results can be viewed using the command,
+
+%\begin{verbatim}
+%In [3]: img_cyga133.showfit()
+%\end{verbatim}
+
+%and can be seen in Figure \ref{ex:cyg.showfit}
+
+%\begin{figure*}[!hb]
+%\begin{center}
+%    \includegraphics[scale=0.38]{cyg.showfit.pdf}
+%  \caption{Top left: The data. Top right: The Gaussian fit to the data. Bottom left: The re-constructured model. Bottom right: The residual.}
+%  \label{ex:cyg.showfit}
+%  \end{center}
+%\end{figure*}
+
+%The sky model is then converted to a bbs sky file using,
+
+%\begin{verbatim}
+%In [4]: img_cyga133.write_gaul(format="bbs")
+%--> Wrote BBS sky model cyga133mhz_model.pybdsm.gaul.sky
+%
+%In [5]: exit()
+%> more cyga133mhz_model.pybdsm.gaul.sky
+%\end{verbatim}
+
+%The sky model consists of 65 components and will be used for the data reduction.
+
+
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+\subsubsection{Calibration within BBS}
+
+Black Board Self-calibration is a highly flexible calibration software being developed for LOFAR that is capable of carrying out direction dependent gains (solutions for different parts of the image) and the time-dependent corrections for the LOFAR beam. In this example, we will go through the simple process of a single direction solution without the beam correction. This is possible because Cygnus A dominates the uv data and is at the pointing centre for the entire observation.
+
+BBS has two modes: a stand-alone mode for solving only one subband, and a 'global solve' mode for finding parameters over multiple subbands, which may be stored on different computers. We will give an example of the usage of both modes.
+
+\textbf{Stand-alone mode: \texttt{calibrate-stand-alone}}
+
+Before we can run the calibration process, we need a parset file to direct the calibration and an initial sky model for correcting the data. The sky model is based on an image of Cygnus A taken with the VLA with $\sim$3 arcsec resolution at 327 MHz. As there is frequency dependent structure in the source, further iterations of self-calibration will be needed to improve on this initial sky model. The sky model should be copied to your working area using
+\begin{verbatim}
+> cp /home/mckean/TUTORIALS/CYGA/cyga.start.mod .
+> more cyga.start.mod
+\end{verbatim}
+
+This model consists of 935 clean components.
+
+The parset file can be found at
+\begin{verbatim}
+> cp /home/mckean/TUTORIALS/CYGA/bbs.parset .
+> more bbs.parset
+\end{verbatim}
+\begin{lstlisting}
+Strategy.ChunkSize = 0
+Strategy.Steps = [solve, correct]
+
+Step.solve.Operation = SOLVE
+Step.solve.Model.Sources = []
+Step.solve.Model.Gain.Enable = T
+Step.solve.Model.Cache.Enable = T
+Step.solve.Solve.Parms = ["Gain:0:0:*","Gain:1:1:*"]
+Step.solve.Solve.CellSize.Freq = 0
+Step.solve.Solve.CellSize.Time = 1
+Step.solve.Solve.CellChunkSize = 10
+Step.solve.Solve.Options.MaxIter = 1000
+Step.solve.Solve.Options.EpsValue = 1e-9
+Step.solve.Solve.Options.EpsDerivative = 1e-9
+Step.solve.Solve.Options.ColFactor = 1e-9
+Step.solve.Solve.Options.LMFactor = 1.0
+Step.solve.Solve.Options.BalancedEqs = F
+Step.solve.Solve.Options.UseSVD = T
+
+Step.correct.Operation = CORRECT
+Step.correct.Model.Sources = []
+Step.correct.Model.Gain.Enable = T
+Step.correct.Output.Column = CORRECTED_DATA
+\end{lstlisting}
+
+This is a very simple parset file that solves and corrects the data. To run BBS, use the following command (on one line),
+\begin{verbatim}
+> calibrate-stand-alone -f L24921_SB005_uv_flag.MS bbs.parset 
+    cyga.start.mod > test.txt &
+\end{verbatim}
+
+
+\begin{figure*}[!hb]
+\begin{center}
+    \includegraphics[scale=0.75]{CalibFlag.pdf}
+  \caption{Top: Plotting the visibility amplitude against time we see some time stamps have high amplitudes. Bottom: A zoom in of the bad time stamps, which are then flagged within plotms.}
+  \label{ex:calib}
+  \end{center}
+\end{figure*}
+
+\begin{figure*}[!hb]
+\begin{center}
+    \includegraphics[scale=0.50]{calib-uv.pdf}
+  \caption{The visibility amplitudes as a function of uv distance for the data after correction in BBS.}
+  \label{ex:calib2}
+  \end{center}
+\end{figure*}
+
+Using the ``$>$ test.txt \&" command allows you to save and inspect the output of BBS. In particular, should be able to see the number of data chunks that have been processed.
+
+\textbf{Multiple nodes mode: \texttt{calibrate}}
+
+The multiple-node mode of BBS needs a number of files that are used for parallel processing of multiple sub-bands. Even though we have only one sub-band in this example, we still show how to do this (you can skip this section if you used \texttt{calibrate-stand-alone} above.
+
+\begin{verbatim}
+> makevds /home/mckean/clusterdesc/cep1.clusterdesc 
+                   /data/scratch/mckean/TUTORIALS/L24921_SB005_uv_flag.MS
+\end{verbatim}
+
+Note that this command is all one line. It is necessay to write out the whole path of where the data set is.
+
+This will create a new file \texttt{L24921\_SB005\_uv\_flag.MS.vds}
+
+\begin{verbatim}
+> more L24921_SB005_uv_flag.MS.vds
+\end{verbatim}
+\begin{lstlisting}
+Name       = /data/scratch/mckean/TUTORIAL/L24921_SB005_uv_flag.MS
+FileName   = /data/scratch/mckean/TUTORIAL/L24921_SB005_uv_flag.MS
+FileSys    = lce006:/data
+ClusterDesc= /home/mckean/clusterdesc/cep1.clusterdesc
+StartTime  = 2011/04/02/01:00:00.000
+EndTime    = 2011/04/02/12:00:09.985
+StepTime   = 15.0209
+NChan      = [1]
+StartFreqs = [133325195.312]
+EndFreqs   = [133496093.75]
+Extra.CorrNames=[XX,XY,YX,YY]
+Extra.DataCubeShape=[4,1,996786]
+Extra.DataFileIsRegular=1
+Extra.DataFileName=/data/scratch/mckean/TUTORIAL/L24921_SB005_uv_flag.MS/
+		      table.f3_TSM0
+Extra.DataTileShape=[4,1,32768]
+Extra.FieldDirectionDec=[+040.44.02.000000]
+Extra.FieldDirectionRa=[19:59:28.290000]
+Extra.FieldDirectionType=J2000
+Extra.StationNames=[CS001HBA0,CS002HBA0,CS003HBA0,CS004HBA0,CS005HBA0,
+CS006HBA0,CS007HBA0,CS017HBA0,CS021HBA0,CS024HBA0,CS026HBA0,CS030HBA0,
+CS032HBA0,CS101HBA0,CS103HBA0,CS201HBA0,CS301HBA0,CS302HBA0,CS401HBA0,
+CS501HBA0,RS106HBA,RS205HBA,RS208HBA,RS306HBA,RS307HBA,RS406HBA,RS503HBA]
+\end{lstlisting}
+
+This file simply summarizes where the data are and what the important parameters are.
+
+\begin{verbatim}
+> combinevds bbs.gds L24921_SB005_uv_flag.MS.vds
+> more bbs.gds
+\end{verbatim}
+\begin{lstlisting}
+Name       = bbs.gds
+ClusterDesc= /home/mckean/clusterdesc/cep1.clusterdesc
+StartTime  = 2011/04/02/01:00:00.000
+EndTime    = 2011/04/02/12:00:09.985
+StepTime   = 15.0209
+NChan      = [1]
+StartFreqs = [133325195.312]
+EndFreqs   = [133496093.75]
+Extra.FieldDirectionDec=[+040.44.02.000000]
+Extra.FieldDirectionRa=[19:59:28.290000]
+Extra.FieldDirectionType=J2000
+NParts = 1
+Part0.Name       = /data/scratch/mckean/TUTORIAL/L24921_SB005_uv_flag.MS.vds
+Part0.FileName   = /data/scratch/mckean/TUTORIAL/L24921_SB005_uv_flag.MS
+Part0.FileSys    = lce006:/data
+Part0.ClusterDesc= /home/mckean/clusterdesc/cep1.clusterdesc
+Part0.StartTime  = 2011/04/02/01:00:00.000
+Part0.EndTime    = 2011/04/02/12:00:09.985
+Part0.StepTime   = 15.0209
+Part0.NChan      = [1]
+Part0.StartFreqs = [133325195.312]
+Part0.EndFreqs   = [133496093.75]
+\end{lstlisting}
+
+This command combines all of the vds files into one. Note that the locations of the data will be different; they will point to your working directory.
+
+\begin{verbatim}
+> calibrate -f --key test --cluster-desc 
+/home/mckean/clusterdesc/cep1.clusterdesc  --db ldb001 
+--db-user postgres bbs.gds bbs.parset cyga.start.mod
+/data/scratch/mckean/TUTORIAL/ > test.txt &
+\end{verbatim}
+
+The calibration process should be completed in about 15 mins. Once it is complete it is useful to look at the calibrated data,
+\begin{verbatim}
+> casaplotms
+\end{verbatim}
+Go to the axes tab and plot the amplitude against time for the corrected data. You will see that there are a few time stamps where the solutions are poor, leading to visibilities with large amplitudes (see Figure \ref{ex:calib}). Use the magnifying glass (the one on the left) to draw a box around the area with poor data. As it is only a couple of minutes of data that are corrupted, lets just flag all the affected time stamps. This is done by selecting the data and flagging using the flag action button. It is also useful to look at the visibility amplitude as a function of uv distance to confirm that the data look good i.e. no amplitude spikes (see Figure \ref{ex:calib2}).
+
+It is also useful to inspect the amplitude and phase solutions for each station. This is done using
+\begin{verbatim}
+> parmdbplot.py L24921_SB005_uv_flag.MS/instrument/
+\end{verbatim}
+
+A small window will appear (see Figure \ref{ex:pardb}) that lists all of the stations, for both Gain:0:0 and 1:1, i.e. for the two polarizations that we just solved for in BBS. It is useful to de-select the ``use resolution" option or set the time to 1s, since this will plot all of the solutions that we solved for. First select station Gain:0:0:CS003 and hit plot. A new window showing the amplitude (top) and phase (bottom) solutions will appear (see Figure \ref{ex:pardb}). First you will notice that the amplitude rises with time, peaks and then falls again. This is an important difference between LOFAR and other radio interferometers, where the amplitudes tend to be constant, or only slightly varying over time. The change in the amplitude arises from the projected area of the station changing as the source rises and then sets during the observation. You should also be able to see the phases change in a sensible way i.e., you can trace the change in phase over time. This is harder to predict since it depends on the state of the ionosphere during the observation, but you should see similar phases for the core stations, particularly those in the Superterp.
+
+Try plotting other core stations to see similar amplitude and phase corrections. Note that you can also plot multiple stations together by selecting those that you are interested in before plotting.
+
+Next, let's plot remote station RS406 (see Figure \ref{ex:pardb}). We see that for a limited time the solutions peak sharply. This suggests that there are possibly bad data at those times. Due to the large amplitudes, it is difficult to see the quality of the solutions in general. Lets zoom in to the solutions with lower amplitudes using the zoom slider in the left part of the window. We see that, in general, the amplitude solutions look similar to the case of the core station, i.e. rising to a peak and then falling, but the solutions are much noisier and not as smooth as the core station example. This is because our model does not fit the data sufficiently well. Also note how fast the phases are varying. They are changing much faster than for the core station, but we can still trace these changes with the 15 s averaging time for the visibilities.
+
+We will carry out self-calibration to improve the model for the source. We should expect to see the amplitude solutions tend towards something similar to what the core stations have, i.e. smoothly varying.
+
+\begin{figure*}[!hb]
+\begin{center}
+    \includegraphics[scale=0.60]{Parmdb.pdf}
+  \caption{Top left: The parmdb window. Use this to select the stations whose solutions you want to inspect, and to change the resolution that is used to display the solutions. Top right: The solutions for CS003. Bottom left: The solutions for RS208. Bottom right: A zoom in for the solutions of RS208.}
+  \label{ex:pardb}
+  \end{center}
+\end{figure*}
+
+
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+\subsubsection{Cleaning and making a new model}
+
+We must de-convolve the data to make science quality images, but also so that we can construct a better model for the data for self-calibration. There are a number of imagers available that can be used, but in this example, we will use the imager that is part of CASA. Since for Cygnus A we plan to image only the centre of the observed field, we can use a simple imager. If you want to image the full field of view, then imaging that incorporates wide-field imaging techniques (e.g. widefield in CASA) must be used.
+
+\begin{verbatim}
+> casapy
+> help clean
+\end{verbatim}
+
+The task clean will be used and the help file that is part of CASA describes in detail the parameters that can be set. For this example, some basic parameters for the image size (imsize), the cell size (cell) and the weighting are used, but feel free to experiment.
+
+\begin{verbatim}
+> inp clean
+\end{verbatim}
+\begin{lstlisting}
+CASA <1>: inp clean
+---------> inp(clean)
+#  clean :: Invert and deconvolve images with selected algorithm
+vis                 = 'L24921_SB005_uv_flag.MS' 
+imagename           =    'cyga1'       
+outlierfile         =         ''        
+field               =         ''       
+spw                 =         ''        
+selectdata          =      False        
+mode                =      'mfs'        
+     nterms         =          1        
+     reffreq        =         ''       
+gridmode            =         ''        
+niter               =       3000        
+gain                =       0.01        
+threshold           =   '0.0mJy'        
+psfmode             =    'clark'        
+imagermode          =         ''        
+multiscale          =         []        
+interactive         =      False        
+mask                = 'cyga.mask'       
+imsize              = [2048, 2048]      
+cell                = ['1.0arcsec', '1.0arcsec'] 
+phasecenter         =         ''        
+restfreq            =         ''       
+stokes              =        'I'        
+weighting           =   'briggs'        
+     robust         =      -0.75        
+     npixels        =          0        
+uvtaper             =      False       
+modelimage          =         ''        
+restoringbeam       =       ['']       
+pbcor               =      False        
+minpb               =        0.2        
+calready            =       True       
+async               =      False        
+\end{lstlisting}
+
+With this set-up clean will operate without any interaction from the user ``interactive = False". As Cygnus A is such a bright source and there are likely to be negative side-lobes in the image due to the limited dynamic range, it is important to use clean boxes to limit the area that clean will use for the de-convolution. A specially prepared mask file should be copied to your working directory,
+\begin{verbatim}
+> cp -rf /home/mckean/TUTORIALS/CYGA/cyga.mask .
+\end{verbatim}
+
+If you wish to create your own mask file, this is best done using the interactive cleaning. To start the de-convolution use,
+
+\begin{verbatim}
+CASA <2>: go clean
+\end{verbatim}
+
+The current set-up has only 3000 iterations that will clean 0.01 of the peak from the image. Therefore clean will have to be run several times to complete the process. In total, the clean component flux in the image should be around 10500 Jy. This information is given in the CASA logger window. You can look at the images with the viewer,
+
+\begin{verbatim}
+CASA <3>: go viewer
+\end{verbatim}
+
+and selecting the files from the pop-up window. In Figure \ref{ex:CasaImages} are the residual and cleaned images from our first calibration loop.
+
+The output from clean is 5 images
+\begin{verbatim}
+cyga1.image     # the de-convolved image
+cyga1.residual  # the residual image
+cyga1.model     # the model image
+cyga1.flux      # the total flux image
+cyga1.psf       # the psf image
+\end{verbatim}
+
+The model image will contain the several thousand clean components that make up our new model for Cygnus A. This model file can be convert to a new bbs sky file using (outside of CASA),
+
+
+\begin{figure*}[!h]
+\begin{center}
+    \includegraphics[scale=0.59]{CasaImages.pdf}
+  \caption{The clean image (left), the residual (middle) and the model (right) image for Cygnus A.}
+  \label{ex:CasaImages}
+  \end{center}
+\end{figure*}
+
+\begin{verbatim}
+> casapy2bbs.py cyga1.model  cyga1.model.bbs
+info: total number of CLEAN components: 1024
+info: total flux in CLEAN components: 10501.65 Jy
+info: clipping at: 10501.65 Jy
+info: number of CLEAN components selected: 1024 (100.00%)
+info: flux in selected CLEAN components: 10501.65 Jy (100.00%)
+> more cyga1.model.bbs
+\end{verbatim}
+
+You wil see the new bbs sky file containing the positions and flux densities of the clean components in bbs format.
+
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+\subsubsection{Manual self-calibration}
+
+Using the skills that you have now developed, you should be able to self-calibrate the data with this new model to make a better model for the source.
+
+\begin{verbatim}
+> calibrate-stand-alone -f L24921_SB005_uv_flag.MS bbs.parset cyga1.model.bbs > test.txt &
+\end{verbatim}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+\newpage
+
+\subsection{3C\,295 -- a bright source at the centre of the field}
+\label{sect:new_tutorial}
+
+In this exercise, the user will calibrate LBA and HBA datasets for 3C\,295. By the end of the exercise the
+User should be able to
+\begin{itemize}
+\item  inspect raw LOFAR data,
+\item  automatically and manually flag data with NDPPP, including demix the LBA data,
+\item  calibrate the data with BBS,
+\item  produce maps with AWimager,
+\item  create a sky model from the data, and,
+\item  subtract bright sources using BBS
+\end{itemize}
+
+%We start first with the HBA data set.
+
+
+Log into one of the compute nodes above, and make a new directory, for example,
+\begin{verbatim}
+> ssh -Y lce019
+> cd /data/scratch/<username>/
+> mkdir tutorial/
+> mkdir tutorial/3c295/
+> cd tutorial/3c295
+\end{verbatim}
+You will be using the LOFAR software tools. To initialise  these use
+\begin{verbatim}
+> use LofIm
+\end{verbatim}
+
+\subsubsection{HBA}
+The raw data set for this exercise can be found in
+\begin{verbatim}
+/data/scratch/williams/tutorial/3c295/L74759/
+\end{verbatim}
+on compute node lce019. The unique LOFAR observation number is
+L74759
+and there are two sub-bands,
+SB000
+and 
+SB001.
+The data set is in Measurement Set (MS) format and the filenames are respectively
+\begin{verbatim}
+L74759_SAP000_SB000_uv.MS
+L74759_SAP000_SB001_uv.MS
+\end{verbatim}
+for the two sub-bands.
+
+To copy it to your current working directory use:
+\begin{verbatim}
+scp -r lce019:/data/scratch/williams/tutorial/3c295/L74759/L74759*MS .
+\end{verbatim}
+
+
+\paragraph{Inspecting the raw data}\mbox{}\\
+
+ It is always useful to find out what the details of the observation are (frequency, integration time, number of stations) before starting on the data reduction. This is done using the command,
+\begin{verbatim}
+> msoverview in=L74759_SAP000_SB000_uv.MS verbose=T
+\end{verbatim}
+\begin{lstlisting}
+msoverview: Version 20110407GvD
+================================================================================
+           MeasurementSet Name:  L74759_SAP000_SB000_uv.MS      MS Version 2
+================================================================================
+           This is a raw LOFAR MS (stored with LofarStMan)
+
+   Observer: unknown     Project: 2012LOFAROBS  
+Observation: LOFAR
+Antenna-set: HBA_DUAL_INNER
+
+Data records: 5337090       Total integration time = 3597.99 seconds
+   Observed from   12-Nov-2012/12:47:00.5   to   12-Nov-2012/13:46:58.5 (UTC)
+
+Fields: 1
+  ID   Code Name                RA            Decl           RefType 
+  0         BEAM_0              14:11:20.5000 +52.12.10.0000 J2000   
+   (nVis = Total number of time/baseline visibilities per field) 
+
+Spectral Windows:  (1 unique spectral windows and 1 unique polarization setups)
+  SpwID  #Chans Frame Ch1(MHz)    ChanWid(kHz)TotBW(kHz)  Ref(MHz)    Corrs           
+  0          64 TOPO  118.849182  3.05175781  195.3125    118.945312  XX  XY  YX  YY  
+
+Antennas: 54:
+  ID   Name  Station   Diam.    Long.         Lat.         
+  0    CS001HBA0LOFAR     31.3 m   +006.52.07.1  +52.43.34.7  
+  1    CS001HBA1LOFAR     31.3 m   +006.52.02.2  +52.43.31.8  
+  2    CS002HBA0LOFAR     31.3 m   +006.52.07.6  +52.43.46.8  
+  3    CS002HBA1LOFAR     31.3 m   +006.52.08.0  +52.43.48.2 
+  ...
+  ...
+  ...
+  42   CS501HBA0LOFAR     31.3 m   +006.51.57.9  +52.44.29.9  
+  43   CS501HBA1LOFAR     31.3 m   +006.51.59.7  +52.44.25.8  
+  44   RS106HBALOFAR     31.3 m   +006.59.05.6  +52.41.21.6  
+  ...
+  ...
+  ...
+  53   RS509HBALOFAR     31.3 m   +006.47.04.7  +53.13.30.1  
+
+The MS is fully regular, thus suitable for BBS
+   nrows=5337090   ntimes=3594   nbands=1   nbaselines=1485 (54 autocorr)
+\end{lstlisting}
+% 
+% \begin{verbatim}
+% > msoverview in=L74759_SAP000_SB001_uv.MS/ verbose=T
+% msoverview: Version 20110407GvD
+% ================================================================================
+%            MeasurementSet Name: L74759_SAP000_SB001_uv.MS      MS Version 2
+% ================================================================================
+%            This is a raw LOFAR MS (stored with LofarStMan)
+% 
+%    Observer: unknown     Project: 2012LOFAROBS  
+% Observation: LOFAR
+% Antenna-set: HBA_DUAL_INNER
+% 
+% Data records: 5337090       Total integration time = 3597.99 seconds
+%    Observed from   12-Nov-2012/12:47:00.5   to   12-Nov-2012/13:46:58.5 (UTC)
+% 
+% Fields: 1
+%   ID   Code Name                RA            Decl           RefType 
+%   0         BEAM_0              14:11:20.5000 +52.12.10.0000 J2000   
+%    (nVis = Total number of time/baseline visibilities per field) 
+% 
+% Spectral Windows:  (1 unique spectral windows and 1 unique polarization setups)
+%   SpwID  #Chans Frame Ch1(MHz)    ChanWid(kHz)TotBW(kHz)  Ref(MHz)    Corrs           
+%   0          64 TOPO  119.044495  3.05175781  195.3125    119.140625  XX  XY  YX  YY  
+% 
+% Antennas: 54:
+%   ID   Name  Station   Diam.    Long.         Lat.         
+%   0    CS001HBA0LOFAR     31.3 m   +006.52.07.1  +52.43.34.7  
+%   1    CS001HBA1LOFAR     31.3 m   +006.52.02.2  +52.43.31.8  
+%   2    CS002HBA0LOFAR     31.3 m   +006.52.07.6  +52.43.46.8  
+%   3    CS002HBA1LOFAR     31.3 m   +006.52.08.0  +52.43.48.2  
+%   ...
+%   ...
+%   ... 
+%   42   CS501HBA0LOFAR     31.3 m   +006.51.57.9  +52.44.29.9  
+%   43   CS501HBA1LOFAR     31.3 m   +006.51.59.7  +52.44.25.8  
+%   44   RS106HBALOFAR     31.3 m   +006.59.05.6  +52.41.21.6  
+%   ...
+%   ...
+%   ... 
+%   53   RS509HBALOFAR     31.3 m   +006.47.04.7  +53.13.30.1  
+%   
+% The MS is fully regular, thus suitable for BBS
+%    nrows=5337090   ntimes=3594   nbands=1   nbaselines=1485 (54 autocorr)
+% \end{verbatim}
+
+
+From this, you should see that  HBA\_DUAL mode was used, i.e. the core stations are split in two HBA sub-fields, giving a total of 54 stations. The observation was $\sim1$ hour, there are 64 spectral channels and the frequency is 118.849\,MHz for SB000 and  119.044\,MHz for SB001. %This gives a useful first look at the data, but we will take a closer look after the data have been converted from the raw correlator visibilities to a proper Measurement Set.
+
+
+\paragraph{Flagging and data compression}\mbox{}\\
+
+The data set that we are using is uncompressed and unflagged; the total size of each MS is 11\,Gb. The data flagging and compression are carried out using NDPPP (see Chapter~\ref{sec:DPPP} for details). Typically, the Radio Observatory will compress the data to 3 and 10\,s in time for the LBA and HBA data, respectively, and to 16 spectral channels. We will compress the sub-band to 1 channel in frequency and 10\,s in time. Note that the limitation on the compression in time is set by the changes in the ionosphere. 
+
+The parset file for the flagging\footnote{Note that in this example we are flagging the data using the aoflagger algorithm.} and compression should be copied to your working directory,
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/NDPPP_HBA_preprocess.parset .
+> cat NDPPP_HBA_preprocess.parset
+\end{verbatim}
+\begin{lstlisting}
+msin = L74759_SAP000_SB000_uv.MS
+msin.autoweight=TRUE
+msin.datacolumn=DATA
+
+msout = L74759_SAP000_SB000_uv.MS.avg.dppp
+msout.datacolumn=DATA
+
+steps=[preflagger0,preflagger1,aoflagger,averager]
+
+preflagger0.chan=[0,1,62,63]
+preflagger0.type=preflagger
+
+preflagger1.corrtype=auto
+preflagger1.type=preflagger
+
+aoflagger.autocorr=F
+aoflagger.count.save=FALSE
+aoflagger.keepstatistics=T
+aoflagger.memorymax=0
+aoflagger.memoryperc=0
+aoflagger.overlapmax=0
+aoflagger.overlapperc=-1
+aoflagger.pedantic=F
+aoflagger.pulsar=F
+aoflagger.timewindow=0
+aoflagger.type=aoflagger
+
+averager.freqstep=64     # compresses to 1 channel
+averager.timestep=10     # compresses 10 time-slots, i.e. 10s
+averager.type=averager
+\end{lstlisting}
+
+This parset file will take the data set, flag and compress and then make a new copy in your working area. If necessary, edit the msin and msout fields to point at your working directory, using your favourite editor (e.g. vim, nano, nedit). To run NDPPP use,
+\begin{verbatim}
+> NDPPP NDPPP_HBA_preprocess.parset > ndppp1.txt
+\end{verbatim}
+
+Depending on the use of the cluster, it will take about $\sim5-10$ minutes to compress and flag the data. The progress bar reports the progress of the initial NDPPP steps, not the entire NDPPP run, so it will keep running several minutes after the progress bar reaches 100\%. Note that it is normal to get the following warning:
+\begin{verbatim}
+log4cplus:WARN Property configuration file "parmdbm.log_prop" not found.
+log4cplus:WARN Using basic logging configuration.
+\end{verbatim} 
+You can inspect the output log file by using
+\begin{verbatim}
+> less ndppp1.txt
+\end{verbatim}
+
+The log file lists the input and output parameters, the level of flagging at each step and the total amount of data flagged. You will see that the total data flagged for each of the flagging steps is 4.7\%, 3.4\% and 2.7\% respectively.
+
+Edit the msin and msout fields of the parset to do the same for the second sub-band.
+
+The flagged and compressed data set should now be in your working directory and each MS should have a total size of 87\,Mb, which is much more manageable than before. You can use msoverview to look at a summary of this data set using:
+\begin{verbatim}
+> msoverview in=L74759_SAP000_SB000_uv.MS.avg.dppp verbose=True
+\end{verbatim}
+
+Some of the tasks that are used will make changes to the MS file, so lets make a
+copy of the compressed data set for safety,
+\begin{verbatim}
+> cp -rf L74759_SAP000_SB000_uv.MS.avg.dppp 
+   L74759_SAP000_SB000_uv.MS.avg.dppp.copy
+\end{verbatim}
+
+\paragraph{Post-compression data inspection and flagging}\mbox{}\\
+
+We will use the CASA task plotms to inspect the data. Only limited information for using plotms is given here, the User is directed to the CASA cookbook\footnote{http://casa.nrao.edu/Doc/Cookbook/casa\_cookbook.pdf} for full details,
+\begin{verbatim}
+> use Casa
+> casaplotms
+\end{verbatim}
+Figure~\ref{fig:plotms1} shows the Amp. vs. time and Amp. vs. UV distance
+(wavelengths) for SB000.
+
+\begin{figure}[Hb!]
+\centering
+\includegraphics[width=0.5\textwidth]{tutorial_hba_plotms_raw_amp_time.png}\\
+\includegraphics[width=0.5\textwidth]{tutorial_hba_plotms_raw_amp_uvwave_ant.png}
+ \caption{SB000. Top: Plotting the visibility amplitude against time. 
+Bottom: Plotting the visibility amplitude against UV distance in wavelengths.
+(The colour scheme `Antenna1' is used here.)}
+%Top left: Plotting the visibility amplitude against time. Top right: Plotting the visibility amplitude against UV distance and selecting the baseline with an unusually large amplitude. Bottom left: Selecting only the visibilities for the baseline 20\&21 and flagging. Bottom right: The data set without the flagged baseline 20\&21.}
+\label{fig:plotms1}
+\end{figure}
+
+% A GUI will open that will allow you to plot the various properties of a data set (Amp vs. Time, Phase vs. Time, Amp vs. UV Distance, etc.). The tabs on the left can be used to load the data set and select which parts of the data are plotted (data), change the axes that are being plotted (axes), and change the colours of the data, for clarity (display).
+
+%It is often useful to only plot the ``corr= xx, yy''. Different antenna pairs (i.e. baselines) can be plotted using ``antenna=21\&22; 5\&6''. 
+
+%In the data tab select ``browse'' and choose the Measurement Set. In the display tab select ``colorize by: Baseline''. Press plot. You will see a plot of all of the visibility amplitudes as a function of time (see Fig.~\ref{fig:plotms1}), with each colour representing a different baseline. It is also useful to look at the visibility amplitude as a function of uv distance. This can be done by pressing the axes tab and selecting ``UVwave'' in the X-axis tab.
+
+
+By inspection of the amplitude vs. uv-distance plots, antenna's CS302HBA0 (blue) and CS302HBA1 (purple) have clearly low amplitudes compared to the other baselines. We will leave them for now and see how they perform after calibration.
+
+%Try selecting different correlations, colours and axes to plot against each other to become familiar with plotms. 
+
+
+% Return to the plot of visibility amplitudes as a function of time (see Figure 41; top left). We see that one of the baselines shows a large amplitude. From a plot of the visibility amplitude as a function of uv distance we see that this baseline has an unusually large amplitude with respect to the other baselines. It may be possible to correct this during the calibration process, but lets identify and flag this baseline as an example.
+% 
+% At the bottom of the plotms window are some action buttons. Select the box with the green mark (see Fig. 41; top right) and mark a box around the visibilities with the large amplitudes. Select the action button with the magnifying glass; the one on the right. This will display the information about these visibilities to your xterm.
+% 
+% This is only an example of a single visibility; this action will print the information for all of the visibilities in the box. In this case, we see that the problematic baseline is RS106HBA-RS205HBA or antenna 20\&21. Lets select only that baseline by inserting “antenna=20\&21” in the data tab (see Fig. 41; bottom left). To flag this baseline, select all of the visibilities using the box with the green mark action button and then flag using the flag action button. Select “antenna= ” in the data tab and replot to see the data set with the flags applied. This manual method is most useful for making small flags to a small data set. Alternatively, we may have 244 sub-bands of data that we want to apply flags to which would take quite a long time to do manually. These types of flags can also be done using NDPPP. So, lets flag this problematic baseline with NDPPP. First copy the parset file to your working directory,
+% 
+
+
+
+\paragraph{Calibration with BBS}\mbox{}\\
+
+Black Board Self-calibration is a highly flexible calibration software developed for LOFAR that is capable of carrying out direction dependent gains (solutions for different parts of the image) and the time-dependent corrections for the LOFAR beam. In this example, we will go through the process of a single direction solution with the beam correction. 
+
+Here we will use the stand-alone version of BBS\footnote{BBS is described in Chapter~\ref{BBS}} to calibrate single sub-bands. The stand-alone version can be run using the following command
+\begin{verbatim}
+> calibrate-stand-alone -f <MS> <parset> <source catalog>
+\end{verbatim}
+
+So before we can run the calibration, we need an initial sky model for correcting the data and a parset file to direct the calibration. Since 3C\,295 is a well-known calibrator source, we already have a good model for it. The sky model consists of two point sources and can be copied to your working area using
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/3C295TWO.model .
+> cat 3C295TWO.model
+\end{verbatim}
+\begin{lstlisting}
+# (Name, Type, Patch, Ra, Dec, I, ReferenceFrequency='150.e6', SpectralIndex) = 
+    format
+
+, , 3c295, 14:11:20.64, +52.12.09.30
+3c295A, POINT, 3c295, 14:11:20.49, +52.12.10.70, 48.8815, , 
+[-0.582, -0.298, 0.583, -0.363]
+3c295B, POINT, 3c295, 14:11:20.79, +52.12.07.90, 48.8815, , 
+[-0.582, -0.298, 0.583, -0.363]
+\end{lstlisting}
+Note that there are other sources visible within the field of view, but 3C\,295 should be sufficiently bright to dominate the field.
+
+
+\textit{ASIDE:} Usually one makes an initial sky model based on what we think the sky looks like at the frequency and resolution that we are interested in. This means constructing a model from good image we have at a different frequency/resolution, or in the case of self-calibration, the image we have just made. Alternatively, a sky model can be created using the gsm.py tool. This tool extracts sources in a cone of a given radius around a given position on the sky from the Global Sky Model or GSM. The GSM contains all the sources from the VLSS, NVSS, and WENSS survey catalogs. See Sections 6.4 and 6.5 for more information about the GSM and gsm.py.
+
+Running gsm.py without any arguments will show you the correct usage (help).
+\begin{verbatim}
+> gsm.py 
+
+Insufficient arguments given; run as:
+
+   /opt/cep/LofIm/daily/Tue/lofar_build/install/gnu_opt/bin/gsm.py outfile RA
+DEC radius [vlssFluxCutoff [assocTheta]] to select using a cone
+
+   outfile         path-name of the output file
+                   It will be overwritten if already existing
+   RA              cone center Right Ascension (J2000, degrees)
+   DEC             cone center Declination     (J2000, degrees)
+   radius          cone radius                 (degrees)
+   vlssFluxCutoff  minimum flux (Jy) of VLSS sources to use
+                   default = 4
+   assocTheta      uncertainty in matching     (degrees)
+                   default = 0.00278  (10 arcsec)
+\end{verbatim}
+
+So now we can construct the command to make a model for the 3C\,295 field:
+\begin{verbatim}
+> gsm.py 3c295_field.model 212.835495 52.202770 3.0
+Sky model stored in source table: 3c295_field.model
+\end{verbatim}
+
+For now, we will return to using the simple two point source model of 3C\,295.
+
+
+
+% \begin{verbatim}
+% > makesourcedb in=3C295TWO.model out=3C295TWO.skymodel format='<'
+% \end{verbatim}
+
+The parset file for BBS can be found at
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/bbs.parset  .
+> cat bbs.parset
+\end{verbatim}
+\begin{lstlisting}
+Strategy.ChunkSize = 100
+Strategy.Steps = [solve, correct]
+
+Step.solve.Operation = SOLVE
+Step.solve.Model.Sources = [3c295]
+Step.solve.Model.Gain.Enable = T
+Step.solve.Model.Beam.Enable = T
+Step.solve.Model.Cache.Enable = T
+Step.solve.Solve.Parms = ["Gain:0:0:*","Gain:1:1:*"]
+Step.solve.Solve.CellSize.Freq = 0
+Step.solve.Solve.CellSize.Time = 1
+Step.solve.Solve.CellChunkSize = 10
+Step.solve.Solve.Options.MaxIter = 1000
+Step.solve.Solve.Options.EpsValue = 1e-9
+Step.solve.Solve.Options.EpsDerivative = 1e-9
+Step.solve.Solve.Options.ColFactor = 1e-9
+Step.solve.Solve.Options.LMFactor = 1.0
+Step.solve.Solve.Options.BalancedEqs = F
+Step.solve.Solve.Options.UseSVD = T
+
+Step.correct.Operation = CORRECT
+Step.correct.Model.Sources = [3c295]
+Step.correct.Model.Gain.Enable = T
+Step.correct.Model.Beam.Enable = T
+Step.correct.Output.Column = CORRECTED_DATA
+\end{lstlisting}
+
+This is a very simple parset file that solves and corrects the data. To run BBS, use the following command:
+\begin{verbatim}
+> calibrate-stand-alone -f L74759_SAP000_SB000_uv.MS.avg.dppp 
+  bbs.parset 3C295TWO.model > bbs_sb000.txt &
+\end{verbatim}
+%> calibrate -f --key test --cluster-desc /home/mckean/clusterdesc/cep1.clusterdesc --db ldb001 --db-user postgres bbs.gds bbs.parset cyga.start.mod /data/scratch/mckean/TUTORIAL/ > test.txt &
+Note that using the  redirect ``$>$ bbs\_sb000.txt'' command allows you to save and inspect the output of BBS and using the ``\&'' at the end runs BBS in the background allowing you to continue with other tasks, e.g. you can simultaneously run a similar command for the second sub-band. The calibration process should be completed in about 10 minutes. 
+Note that currently there is no progress bar incorporated into
+calibrate-stand-alone. However, you can (somewhat primitively!) follow the
+progress by checking the log file, in particular by inspecting how many of the
+data chunks have been processed.  Alternatively, using the `top' command will 
+allow you to see when the process is complete.
+
+
+Once complete it is useful to look at the calibrated data with  parmdbplot.py:
+\begin{verbatim}
+> parmdbplot.py  L74759_SAP000_SB000_uv.MS.avg.dppp/instrument/
+\end{verbatim}
+It is useful to keep the `use resolution' option unchecked as this will plot all of the solutions that we solved for.
+With the `use resolution' option deselected select a few stations and look at the solutions. 
+Figure~\ref{fig:parmdbplot} shows some solution plots for SB000.
+
+\begin{figure}[ht]
+ \centering
+\includegraphics[width=0.45\textwidth]{tutorial_parmdbplot.png}
+\includegraphics[width=0.45\textwidth]{tutorial_hba_parmdbplot_CS003HBA1.png}\\
+\includegraphics[width=0.45\textwidth]{tutorial_hba_parmdbplot_CS302HBA0.png}
+\includegraphics[width=0.45\textwidth]{tutorial_hba_parmdbplot_RS406HBA.png}
+\caption{Top left: The parmdb window. Use this to select the stations
+whose solutions you want to
+inspect, and to change the resolution that is used to display the solutions. Top right: The solutions for
+CS003HBA1. Bottom left: The solutions for CS302HBA0. Bottom right: The solutions for RS406HBA.}
+\label{fig:parmdbplot}
+\end{figure}
+
+We can also inspect the corrected data with casaplotms. Go to the axes tab and plot the amplitude against time for the corrected data by selecting ``Data Column: corrected'' and plot only the XX and YY correlations. Figures \ref{fig:corrected_plotms0} and \ref{fig:corrected_plotms1} show these plots for SB000 and SB001 respectively. For SB000, it is clear that the solutions for CS302HBA0 are still very noisy. For both sub-bands, baselines RS508HBA\&RS509HBA (visible in orange) and RS208HBA\&RS509HBA (in green) look bad and for SB001, CS302HBA0\&CS302HBA1 (in blue) also looks bad.
+
+% BL=RS508HBA@LOFAR & RS509HBA@LOFAR[52&53] orange
+% BL=RS208HBA@LOFAR & RS509HBA@LOFAR[46&53] green
+
+%  SB001
+% BL=CS302HBA0@LOFAR & CS302HBA1@LOFAR[38&39]
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.6\textwidth]{tutorial_hba_plotms_cor_amp_uvwave_ant.png}\\
+\includegraphics[width=0.6\textwidth]{tutorial_hba_plotms_cor_amp_uvwave_not_CS302HBA0.png}
+\caption{SB000. Top: Plotting the visibility amplitude against UV distance.
+Bottom: Excluding antenna CS302HBA0.}
+\label{fig:corrected_plotms0}
+\end{figure}
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.6\textwidth]{tutorial_hba_plotms_cor_amp_uvwave_sb1.png}
+\caption{SB001. Plotting the visibility amplitude against UV distance.}
+\label{fig:corrected_plotms1}
+\end{figure}
+
+We will flag all of these bad baselines now with NDPPP. Since NDPPP can only write to the DATA column we will write a new dataset and re-do the calibration. The NDPPP parsets are:
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/NDPPP.flag.sb000.parset .
+> cat NDPPP.flag.sb000.parset
+\end{verbatim}
+\begin{lstlisting}
+msin = L74759_SAP000_SB000_uv.MS.avg.dppp
+msin.startchan = 0
+msin.nchan = 1
+msin.datacolumn = DATA
+msout = L74759_SAP000_SB000_uv.MS.avg.dppp.flag
+msout.datacolumn = DATA
+steps = [flag]
+flag.type=preflagger
+flag.baseline=RS508HBA&RS509HBA; RS208HBA&RS509HBA; CS302HBA0
+
+> NDPPP NDPPP.flag.sb000.parset > ndppp.flag0.txt &
+\end{lstlisting}
+and likewise for the other subband:
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/NDPPP.flag.sb001.parset .
+> cat NDPPP.flag.sb001.parset
+\end{verbatim}
+\begin{lstlisting}
+msin = L74759_SAP000_SB001_uv.MS.avg.dppp
+msin.startchan = 0
+msin.nchan = 1
+msin.datacolumn = DATA
+msout = L74759_SAP000_SB001_uv.MS.avg.dppp.flag
+msout.datacolumn = DATA
+steps = [flag]
+flag.type=preflagger
+flag.baseline=RS508HBA&RS509HBA; RS208HBA&RS509HBA; CS302HBA0&CS302HBA1
+
+> NDPPP NDPPP.flag.sb001.parset > ndppp.flag1.txt &
+\end{lstlisting}
+
+We can re-do the calibration with:
+\begin{verbatim}
+> calibrate-stand-alone -f L74759_SAP000_SB000_uv.MS.avg.dppp.flag bbs.parset \
+  3C295TWO.model > bbs_sb000.txt &
+\end{verbatim}
+
+The amplitude against time for the flagged corrected data is plotted in \ref{fig:corrected_plotms1_flag}.
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.6\textwidth]{tutorial_hba_plotms_cor_amp_uvwave_sb000_flag.png}
+\caption{Plotting the visibility amplitude against UV distance for SB000 after flagging.}
+\label{fig:corrected_plotms1_flag}
+\end{figure}
+
+
+\paragraph{Imaging}\mbox{}\\
+
+Here we will use the AWimager\footnote{see Chapter~\ref{sec:awimager}} to do the deconvolution. While 3C\,295 is the dominant source at the centre of the field we can actually image the large field and find other sources exploiting the wide-field imaging techniques built into the AWimager. The list  of parameters along with a brief description of each can be shown with
+\begin{verbatim}
+> awimager -h
+\end{verbatim}
+
+At the time of this writing, in order to use the fast new version of the AWimager, you need to source it from Cyril Tasse's home\footnote{In future this will be part of the daily build}
+\begin{verbatim}
+> source ~tasse/jaws22/init.sh
+\end{verbatim}
+Note that the first time you run it, you are likely to get a ``Cannot read table of Observatories''. Should this happen, you can resolve the issue by correcting your ``.casarc'' file to look like this (there should be no space at the end on the line)
+\begin{verbatim}
+> cat  ~/.casarc
+measures.directory: /opt/cep/casacore/data
+\end{verbatim}
+
+
+We will use a parameter file for AWimager. At 120\,MHz the LOFAR (NL Remote) field of view is $4.5$ deg and the resolution should be around $8''$ First, to make a dirty image, set niter to 0:
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/awimger.sb000.parms .
+> cat awimger.sb000.parms 
+\end{verbatim}
+\begin{lstlisting}
+ms=L74759_SAP000_SB000_uv.MS.avg.dppp.flag
+image=L74759_SAP000_SB000.dirty.img
+data=CORRECTED_DATA
+gain=0.1
+cellsize=3arcsec
+npix=4096
+stokes=I
+weight=briggs
+robust=0
+operation=mfclark
+niter=0
+\end{lstlisting}
+
+If you have run the imager before, it is advisable to remove any existing images:
+\begin{verbatim}
+> rm -rf L74759_SAP000_SB000.dirty.img*
+\end{verbatim}
+To run AWimager, call
+\begin{verbatim}
+> awimager awimger.sb000.parms
+\end{verbatim}
+this will take $2-3$ minutes to run. Note that in order to make a dirty image set ``operation=mfclark'' and ``niter=0'' so that it does 0 iterations of cleaning\footnote{setting ``operation=image'' does not work to make a dirty image with this version of the imager.}. The last few lines of the output will look like (timestamps have been removed for clarity)
+\begin{lstlisting}
+---------------------------> finalizeToVis
+[4096, 4096] [4096, 4096]
+FCleanImageSkyModel::solve     Final maximum residual = 92.3824
+MFCleanImageSkyModel::solve     Model 0: max, min residuals = 92.3824, -14.071 
+clean flux 0
+imager::clean() Threshhold not reached yet.
+imager::clean() Fitted beam used in restoration: 25.434 by 13.9604 (arcsec) at 
+pa 51.1185 (deg) 
+Final normalisation
+clean      133.3 real      376.42 user        7.89 system
+awimager normally ended
+\end{lstlisting}
+AWImager produces a lot of images as output, including
+\begin{verbatim}
+L74759_SAP000_SB000.dirty.img.model          # uncorrected dirty image
+L74759_SAP000_SB000.dirty.img.residual       # residual image
+L74759_SAP000_SB000.dirty.img.psf            # point spread function
+L74759_SAP000_SB000.dirty.img.residual.corr  # corrected residual image
+\end{verbatim} 
+The image we wish to look at now is the ``residual.corr'' image. It may seem strange to look at the residual but this is because no iterations of cleaning has been done so there will be nothing in the restored image. This can be done with casaviewer:
+%is the residual image (see Fig.~\ref{fig:hba_images}),
+\begin{verbatim}
+> casaviewer L74759_SAP000_SB000.dirty.img.residual.corr
+\end{verbatim}
+the dirty image should look like a single strong point source convolved with the psf (See Fig.~\ref{fig:tutorial_hba_dirty_images}).
+
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.475\textwidth]{tutorial_hba_dirty_sb000.png}
+\includegraphics[width=0.505\textwidth]{tutorial_hba_dirty_sb000_zoom.png}
+\caption{Left: The dirty image for 3C\,295 (SB000). Right: Zoom in 4x. The data range is set to [-0.1, 1].}
+\label{fig:tutorial_hba_dirty_images}
+\end{figure}
+
+Now we will do some cleaning. If you look at George Heald's beta noise calculator for LOFAR\footnote{\url{http://www.astron.nl/~heald/test/sens.php}}, with 21 core and 9 remote split HBA stations, we should expect a noise of a few mJy for an hour's observation at 120\,MHz.  Initially though, we will just clean over the entire image down to a relatively high threshold of $0.1$\,Jy.
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/awimger.sb000.clean.parms .
+> cat awimger.sb000.clean.parms
+\end{verbatim}
+\begin{lstlisting}
+ms=L74759_SAP000_SB000_uv.MS.avg.dppp.flag
+image=L74759_SAP000_SB000.clean.img
+data=CORRECTED_DATA
+padding=1.
+cyclefactor=1.5
+gain=0.1
+cellsize=3arcsec
+npix=4096
+stokes=I
+weight=briggs
+robust=0
+operation=mfclark
+niter=10000
+threshold=0.1Jy
+\end{lstlisting}
+\begin{verbatim}
+> rm -rf L74759_SAP000_SB000.clean.img*
+> awimager awimger.sb000.clean.parms
+\end{verbatim}
+
+
+AWimager will run for $\sim20$\,minutes and will produce a lot of output to the screen for each major cycle.
+\begin{lstlisting}
+---------------------------> finalizeToVis
+[4096, 4096] [4096, 4096]
+imager::clean() Successfully deconvolved image
+imager::clean() Fitted beam used in restoration: 25.434 by 13.9604 (arcsec) at 
+pa 51.1184 (deg)
+Final normalisation
+... restored image too ...
+clean       1761 real      8755.3 user        87.3 system
+awimager normally ended
+54 real       14373 user 2937.9000000000000909 system
+awimager normally ended
+\end{lstlisting
+
+
+The output from AWimager consists of several images:
+\begin{verbatim}
+L74759_SAP000_SB000.img.model          # uncorrected dirty image
+L74759_SAP000_SB000.img.residual       # residual image
+L74759_SAP000_SB000.img.psf            # point spread function
+L74759_SAP000_SB000.img.restored       # restored image
+L74759_SAP000_SB000.img.restored.corr  # corrected restored image
+L74759_SAP000_SB000.img.model.corr     # corrected model image
+L74759_SAP000_SB000.img.residual.corr  # corrected residual image
+\end{verbatim}
+Figure \ref{fig:tutorial_hba_images_clean} shows the cleaned corrected image (``restored.corr''). One can see 3C\,295 at the centre of the field and even though only 3C\,295 was in our calibration model there are clearly about thirty other sources visible in the field.
+
+
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.475\textwidth]{tutorial_hba_clean_sb000.png}
+\includegraphics[width=0.505\textwidth]{tutorial_hba_clean_sb000_zoom1.png}
+\caption{Left: The cleaned image for 3C\,295 (SB000). Right: A zoom-in of the source in the lower right corner. The data range is set to [-0.1, 1].}
+\label{fig:tutorial_hba_images_clean}
+\end{figure}
+
+% The model image will contain the several thousand clean components that make up our new model for Cygnus A. This model file can be convert to a new bbs sky file using (outside of CASA),
+% 
+% 
+% \begin{verbatim}
+% > casapy2bbs.py cyga1.model cyga1.model.bbs
+% info: total number of CLEAN components: 1024
+% info: total flux in CLEAN components: 10501.65 Jy
+% info: clipping at: 10501.65 Jy
+% info: number of CLEAN components selected: 1024 (100.00%)
+% info: flux in selected CLEAN components: 10501.65 Jy (100.00%)
+% > more cyga1.model.bbs
+% \end{verbatim}
+% 
+% You wil see the new bbs sky file containing the positions and flux densities of the clean components in bbs format.
+
+\paragraph{Subtraction of 3C\,295}\mbox{}\\
+
+3C\,295 is the dominant source at the center of the field. 
+In order to image the rest of the field we will subtract it using BBS.
+
+We make a copy of the measurement set before carrying out the 
+subtraction.
+\begin{verbatim}
+ cp -r L74759_SAP000_SB000_uv.MS.avg.dppp.flag 
+ L74759_SAP000_SB000_uv.MS.avg.dppp.flag.sub
+\end{verbatim}
+
+
+We require a parset that includes a subtract step for the source 3C\,295. 
+%\begin{verbatim}
+%> calibrate-stand-alone -f L74759_SAP000_SB001_uv.MS.avg.dppp.flag
+%bbs_subtraction_SB001.parset 3C295TWO.model > bbs subtraction_SB001.txt
+%\end{verbatim}
+%where the parset includes a subtract step for the source 3c295, which consists
+%of two point sources grouped in one patch called ``3c295'':
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/bbs_subtract3c295.parset .
+> cat bbs_subtract3c295.parset
+\end{verbatim}
+\begin{lstlisting}
+Strategy.ChunkSize = 100
+Strategy.InputColumn = DATA
+Strategy.TimeRange = []
+Strategy.Baselines = *&
+Strategy.Steps = [solve,subtract,correct]
+
+Step.subtract.Operation = SUBTRACT
+Step.subtract.Model.Sources = [3c295]
+Step.subtract.Model.Beam.Enable = T
+Step.subtract.Model.Gain.Enable = T
+Step.subtract.Model.Cache.Enable = T
+
+Step.solve.Operation = SOLVE
+Step.solve.Model.Sources = [3c295]
+Step.solve.Model.Gain.Enable = T
+Step.solve.Model.Beam.Enable = T
+Step.solve.Model.Cache.Enable = T
+Step.solve.Solve.Parms = ["Gain:0:0:*","Gain:1:1:*"]
+Step.solve.Solve.CellSize.Freq = 0
+Step.solve.Solve.CellSize.Time = 1
+Step.solve.Solve.CellChunkSize = 10
+Step.solve.Solve.Options.MaxIter = 1000
+Step.solve.Solve.Options.EpsValue = 1e-9
+Step.solve.Solve.Options.EpsDerivative = 1e-9
+Step.solve.Solve.Options.ColFactor = 1e-9
+Step.solve.Solve.Options.LMFactor = 1.0
+Step.solve.Solve.Options.BalancedEqs = F
+Step.solve.Solve.Options.UseSVD = T
+
+Step.correct.Operation = CORRECT
+Step.correct.Model.Sources = []
+Step.correct.Model.Gain.Enable = T
+Step.correct.Model.Beam.Enable = T
+Step.correct.Output.Column = CORRECTED_DATA
+
+> calibrate-stand-alone -f L74759_SAP000_SB000_uv.MS.avg.dppp.flag.sub 
+  bbs_subtract3c295.parset 3C295TWO.model > bbs_subtract_sb000.txt &
+\end{lstlisting}
+This should take $\sim10$ minutes to run.
+% You may get an error like:
+% Tue Apr 16 15:08:54 UTC 2013 [FAIL] error: failed to add CASA imaging columns
+% It seems to be fixed by introducing '-n' in the command before '-f'.
+
+The 3C\,295-subtracted visibility amplitudes are plotted against time in Figure~\ref{fig:corrected_plotms1_sub}.
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.6\textwidth]{tutorial_hba_plotms_cor_amp_uvwave_sb000_flag.png}
+\caption{Plotting the visibility amplitude against UV distance after flagging.}
+\label{fig:corrected_plotms1_sub}
+\end{figure}
+
+
+We can make an image of the subtracted data
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/awimger.sb000.sub.clean.parms .
+> cat awimger.sb000.sub.clean.parms
+\end{verbatim}
+\begin{lstlisting}
+ms=L74759_SAP000_SB000_uv.MS.avg.dppp.flag.sub
+image=L74759_SAP000_SB000.sub.clean.img
+data=CORRECTED_DATA
+padding=1.
+cyclefactor=1.5
+gain=0.1
+cellsize=3arcsec
+npix=4096
+stokes=I
+weight=briggs
+robust=0
+operation=mfclark
+niter=20000
+threshold=30mJy
+
+> rm -rf L74759_SAP000_SB000.sub.clean.img*
+> awimager awimger.sb000.sub.clean.parms
+\end{lstlisting}
+
+
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.47\textwidth]{tutorial_hba_clean_sub_sb000.png}
+\includegraphics[width=0.51\textwidth]{tutorial_hba_clean_sub_sb000_zoom1.png}
+\caption{Left: The cleaned image for 3C\,295 (SB000) after 3C\,295 has been subtracted. Right: A zoom-in of the source in the lower right corner. The data range is set to [-0.1, 1].}
+\label{fig:tutorial_hba_images_clean_sub}
+\end{figure}
+
+
+\paragraph{Combining Measurement Sets}\mbox{}\\
+
+It is often useful to combine calibrated Measurement Sets for separate sub-bands into a single Measurement
+Set, both to allow faster processing in subsequent BBS runs and also to allow a single image of the combined
+data to be made.
+
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/NDPPP.combineMS.parset .
+> cat NDPPP.combineMS.parset
+msin = L74759_SAP000_SB*_uv.MS.avg.dppp.flagi.sub
+msin.datacolumn = CORRECTED_DATA
+msout = L74759_SAP000_SBcomb_uv.MS.avg.dppp.flag.sub
+
+steps = []
+\end{verbatim}
+
+
+The wild card in line one of this very simple parset means that all sub-bands of the observation will be combined. Line two means that the CORRECTED DATA column from the input MSs will be written to the DATA column in the output. Here we only have two but the method should provide a simple way of combining multiple sub-bands.  Note that this  method will collapse all channels.  To preserve individual spectral windows in your data then `msconcat' within CASA can be used.
+
+Using the skills that you have now developed, you should be able to image the concatenated data.
+
+% \paragraph{Self-calibration}\mbox{}\\
+% TODO
+% 
+% Using the skills that you have now developed, you should be able to self-calibrate the data with this new model to make a better model for the source.
+% 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{LBA}
+The raw LBA data set for this exercise can be found in,
+\begin{verbatim}
+/data/scratch/williams/tutorial/3c295/L74762/
+\end{verbatim}
+on compute node lce018. The unique LOFAR observation number is
+L74762
+and there are two sub-bands,
+SB000
+and 
+SB001.
+The data set is in Measurement Set (MS) format and the filenames are respectively
+\begin{verbatim}
+L74762_SAP000_SB000_uv.MS
+L74762_SAP000_SB001_uv.MS
+\end{verbatim}
+for the two sub-bands.
+
+\paragraph{Inspecting the raw data}\mbox{}\\
+
+Use msoverview again to find out the details of the observation (frequency, integration time, number of stations): 
+\begin{verbatim}
+> msoverview in=L74762_SAP000_SB000_uv.MS verbose=T
+\end{verbatim}
+\begin{lstlisting}
+msoverview: Version 20110407GvD
+================================================================================
+           MeasurementSet Name:  L74762_SAP000_SB000_uv.MS      MS Version 2
+================================================================================
+           This is a raw LOFAR MS (stored with LofarStMan)
+
+   Observer: unknown     Project: 2012LOFAROBS  
+Observation: LOFAR
+Antenna-set: LBA_OUTER
+
+Data records: 1897632       Total integration time = 3597.99 seconds
+   Observed from   12-Nov-2012/14:06:00.5   to   12-Nov-2012/15:05:58.5 (UTC)
+
+Fields: 1
+  ID   Code Name                RA            Decl           RefType 
+  0         BEAM_0              14:11:20.5167 +52.12.09.9276 J2000   
+   (nVis = Total number of time/baseline visibilities per field) 
+
+Spectral Windows:  (1 unique spectral windows and 1 unique polarization setups)
+  SpwID  #Chans Frame Ch1(MHz)    ChanWid(kHz)TotBW(kHz)  Ref(MHz)    Corrs           
+  0          64 TOPO  59.4741821  3.05175781  195.3125    59.5703125  XX  XY  YX  YY  
+
+Antennas: 32:
+  ID   Name  Station   Diam.    Long.         Lat.         
+  0    CS001LBALOFAR     86.0 m   +006.52.03.5  +52.43.34.0  
+  1    CS002LBALOFAR     86.0 m   +006.52.11.4  +52.43.47.4 
+  ...
+  ...
+  ... 
+  30   RS508LBALOFAR     86.0 m   +006.57.11.4  +53.03.19.2  
+  31   RS509LBALOFAR     86.0 m   +006.47.07.0  +53.13.28.2  
+
+The MS is fully regular, thus suitable for BBS
+   nrows=1897632   ntimes=3594   nbands=1   nbaselines=528 (32 autocorr)
+\end{lstlisting}
+% \begin{verbatim}
+% > msoverview in=L74762_SAP000_SB001_uv.MS verbose=T
+% msoverview: Version 20110407GvD
+% ================================================================================
+%            MeasurementSet Name:  /data/scratch/williams/tutorial/rawdata/L74762/L74762_SAP000_SB001_uv.MS      MS Version 2
+% ================================================================================
+%            This is a raw LOFAR MS (stored with LofarStMan)
+% 
+%    Observer: unknown     Project: 2012LOFAROBS  
+% Observation: LOFAR
+% Antenna-set: LBA_OUTER
+% 
+% Data records: 1897632       Total integration time = 3597.99 seconds
+%    Observed from   12-Nov-2012/14:06:00.5   to   12-Nov-2012/15:05:58.5 (UTC)
+% 
+% Fields: 1
+%   ID   Code Name                RA            Decl           RefType 
+%   0         BEAM_0              14:11:20.5167 +52.12.09.9276 J2000   
+%    (nVis = Total number of time/baseline visibilities per field) 
+% 
+% Spectral Windows:  (1 unique spectral windows and 1 unique polarization setups)
+%   SpwID  #Chans Frame Ch1(MHz)    ChanWid(kHz)TotBW(kHz)  Ref(MHz)    Corrs           
+%   0          64 TOPO  59.6694946  3.05175781  195.3125    59.765625   XX  XY  YX  YY  
+% 
+% Antennas: 32:
+%   ID   Name  Station   Diam.    Long.         Lat.         
+%   0    CS001LBALOFAR     86.0 m   +006.52.03.5  +52.43.34.0  
+%   1    CS002LBALOFAR     86.0 m   +006.52.11.4  +52.43.47.4  
+%   ...
+%   30   RS508LBALOFAR     86.0 m   +006.57.11.4  +53.03.19.2  
+%   31   RS509LBALOFAR     86.0 m   +006.47.07.0  +53.13.28.2  
+% 
+% The MS is fully regular, thus suitable for BBS
+%    nrows=1897632   ntimes=3594   nbands=1   nbaselines=528 (32 autocorr)
+% \end{verbatim}
+From this, you should see that 32 stations were used for this observation, that the observation was $\sim1$ hour that there are 64 spectral channels and the frequency is 59.474\,MHz for SB000 and  59.669\,MHz for SB001. This gives a useful first look at the data, but we will take a closer look after the data have been converted from the raw correlator visibilities to a proper Measurement Set.
+
+
+
+\paragraph{Flagging and demixing}\mbox{}\\
+
+As with the HBA, the data set is uncompressed and unflagged; the total size of each MS is 3.9\,Gb. The data flagging and compression are carried out using NDPPP (see Chapter~\ref{sec:DPPP} for details). We will compress the sub-band to 1 channel in frequency and 10\,s in time. Note that the limitation on the compression in time is set by the changes in the ionosphere. For LBA data it is almost always necessary to demix the data to remove the bright radio sources from the data. Demixing is described in detail in Chapter~\ref{sec:DPPP} and has been implemented in NDPPP. Usually this will be performed by the Radio Observatory but we include it here so you can learn how to do it.
+
+To see which A-team sources need to be demixed use the plot\_Ateam\_elevation python script,
+\begin{verbatim}
+python /opt/cep/tools/cookbook/plot_Ateam_elevation.py L74762_SAP000_SB000_uv.MS
+\end{verbatim}
+the output of which is shown in Fig.\ref{fig:Ateam}. 
+From this we can see that CygA and CasA are over 40 deg elevation for the
+duration of the observation and should be demixed. They are also both about 60
+deg away from the pointing centre (the distances of the A-team sources from the
+pointing centre are indicated in the legend).
+
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.7\textwidth]{tutorial_plot_Ateam_elevation.png}
+\caption{A-team elevation for the LBA observation.}
+\label{fig:Ateam}
+\end{figure}
+
+The parset file for the flagging\footnote{using the aoflagger algorithm.} and demixing should be copied to your working directory. Note that the demixing outputs the compressed data.
+
+A sky model containing the sources to be demixed is also required
+\begin{verbatim}
+> cp -r /home/williams/tutorial/3c295/Ateam_LBA_CC.sky .
+\end{verbatim}
+
+
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/NDPPP_LBA_preprocess.parset .
+> cat NDPPP_LBA_preprocess.parset
+\end{verbatim}
+\begin{lstlisting}
+msin = L74762_SAP000_SB000_uv.MS
+msin.autoweight=TRUE
+msin.datacolumn=DATA
+
+msout = L74762_SAP000_SB000_uv.MS.dem.dppp
+msout.datacolumn=DATA
+
+steps=[preflagger0,preflagger1,aoflagger,demixer]
+
+preflagger0.chan=[0,1,62,63]
+preflagger0.type=preflagger
+
+preflagger1.corrtype=auto
+preflagger1.type=preflagger
+
+aoflagger.autocorr=F
+aoflagger.count.save=FALSE
+aoflagger.keepstatistics=T
+aoflagger.memorymax=0
+aoflagger.memoryperc=0
+aoflagger.overlapmax=0
+aoflagger.overlapperc=-1
+aoflagger.pedantic=F
+aoflagger.pulsar=F
+aoflagger.timewindow=0
+aoflagger.type=aoflagger
+
+demixer.freqstep=64     # compresses to 1 channel
+demixer.timestep=10     # compresses 10 time-slots, i.e. 10s
+demixer.skymodel=Ateam_LBA_CC.sky
+demixer.subtractsources=[CasA, CygA]  # which sources to demix
+demixer.type=demixer
+\end{lstlisting}
+\begin{verbatim}
+> NDPPP NDPPP_LBA_preprocess.parset > ndppp1.txt
+\end{verbatim}
+
+
+Depending on the use of the cluster, it will take about $\sim10-12$ minutes to demix and flag the data (see the percentage progress bar). Inspecting the log file, you will see that the total data flagged for each of the flagging steps is 4.7\%, 5.6\% and 1.2\% respectively.
+
+Edit the msin and msout fields of the parset to do the same for the second sub-band.
+
+The flagged and demixed data set should now be in your working directory and each MS should have a total size of 32\,Mb, which is much more manageable than before. You can use msoverview to look at a summary of this data set using.
+\begin{verbatim}
+> msoverview in=L74762_SAP000_SB000_uv.MS.dem.dppp verbose=True
+\end{verbatim}
+
+Some of the tasks that are used will make changes to the MS file, so let's make a copy of the compressed data set for safety,
+\begin{verbatim}
+> cp -rf L74762_SAP000_SB000_uv.MS.dem.dppp L74762_SAP000_SB000_uv.MS.dem.dppp.copy
+\end{verbatim}
+
+
+\paragraph{Post-compression data inspection and flagging}\mbox{}\\
+
+We will use the CASA task plotms to inspect the data. Figure~\ref{fig:plotms1_lba} shows the Amp. vs Time and Amp. vs UV distance (wavelengths) for SB000. We can see that there are a few short baselines with large fluctuating amplitudes. We will leave these as is for now.
+
+\begin{figure}[htp]
+\centering
+ \includegraphics[width=0.7\textwidth]{tutorial_lba_plotms_raw_amp_time.png}\\
+ \includegraphics[width=0.7\textwidth]{tutorial_lba_plotms_raw_amp_uvwave_ant.png}
+ \caption{SB000. Top: Plotting the visibility amplitude against time.  Bottom:
+Plotting the visibility amplitude against UV distance in wavelengths. Colourise
+by 'Antenna2' to obtain these colours.}
+\label{fig:plotms1_lba}
+\end{figure}
+
+
+
+
+% By inspection, antenna's CS302HBA0 (blue) and CS302HBA1 (purple) have clearly low amplitudes compared to the other baselines. We will leave them for now and see how they perform after calibration.
+
+
+\paragraph{Calibration with BBS}\mbox{}\\
+
+Here we will use the stand-alone version of BBS\footnote{BBS is described in Chapter~\ref{BBS}} to calibrate single sub-bands. The stand-alone version can be run using the following command
+\begin{verbatim}
+> calibrate-stand-alone -f <MS> <parset> <source catalog>
+\end{verbatim}
+
+We use the same sky model as before:
+
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/3C295TWO.model .
+> cat 3C295TWO.model
+\end{verbatim}
+\begin{lstlisting}
+# (Name, Type, Patch, Ra, Dec, I, ReferenceFrequency='150.e6', SpectralIndex) = 
+format
+
+, , 3c295, 14:11:20.64, +52.12.09.30
+3c295A, POINT, 3c295, 14:11:20.49, +52.12.10.70, 48.8815, , 
+[-0.582, -0.298, 0.583, -0.363]
+3c295B, POINT, 3c295, 14:11:20.79, +52.12.07.90, 48.8815, , 
+[-0.582, -0.298, 0.583, -0.363]
+\end{lstlisting}
+
+% \begin{verbatim}
+% > makesourcedb in=3C295TWO.model out=3C295TWO.skymodel format='<'
+% \end{verbatim}
+
+The parset file can be found at,
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/bbs.parset  .
+> cat bbs.parset
+\end{verbatim}
+\begin{lstlisting}
+Strategy.ChunkSize = 100
+Strategy.Steps = [solve, correct]
+
+Step.solve.Operation = SOLVE
+Step.solve.Model.Sources = [3c295]
+Step.solve.Model.Gain.Enable = T
+Step.solve.Model.Beam.Enable = T
+Step.solve.Model.Cache.Enable = T
+Step.solve.Solve.Parms = ["Gain:0:0:*","Gain:1:1:*"]
+Step.solve.Solve.CellSize.Freq = 0
+Step.solve.Solve.CellSize.Time = 1
+Step.solve.Solve.CellChunkSize = 10
+Step.solve.Solve.Options.MaxIter = 1000
+Step.solve.Solve.Options.EpsValue = 1e-9
+Step.solve.Solve.Options.EpsDerivative = 1e-9
+Step.solve.Solve.Options.ColFactor = 1e-9
+Step.solve.Solve.Options.LMFactor = 1.0
+Step.solve.Solve.Options.BalancedEqs = F
+Step.solve.Solve.Options.UseSVD = T
+
+Step.correct.Operation = CORRECT
+Step.correct.Model.Sources = [3c295]
+Step.correct.Model.Gain.Enable = T
+Step.correct.Model.Beam.Enable = T
+Step.correct.Output.Column = CORRECTED_DATA
+\end{lstlisting}
+
+This is a very simple parset file that solves and corrects the data. To run BBS, use the following command,
+
+
+\begin{verbatim}
+> calibrate-stand-alone -f L74762_SAP000_SB000_uv.MS.dem.dppp bbs.parset 
+3C295TWO.model 
+  > bbs_sb000.txt &
+\end{verbatim}
+%> calibrate -f --key test --cluster-desc /home/mckean/clusterdesc/cep1.clusterdesc --db ldb001 --db-user postgres bbs.gds bbs.parset cyga.start.mod /data/scratch/mckean/TUTORIAL/ > test.txt &
+
+% Using the  ``> bbs\_sb000.txt \&'' command allows you to save and inspect the output of BBS. 
+The calibration process should be completed in about 10 minutes. You can simultaneously run a similar command for the second sub-band. 
+
+When BBS is complete we can look at the calibrated data with  parmdbplot.py. After de-selecting the ``use resolution'' option select a few stations and look at the solutions. Figure~\ref{fig:parmdbplot_lba} shows some solution plots for SB000. It is clear that there are a few spikes in the solutions.
+
+
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.6\textwidth]{tutorial_lba_parmdbplot_CS003HBA1.png}\\ 
+%\includegraphics[width=0.45\textwidth]{tutorial_lba_parmdbplot_CS302HBA0.png}
+\includegraphics[width=0.6\textwidth]{tutorial_lba_parmdbplot_RS406HBA.png}
+\caption{Top: The solutions for CS003LBA. Bottom: The solutions for RS406LBA.}
+\label{fig:parmdbplot_lba}
+\end{figure}
+
+Once again, we can inspect the corrected data with casaplotms. Figure \ref{fig:corrected_plotms_lba_raw} shows the corrected Amp. vs. Time plots for both sub-bands. From this we see again that there are some scans with bad solutions and there is  a lot of scatter overall to high amplitudes. Here we will flag these time stamps manually in plotms and also clip all amplitudes above $\sim500$.  Figure \ref{fig:corrected_plotms_lba_raw_flagged} shows the Amp. vs UV distance plots for both sub-bands after flagging.
+
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.55\textwidth]{tutorial_lba_plotms_cor_amp_time_ant.png}\\
+\includegraphics[width=0.55\textwidth]{tutorial_lba_plotms_cor_amp_time_ant_sb001.png}\\
+% \includegraphics[width=0.7\textwidth]{tutorial_lba_plotms_cor_amp_uvwave_ant.png}
+\caption{Top: Plotting the visibility amplitude against time for SB000. Bottom: SB001.}
+\label{fig:corrected_plotms_lba_raw}
+\end{figure}
+
+
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.5\textwidth]{tutorial_lba_plotms_cor_amp_uvwave_flagged.png}\\
+\includegraphics[width=0.5\textwidth]{tutorial_lba_plotms_cor_amp_uvwave_flagged_sb001.png}
+\caption{Top: Plotting the visibility amplitude against UV distance for SB000 after flagging. Bottom: SB001.}
+\label{fig:corrected_plotms_lba_raw_flagged}
+\end{figure}
+
+We can re-do the calibration with:
+\begin{verbatim}
+> calibrate-stand-alone -f L74762_SAP000_SB000_uv.MS.dem.dppp bbs.parset 
+   3C295TWO.model 
+> bbs_sb000.txt &
+\end{verbatim}
+
+
+
+
+\paragraph{Imaging}\mbox{}\\
+
+Here we will also use the AWimager\footnote{see Chapter~\ref{sec:awimager}} to do the deconvolution. 
+
+We will use a parameter file for awimager. At 60\,MHz the LOFAR (NL Remote) field of view is $4.5$ deg and the resolution should be around $8''$ First, to make a dirty image:
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/awimger.sb000.parms .
+> cat awimger.sb000.parms 
+\end{verbatim}
+\begin{lstlisting}
+ms=L74762_SAP000_SB000_uv.MS.dem.dppp
+image=L74762_SAP000_SB000.dirty.img
+data=CORRECTED_DATA
+padding=1.
+oversample=5
+cyclefactor=1.5
+gain=0.1
+cellsize=6arcsec
+npix=2048
+stokes=I
+weight=briggs
+robust=0
+wprojplanes=256
+wmax=15000 
+operation=image
+niter=0
+\end{lstlisting}
+\begin{verbatim}
+> awimager awimger.sb000.parms
+\end{verbatim}
+
+\begin{verbatim}
+> cp /home/williams/tutorial/3c295/awimger.sb000.clean.parms .
+> cat awimger.sb000.clean.parms 
+\end{verbatim}
+\begin{lstlisting}
+ms=L74759_SAP000_SB000_uv.MS.avg.dppp.flag
+image=L74759_SAP000_SB000.clean.img
+data=CORRECTED_DATA
+padding=1.
+cyclefactor=1.5
+gain=0.1
+cellsize=3arcsec
+npix=4096
+stokes=I
+weight=briggs
+robust=0
+operation=mfclark
+niter=10000
+threshold=0.1Jy
+\end{lstlisting}
+\begin{verbatim}
+> awimager awimger.sb000.clean.parms
+\end{verbatim}
+
+Figure \ref{fig:tutorial_lba_dirty} shows the dirty image and Fig. \ref{fig:tutorial_lba_cleaned} shows the cleaned corrected image. %One can see 3C\,295 at the centre of the field as well as several other sources (TO DO: this image is not cleaned deep enough yet).
+
+
+
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.5\textwidth]{tutorial_lba_dirty_sb000.png}
+\caption{The dirty LBA image for 3C\,295 (SB000).}
+\label{fig:tutorial_lba_dirty}
+\end{figure}
+
+\begin{figure}[htp]
+ \centering
+\includegraphics[width=0.5\textwidth]{tutorial_3c295_lba_clean_zoom.png}
+\caption{The cleaned LBA image for 3C\,295.}
+\label{fig:tutorial_lba_cleaned}
+\end{figure}
+
+
+
+
+
