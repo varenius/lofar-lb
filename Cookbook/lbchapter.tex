@@ -69,41 +69,56 @@ All in all, long baselines are in some ways easier to calibrate and image than N
 The area possible to image in a single LOFAR observation (NL or international) is limited
 by several factors such as: 
 \begin{itemize}
-\item The station beam, i.e. the electric field response of a single LOFAR station limiting the signal to noise ratio 
-far away from the pointing center. Although the flux densities of an image can be corrected using a good beam model, 
-the lack of sensitivity will then manifest as larger rms image noise far from the phase center. Fundamentally speaking,
-the decrease in sensitivity cannot be corrected for, so if your source is weak and far from the phase center, you may 
-have to re-observe with another pointing to see it.
-This effect is independent of baseline length, however: for long baselines 
-we use international stations which are bigger than NL-remote stations, meaning a slightly smaller station beam with FWHM 1-2 degrees at 
-HBA frequencies, see Table. \ref{tab:res}. 
-\item Geometrical/projection effects, such as W-projection artefacts. These can be corrected for in the imaging process using the AW-imager
-when making wide field images. This effect is more serious with long baselines, although fundamentally the same. However, since we are 
-usually interested in small-field imaging, we may re-project the visibilites to another phase-center before imaging, decoupling the expensive
-projection process from the imaging. 
-\item Variations in the atmosphere within the image. If the atmosphere is significantly non-uniform over your sky region of interest,
-you may need to use multi-directional calibration algorithms, e.g. SAGECAL, to calibrate your data. This can in principle be done, provided
-you have enough bright sources to serve as calibrators in your image, but may be computationally expensive. For long baselines,
-we are typically interested in only a few directions, reducing the computational demands.
-\item Averaging of visibility data, also referred to as time and frequency \emph{smearing}. This effect reduces the amplitude of sources
-far from the phase center and may also distort the shape (typically enlarge them). As for the projection losses, averaging losses are
-more prominent at longer baselines. Here we need to take care during the observations, and subsequent initial processing, but if we do
-we can actually use the averaging effects to great advantage. By averaging, we reduce the impact of interferring sources, and reduce
-the data volume, thereby speeding up calibration and imaging. 
-\item Disturbance from bright sources in the sky, e.g. Cas. A and others in the \emph{A-team}. Interferring sources can be removed from the data
-provided you have a (very) good model of the soure, through \emph{demixing} or similar procedures offered by the observatory. Interference
-from bright source may severely affect your dynamic range even if they are far away from the main beam of the station. This effect
-is actually much, much less of a problem on long baselines because we may average the data to greatly limit the field of view around 
-the objec(s) we are interested in.
+\item The station beam, i.e. the electric field response of a single LOFAR
+station limiting the signal to noise ratio far away from the pointing center.
+Although the flux densities of an image can be corrected using a good beam
+model, the lack of sensitivity will then manifest as larger rms image noise far
+from the phase center. Fundamentally speaking, the decrease in sensitivity
+cannot be corrected for, so if your source is weak and far from the phase
+center, you may have to re-observe with another pointing to see it.  This
+effect is independent of baseline length, however: for long baselines we use
+international stations which are bigger than NL-remote stations, meaning a
+slightly smaller station beam with FWHM 1-2 degrees at HBA frequencies, see
+Table. \ref{tab:res}. 
+\item Geometrical/projection effects, such as W-projection artefacts. These can
+be corrected for in the imaging process using the AW-imager when making wide
+field images. This effect is more serious with long baselines, although
+fundamentally the same. However, since we are usually interested in small-field
+imaging, we may re-project the visibilites to another phase-center before
+imaging, decoupling the expensive projection process from the imaging. 
+\item Variations in the atmosphere within the image. If the atmosphere is
+significantly non-uniform over your sky region of interest, you may need to use
+multi-directional calibration algorithms, e.g. SAGECAL, to calibrate your data.
+This can in principle be done, provided you have enough bright sources to serve
+as calibrators in your image, but may be computationally expensive. For long
+baselines, we are typically interested in only a few directions, reducing the
+computational demands.
+\item Averaging of visibility data, also referred to as time and frequency
+\emph{smearing}. This effect reduces the amplitude of sources far from the
+phase center and may also distort the shape (typically enlarge them). As for
+the projection losses, averaging losses are more prominent at longer baselines.
+Here we need to take care during the observations, and subsequent initial
+processing, but if we do we can actually use the averaging effects to great
+advantage. By averaging, we reduce the impact of interferring sources, and
+reduce the data volume, thereby speeding up calibration and imaging. 
+\item Disturbance from bright sources in the sky, e.g. Cas. A and others in the
+\emph{A-team}. Interferring sources can be removed from the data provided you
+have a (very) good model of the soure, through \emph{demixing} or similar
+procedures offered by the observatory. Interference from bright source may
+severely affect your dynamic range even if they are far away from the main beam
+of the station. This effect is actually much, much less of a problem on long
+baselines because we may average the data to greatly limit the field of view
+around the objec(s) we are interested in.
 \end{itemize}
 
 Generally, all the effects above need to be corrected for to some extent to
-make wide field images. But, when we are interested in one (or many)
-smaller parts of the sky and we have long baselines, we can focus on making several
+make wide field images. But, when we are interested in one (or many) smaller
+parts of the sky and we have long baselines, we can focus on making several
 small-field images. Here we can use averaging to our advantage. By averaging
 the data, interference from distant (e.g. tens of arcminutes, depend on how
-much we average) sources is greatly reduced and calibration and imaging is thus simplified.
-However, some care is needed with averaging and therefore we elaborate a bit more on this concept below. 
+much we average) sources is greatly reduced and calibration and imaging is thus
+simplified.  However, some care is needed with averaging and therefore we
+elaborate a bit more on this concept below. 
 
 \subsubsection{Time- and frequency smearing limiting field of view}
 Since correlators output a discrete set of visibilities (i.e. samples in time
@@ -187,19 +202,26 @@ bandwidth is important.
 
 \subsection{The \emph{shift + average} procedure}
 \label{sect:shift+average}
-If we are interested in a single source, like the core of M82 which extends about 1 arcminute on the sky, we may average 
-much more. For example, in the case of M82 the data were averaged to 1ch/SB and 10s meaning about 0.5\% loss in amplitude
-at 30$''$ from the phase center (thereby giving a FoV of 1 arcminute). 
-Note however that when averaging this heavily in frequency or time, it is important to first check if there are large residual rates or delays in the data.
+If we are interested in a single source, like the core of M82 which extends
+about 1 arcminute on the sky, we may average much more. For example, in the
+case of M82 the data were averaged to 1ch/SB and 10s meaning about 0.5\% loss
+in amplitude at 30$''$ from the phase center (thereby giving a FoV of 1
+arcminute).  Note however that when averaging this heavily in frequency or
+time, it is important to first check if there are large residual rates or
+delays in the data.
 %TODO: REF, how large is large? No rate/delay offsets are given. Perhaps convert to offset with simple formula to allow calculation?
-If one is interested in multiple objects within the station beam, on needs to phase-shift (and re-project) the UV-data to each object before averaging.
-If M82 was not in the center of my field, but say 3$'$ from the phase center, and I averaged as heavily as above without shifting first, I would
-decrease the amplitude of M82 with about 14\%.
-The need for imaging multiple objects within the same primary beam has shown to be common enough for the Radio Observatory to implement this 
-in the official pipelines. Starting during cycle three, you will be able to request shifting and averaging of data to multiple phase centers within a beam 
-as a part of your observation. 
+If one is interested in multiple objects within the station beam, on needs to
+phase-shift (and re-project) the UV-data to each object before averaging.  If
+M82 was not in the center of my field, but say 3$'$ from the phase center, and
+I averaged as heavily as above without shifting first, I would decrease the
+amplitude of M82 with about 14\%.  The need for imaging multiple objects within
+the same primary beam has shown to be common enough for the Radio Observatory
+to implement this in the official pipelines. Starting during cycle three, you
+will be able to request shifting and averaging of data to multiple phase
+centers within a beam as a part of your observation. 
 
 \subsection{Calibration of international LOFAR stations}
+\label{sect:cal}
 %- Description of variables relevant for long baseline interferometry: phase, delay, delay rate.
 %- Impact of baseline separation, ionosphere, and source structure on the phase behavior.
 %- Calibrators needed in a typical long baseline observation (Dutch array calibrator, primary and secondary calibrators).
@@ -277,28 +299,6 @@ theirin, in particular \cite{thompson}.
 % TODO: Include phasing up?
 
 
-\subsection{Distributing bandwidth on calibrators}
-In the M82 observations, we spent equal bandwidth on target and calibrator. This is
-in principle not necessary, since the calibrator is bright we can use fewer subbands
-on the calibrator and thereby get more subbands i.e. lower continuum noise on the target beam.
-To use fringe finding, we need to sample accurately the residual delay/rate slope (and possibly curvature at
-low frequencies) present in the data. This can be done with sparse sampling in frequency,
-where the optimal coverage is achieved by spreading the subbands as a powerlaw density with
-denser placement of subbands at lower frequencies. The advantage of this 
-approach is that more bandwidth can be placed on the target. The disadvantage is that
-the calibration becomes a bit more demanding. One reason for this is that the UVFITS
-format used by AIPS (for running fringe fitting) requires data in all channels.
-If we do not have contigouse subband coverage in frequency, we need to insert fake
-data and flag that (e.g. using NDPPP, see Sect. \ref{sect:fakedata}) before reading
-the data into AIPS. This will cause an increase in data volume which will slow down
-processing. Also, spreading the subbands sparsely is always a risk in case your calibrator
-is weaker than you think. 
-If you want to use the sparse sampling of subbands, we reccommend you take a look
-at the paper en titled "Optimum estimate of delays and dispersive effects in
-low-frequency interferometric observations"
-(http://dx.doi.org/10.1051/0004-6361/200913951) from 2010. This paper analyses
-on how to distribute subbands specifically in LOFAR observations for optimal
-fringe detection.
 
 \section{Calibration example step by step: The M82 data}
 \label{sect:handson}
@@ -378,31 +378,38 @@ The first thing to do is to get the data. The data was put in the LOFAR long
 term archive (LTA) as a lot of separate files. First one needs to download
 all the relevant files from the archive. This
 takes a while, since the data were stored in 2s, 4ch/SB resolution.
-In the LTA the data were stored as one file per subband per hour,
-so for the upper 16\,MHz data for J0958+6533 I had to download
-and keep track of 81 * 16 = 1296 files for this source. 
+In the LTA the data were stored as one file per subband per hour
+during 16 hours, so for the upper 16\,MHz data for J0958+6533 we had to download
+81 * 16 = 1296 files for this source. 
 The split per hour was done since we interrupted the observations once
 every hour with a 2 minute scan of 3C196.
-After checking the cookbook and talking with science support,
-I converged on the following procedure: First combine all subbands together 
-within each 1h block giving 16 MS files, then combine those together to a single MS.
 
-I started trying to combine all subbands, but unfortunately, not all files 
-were present because of a few random failing nodes
-in the observatory pipeline. Since a few missing subbands is not important here,
-I used NDPPP to insert fake data (completely flagged) where the missing subbands were.
-Example parset for combining all subbands for the same 1h block:
+In principle it is easy to combine multiple MS into one single big MS file.
+However, one has to take care since some files (subbands) may be missing in the LTA
+because of problems with single nodes during the pipeline processing. In most
+cases losing a few subbands will not impact the science, but AIPS assumes that the data
+is contigous in frequency. This means that fake data (completely flagged nonsense) 
+need to be inserted instead of the missing subbands. This can be done with NDPPP
+in the following way:
 \begin{lstlisting}
-msin = [...,'L118547_SB441_uv.dppp.MS','SB442_MISSING',
-        'L118547_SB443_uv.dppp.MS',...]
+msin=['SB0.MS', 'SB1.MS', 'missing2', 'missing3', 'SB4.MS', 'missing5','SB6.MS']
+#the files missing2,3,5 should not(!) exist in your working directory
+msin.datacolumn = DATA
 msin.missingdata=True
 msin.orderms=False
-msin.datacolumn = DATA
-msout = J0958_L118547_154MHZ_HOUR1.MS
+msout=allbands.ms # creates a 7 channel datasetr, with three channels flagged.
+steps=[]
 \end{lstlisting}
-The list of input ms has to be ordered correctly in frequency, then the missingdata flag will fill any non-existent file with fake data
-(in this case SB442).
-At this point we also averaged the data to 10s, 1ch/SB to speed up the calibration process. 
+Note the subbands --have-- to be in increasing freq order, and "touch" each
+other (so you --need-- contiguous frequency coverage), if not "missing" names
+have to be inserted and this will created flagged channels. In this example
+SB2,3 and 5 were missing. In this way you can always create a dataset with
+regular frequency spacing than can be exported to UVFITS format.
+{\bf NOTE:} Instead of semi-manually writing these parset files, there is a script called mergeSB.py
+described in sect. 11.3.2 of this LOFAR cookbook which should be able to save you some
+time with the subband concatenation.
+
+At this point the M82 data were also averaged the data to 10s, 1ch/SB to speed up the calibration process
 This was done by adding the following lines to the NDPPP parset:
 \begin{lstlisting}
 averager.freqstep = 4
@@ -478,8 +485,8 @@ Hence, it is important to ensure that data are contigous in frequency (e.g. by i
 and that there are data present for all baselines in the dataset. 
 
 \subsection{Loading the data into AIPS}
-The AIPS task FITLD can be used to load the data in to AIPS. For LOFAR data,
-the parameters digicor=-1 and douvcomp=-1 should be used.
+The AIPS task FITLD can be used to load the data in to AIPS. For an example
+of how to run this task using the Python interface ParselTongue, see Sect. \ref{sect:parseltongue}.
 
 \subsection{Introduction to AIPS tables}
 In AIPS one calibrates data by sucessively finding and improving corrections for the 
@@ -628,7 +635,7 @@ snsmo.doblank = -1
 snsmo.go()
 \end{lstlisting}
 This produced SN version 2, which is in fact what is shown in Fig,
-\ref{fig:J0958fringsols}. In this case only a few points were removed and the
+\ref{fig:fringsols}. In this case only a few points were removed and the
 original version 1 was very similar to after filtering. 
 
 \subsection{Applying the solutions with CLCAL}
@@ -653,6 +660,13 @@ After applying the corrections from FRING, the phase is flat with respect to
 frequency, see \ref{fig:J0958Hpostfring}, as it should be for a point
 source.
 
+{\bf NOTE:} Once the FRING solutions are applied, one can in principle 
+continue the phase and amplitude calibration in another software such as CASA.
+To do this, use the task SPLIT to apply the calibration derived by FRING, and then
+the task FITTP to save the fringe-fitted dataset to disk as UVFITS.
+FOr the M82 dataset we did the full calibration, i.e. including amplitude
+and better phase calibration, in AIPS. This is described below.
+
 \subsection{Amplitude calibration: bootstrapping to short baselines}
 %- Ways to obtain the amplitude calibration for international stations
 As described earlier the calibrator used for deriving delay, rate and phase
@@ -666,20 +680,28 @@ calibrators stay compact, but the flux density can vary more than a factor of
 two between observations due to intrinsic variability. Therefore they cannot be
 trusted to set the amplitude scale of the observation. 
 
-For the case of M82, the calibrator J0958 is bright and compact enough for amplitude
-calibration of the international baselines, but we did not know the correct flux density. 
-Therefore, we included observations also of a known flux calibrator, 3C196. Now, the calibrator J0958
-was used to track possible amplitude variations during the observation for all stations, and
-3C196 was used to check the absolute amplitude scale, i.e. to find the flux density of J0958. 
+For the case of M82, the calibrator J0958 is bright and compact enough for
+amplitude calibration of the international baselines, but we did not know the
+correct flux density.  Therefore, we included observations also of a known flux
+calibrator, 3C196. Now, the calibrator J0958 was used to track possible
+amplitude variations during the observation for all stations, and 3C196 was
+used to check the absolute amplitude scale, i.e. to find the flux density of
+J0958. 
 
-The amplitude corrections should be smooth, and will in most cases show a larger gain at the start and end of an experiment.
-This is because an observation is usually centered in time so that the target will reach its peak elevation at the middle of the
-observation time. This means that it will be at lower elevation in the begining and end of the observation, which means that
-the projected station area will be less at the start and end times. This in turn means that the sensitivity is lower at the start
-and end times, which means that the gain corrections need to be larger (and will be noisier) at these times. As an example,
-let us look at the gain corrections derived by CALIB in AIPS for DE601HBA on J0958, see Fig. \ref{fig:ampcal}.
-When running CALIB, we have decreased the number of free parameters compared to FRING, since we are now only solving for amplitude and phase. 
-It is therefore possible to find minor phase corrections at this point which was not perfectly determined by FRING.
+The amplitude corrections should be smooth, and will in most cases show a
+larger gain at the start and end of an experiment.  This is because an
+observation is usually centered in time so that the target will reach its peak
+elevation at the middle of the observation time. This means that it will be at
+lower elevation in the begining and end of the observation, which means that
+the projected station area will be less at the start and end times. This in
+turn means that the sensitivity is lower at the start and end times, which
+means that the gain corrections need to be larger (and will be noisier) at
+these times. As an example, let us look at the gain corrections derived by
+CALIB in AIPS for DE601HBA on J0958, see Fig. \ref{fig:ampcal}.  When running
+CALIB, we have decreased the number of free parameters compared to FRING, since
+we are now only solving for amplitude and phase.  It is therefore possible to
+find minor phase corrections at this point which was not perfectly determined
+by FRING.
 
 \begin{figure*}[htbp]
 \centering
@@ -723,23 +745,88 @@ to check the flux scale. More details by \cite{varenius2014}.
 
 \subsection{ParselTongue - Scripting AIPS with python}
 \label{sect:parseltongue}
-TODO: Brief section with examples and ref on ParselTongue scripting. In practice,
-I rarely use pure AIPS nowadays, almost all through ParselTongue / Eskil
+ParselTongue is a Python interface to classic AIPS. ParselTongue can be ran
+interactively, just like AIPS or CASA, but for Long Baselines we mostly use
+ParselTongue to execute scripts running different tasks in AIPS, such as FRING.
+ParselTongue and AIPS are not available on the LOFAR clusters, and therefore
+the data need to be calibrated at other computer facilities. 
+
+Tasks in AIPS often have many parameters to set, and it is easy to 
+forget or mix up parameters in different tasks. With ParselTongue, you can write your AIPS inputs
+as python scripts and run them. This can save a lot of time and prevent errors and mistakes
+when running tasks. ParselTongue is availabe from JIVE at http://www.jive.nl/jivewiki/doku.php?id=parseltongue:parseltongue.
+\footnote{If you want to install AIPS/ParselTongue, you may find these notes helpful:
+http://magicalbengt.wordpress.com/2012/07/02/installing-parseltongue-2-0-using-obit-20070702-on-ubuntu-12-04-64-bit/}
+For a quick tutorial to ParselTongue, see http://wiki.astrogrid.org/pub/Astrogrid/RadioAgenda/pt-demo.html.
+Below is a quick example of how to run the task FITLD to load your data into AIPS using ParselTongue. 
+
+\begin{lstlisting}
+# Demo script to run FITLD using ParselTongue. Script is executed in the terminal
+# as "ParselTongue script.py". 
+# Load ParselTongue modules
+from AIPS import AIPS
+from AIPSTask import AIPSTask as task
+from AIPSData import AIPSUVData as UV
+
+# Set AIPS user, i.e. where the files are stored in AIPS
+AIPS.userno = 666
+
+# Set logfile for ParselTongue to save AIPS output
+AIPS.log = open('PT.log', 'a')
+
+# Define task and set parameters
+fitld = task('fitld')
+fitld.datain = '/data/user/LOFARDATA.FITS'
+# Set filename in AIPS, chosing disk 1 and sequence no. 1
+outdata = UV('NAME','CLASS',1, 1)
+fitld.outdata = outdata
+fitld.ncount = 1
+fitld.clint = 0.5
+# Automatically remove already existing data, i.e. overwrite. Else AIPS
+# will complain that file already exists.
+if outdata.exists():
+    print 'WARNING: Removing existing file '+outdata.name +'.' + outdata.klass
+    outdata.zap()
+    print '         File removed. Proceeding with FITLD...'
+# Run task
+fitld.go()
+\end{lstlisting}
 
 \subsection{High-resolution imaging}
 %- Brief comments on high-resolution imaging.
-Although AIPS can determine delays and rates, it is not the best option for
-imaging long baseline LOFAR data. Since we consider asmall field of view, we do
-not need the beam models offered by AW-imager. However, at subarcsecond
-resolution we will may need to take into account any effects of a non-coplanar
+Although AIPS can determine delays and rates, it may not the best option for
+imaging your long baseline LOFAR data. A quick image in AIPS may however
+be useful, and in that case you can use the AIPS task IMAGR.
+
+Since we consider a small field of view, we do
+not need the beam models, or application of multi-directional calibration, as
+offered by AW-imager. However, at subarcsecond
+resolution we may need to take into account any effects of a non-coplanar
 array, i.e. W-projection. The field of view $\theta_\mathrm{f}$ possible to
 image without W-projection (i.e. using a single tangent plane) can be estimated
 as $\theta_{\mathrm{f}} = \sqrt{\theta_{\mathrm{b}}}/3$ (see 2-29 in
 \cite{NRAO}) where $\theta_\mathrm{b}$ is the FWHM of the synthesized beam,
 both $\theta$ in radians. This expression assumes that we may tolerate phase errors
 from no-coplanar effects of up to 0.1 radians in our image.
-If your field to image is larger than this you need to
-perform deconvolution using W-projection, for example in CASA.
+If your field to image is larger than this you may need to
+perform deconvolution using W-projection, for example in CASA or using AW-imager.
+
+If your target is complex and extended (i.e. not easily represented as a sum of
+delta functions) you may want to consider using multi-scale clean. This is
+available both in AIPS, CASA and the AW-imager. Here the emission is modelled
+as a sum of Gaussian intensity distributions rather than delta functions (as in
+ordinary CLEAN). In CASA you set the multiscale options as scales in pixels,
+using the parameter \emph{multiscale} in the task \emph{clean}. 
+
+Since the international LOFAR stations are relatively few in numbers and placed
+far apart, the UV-coverage is not as dense as for NL-LOFAR. However, the
+technique Multi-Frequency-Synthesis (MFS) can be used to improve the
+UV-coverage. The relatively wide bandwidth of LOFAR observations can be gridded
+using MFS to better fill the UV-plane, thereby improving image fidelity. MFS is
+implemented in the CASA imaging task \emph{clean}. MFS can also solve for the 
+spectrum of the image, fitting e.g. a spectral index as well as the ordinary
+total intensity in the cleaning process. To also fit a spectral index
+in CASA clean, use \emph{nterms = 2}.
 
 \subsection{Combining the core into a single superstation}
 \label{sect:phaseup}
@@ -752,7 +839,112 @@ document regarding field of view. Also, it is not clear to me if NDPPP
 phase-rotates the data properly when adding the beams in a specific direction,
 if using the shift-average approach in the coming pipeline.
 
-\section{Scheduling long baseline LOFAR observations}
+\section{Planning long baseline LOFAR observations}
 \label{sect:sched}
-TODO: Maybe good to summarise how to select calibrators, subbands etc.?
+This section aims to serve as a reference for proposing, planning and
+scheduling long baseline LOFAR observations. 
 
+\subsection{Selecting the target}
+\subsubsection{Resolution}
+Using international baselines, it is possible to obtain images with
+subarcsecond resolution at the HBA and upper part of the LBA band, see Table
+\ref{tab:res}. International baseline calibration and imaging procedures have
+also been used to obtain 4-5$''$ resolution images using the longest NL
+(remote) baselines. A suitable target is one which is interesting to image
+with resolutions in the range 0.2 to 5$''$.
+
+\subsubsection{Sensitivity}
+Before scheduling observations it is wise to estimate the final expected
+image rms noise levels to know if the sensitivity will be high enough for the
+science goals. 
+The theoretical image noise for dual polarisation data using natural weighting
+can be estimated using a modified version (including only international
+baselines) of the image noise equation given in SKA memo 113 by \cite{skamemo113} as
+\begin{equation}
+\Delta S[\mathrm{Jy}/\mathrm{beam}]=W(4\delta\nu\delta t)^{-1/2}\Bigg(
+\frac{N_{INT}(N_{INT}-1)/2}{S^2_{INT}}+\\
+        \frac{N_{INT}N_{RS}}{S_{INT}S_{RS}}+
+        \frac{N_{INT}N_{CS}}{S_{INT}S_{CS}}
+    \Bigg)^{-1/2},
+    \label{eqn:noise}
+\end{equation}
+where $W$ is an extra weighting factor (see below), $\delta\nu$ is the
+bandwidth [Hz], $\delta t$ is the integration time [s], $N_{X}$ is the number
+of stations of type $X$, and $S_{X}$ is the system equivalent flux density
+(SEFD) of station type $X$ [Jy]. The sensitivity of LOFAR depends on the
+observing frequency.  The SEFD can be found from Fig. 22 by
+\cite{vanhaarlem2013}. In the HBA band, LOFAR is most sensitive around 150\,MHz
+where a remote LOFAR station has an estimated zenith SEFD of
+$S_{RS}\approx1900$\,Jy. In HBA-joined mode we expect a $S_{CS}=S_{RS}$.  INT
+stations are twice as big, hence $S_{INT}\approx0.5S_{RS}$.  In addition,
+\cite{vanhaarlem2013} estimate that the image noise increases by a factor of 1.3
+due to time-variable station projection losses, and with a factor of 1.5 due to
+the robust weighting commonly used for imaging.  For M82, the achieved rms
+noise levels were 2-3 times higher than the theoretical levels as expected from
+eq. \ref{eqn:noise}, reaching 0.16\,mJy/beam at 154\,MHz. 
+
+\subsection{Selecting the amplitude calibrator}
+To fix the absolute flux scale of an observation, it is necessary to include a
+bright object of known flux density.  Usually one of the standard LOFAR flux
+calibrators can be used, i.e. 3C196, 3C295 etc. Since they are so bright, only
+a few minutes of observing time are needed to reach sufficient sensitivity.
+However, it is wise to spread the time in hour angle during the observation to
+better sample the UV plane. In the M82 observations, 3C196 was observed for two
+minutes once every hour.  This can also serve as calibrator when phasing up the
+core stations to increase sensitivity in fringe finding, see Sect.
+\ref{sect:phaseup}. This object need not to be very close to the target, and it
+is usually selected with help of Science support when the exact date of the
+observation is fixed.
+
+\subsection{Selecting a delay/rate/phase calibrator}
+To correct for delay/rate/phase disturbances caused, for example, by the
+ionosphere, it is necessary to include a source bright enough (typically peak
+$>150$\,mJy/beam at subarcsecond resolution, or $>50$\,mJy/beam if phasing up
+the core) to detect fringes on international baselines, and a model of the
+source structure (e.g. an image) must exist with subarcsecond resolution.
+Finally, this source should be close (1$^\circ$) to the target source.
+Currently, no extensive catalogues exist of such objects with subarcsecond
+resolution at LOFAR frequencies, although efforts are under way to 
+build such a catalog. However, a good starting point is usually
+the VLBI calibrator catalog available at http://astrogeo.org/calib/search.html.
+Once a calibrator is found which is nearby and compact (most objects in this 
+catalog are compact enough since it is made for milli-arcsecond resolution VLBI),
+one can check manually the flux density at LOFAR frequencies using e.g. NED. 
+If the object is compact and bright enough for cm-VLBI, and also bright
+enough at LOFAR frequencies, it is probably good enough to use as calibrator
+for phase-referencing of the long baselines.
+
+\subsection{Are multiple beams necessary?}
+If your target and phase calibrator are within the field of view listed in
+Table \ref{tab:res}, you can use the \emph{shift and average} procedure, as
+described in \ref{sect:shift+average} and you only need a single beam.  If not,
+you need to place separate beams on the calibrator and target. This means that
+the available bandwidth will have to be split, which will result in less
+sensitive images compared to a single beam. Note that if you do not require the
+highest sensitivity, you may instead observe many sources at once, thereby
+saving observing time. 
+
+\subsubsection{Dividing the available bandwidth in separate beams}
+The simplest approach is to split the total bandwidth equally on all
+sources, as done for the M82 observations described in this chapter. 
+This may however be far from optimal in terms of sensitivity. The calibrator
+may in many cases be bright enough to find corrections using a few subbands only. 
+To use fringe finding, we need to sample
+accurately the residual delay/rate slope (and possibly curvature at low
+frequencies) present in the data. This can be done with sparse sampling in
+frequency, where the optimal coverage is achieved by spreading the subbands as
+a powerlaw density with denser placement of subbands at lower frequencies. The
+advantage of this approach is that more bandwidth can be placed on the target.
+The disadvantage is that the calibration becomes a bit more demanding. One
+reason for this is that the UVFITS format used by AIPS (for running fringe
+fitting) requires data in all channels.  If we do not have contigouse subband
+coverage in frequency, we need to insert fake data and flag that (e.g. using
+NDPPP, see Sect. \ref{sect:fakedata}) before reading the data into AIPS. This
+will cause an increase in data volume which will slow down processing. Also,
+spreading the subbands sparsely is always a risk in case your calibrator is
+weaker than you think.  If you want to use the sparse sampling of subbands, we
+reccommend you take a look at the paper en titled "Optimum estimate of delays
+and dispersive effects in low-frequency interferometric observations"
+(http://dx.doi.org/10.1051/0004-6361/200913951) from 2010. This paper analyses
+on how to distribute subbands specifically in LOFAR observations for optimal
+fringe detection.
