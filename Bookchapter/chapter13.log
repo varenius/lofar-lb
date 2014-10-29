@@ -1,0 +1,453 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.8.23)  29 OCT 2014 01:54
+entering extended mode
+ %&-line parsing enabled.
+**chapter13.tex
+(./chapter13.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, loaded.
+(./svmult.cls
+Document Class: svmult 2007/06/25 v5.4 
+Springer Verlag global LaTeX document class for multi authored books
+Class Springer-SVMult Info: extra/valid Springer sub-package 
+(Springer-SVMult)           not found in option list - using "global" style.
+(/usr/share/texmf-texlive/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-texlive/tex/latex/base/size10.clo
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+\svparindent=\dimen103
+\bibindent=\dimen104
+\betweenumberspace=\dimen105
+\headlineindent=\dimen106
+\minitoc=\write3
+\c@minitocdepth=\count87
+\c@chapter=\count88
+\mottowidth=\dimen107
+\svitemindent=\dimen108
+\verbatimindent=\dimen109
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 963.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 964.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 965.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 966.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 967.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 968.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 969.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 970.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 971.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 972.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 973.
+\tocchpnum=\dimen110
+\tocsecnum=\dimen111
+\tocsectotal=\dimen112
+\tocsubsecnum=\dimen113
+\tocsubsectotal=\dimen114
+\tocsubsubsecnum=\dimen115
+\tocsubsubsectotal=\dimen116
+\tocparanum=\dimen117
+\tocparatotal=\dimen118
+\tocsubparanum=\dimen119
+\foot@parindent=\dimen120
+\spthmsep=\dimen121
+\c@theorem=\count89
+\c@case=\count90
+\c@conjecture=\count91
+\c@corollary=\count92
+\c@definition=\count93
+\c@example=\count94
+\c@exercise=\count95
+\c@lemma=\count96
+\c@note=\count97
+\c@problem=\count98
+\c@property=\count99
+\c@proposition=\count100
+\c@question=\count101
+\c@solution=\count102
+\c@remark=\count103
+\c@prob=\count104
+\instindent=\dimen122
+\figgap=\dimen123
+\bildb@x=\box26
+\figcapgap=\dimen124
+\tabcapgap=\dimen125
+\c@merk=\count105
+\c@@inst=\count106
+\c@@auth=\count107
+\c@auco=\count108
+\instindent=\dimen126
+\authrun=\box27
+\authorrunning=\toks14
+\tocauthor=\toks15
+\titrun=\box28
+\titlerunning=\toks16
+\toctitle=\toks17
+\c@contribution=\count109
+LaTeX Info: Redefining \abstract on input line 2320.
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
+\Gread@gobject=\count110
+))
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/framed.sty
+Package: framed 2007/10/04 v 0.95: framed or shaded text with page breaks
+\fb@frw=\dimen127
+\fb@frh=\dimen128
+\FrameRule=\dimen129
+\FrameSep=\dimen130
+)
+(/usr/share/texmf-texlive/tex/latex/psnfss/mathptmx.sty
+Package: mathptmx 2005/04/12 PSNFSS-v9.2a Times w/ Math, improved (SPQR, WaS) 
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 28.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/ztmcm/m/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ztmcm/m/n on input line 28.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 29.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/ztmcm/m/it on input line 29.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/ztmcm/m/it on input line 29.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 30.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/ztmcm/m/n on input line 30.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/ztmcm/m/n on input line 30.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 31.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 31.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 31.
+\symbold=\mathgroup4
+\symitalic=\mathgroup5
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 34.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/ptm/m/it on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 35.
+LaTeX Info: Redefining \hbar on input line 50.
+)
+(/usr/share/texmf-texlive/tex/latex/psnfss/helvet.sty
+Package: helvet 2005/04/12 PSNFSS-v9.2a (WaS) 
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks18
+))
+(/usr/share/texmf-texlive/tex/latex/psnfss/courier.sty
+Package: courier 2005/04/12 PSNFSS-v9.2a (WaS) 
+)
+(/usr/share/texmf-texlive/tex/latex/type1cm/type1cm.sty
+Package: type1cm 2002/09/05 v0.04 BlueSky/Y&Y Type1 CM font definitions (DPC, p
+atched RF)
+)
+(/usr/share/texmf-texlive/tex/latex/base/makeidx.sty
+Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+)
+\Gin@req@height=\dimen131
+\Gin@req@width=\dimen132
+)
+(/usr/share/texmf-texlive/tex/latex/tools/multicol.sty
+Package: multicol 2008/12/05 v1.6h multicolumn formatting (FMi)
+\c@tracingmulticols=\count111
+\mult@box=\box29
+\multicol@leftmargin=\dimen133
+\c@unbalance=\count112
+\c@collectmore=\count113
+\doublecol@number=\count114
+\multicoltolerance=\count115
+\multicolpretolerance=\count116
+\full@width=\dimen134
+\page@free=\dimen135
+\premulticols=\dimen136
+\postmulticols=\dimen137
+\multicolsep=\skip43
+\multicolbaselineskip=\skip44
+\partial@page=\box30
+\last@line=\box31
+\mult@rightbox=\box32
+\mult@grightbox=\box33
+\mult@gfirstbox=\box34
+\mult@firstbox=\box35
+\@tempa=\box36
+\@tempa=\box37
+\@tempa=\box38
+\@tempa=\box39
+\@tempa=\box40
+\@tempa=\box41
+\@tempa=\box42
+\@tempa=\box43
+\@tempa=\box44
+\@tempa=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\@tempa=\box50
+\@tempa=\box51
+\@tempa=\box52
+\c@columnbadness=\count117
+\c@finalcolumnbadness=\count118
+\last@try=\dimen138
+\multicolovershoot=\dimen139
+\multicolundershoot=\dimen140
+\mult@nat@firstbox=\box53
+\colbreak@box=\box54
+)
+(/usr/share/texmf-texlive/tex/latex/footmisc/footmisc.sty
+Package: footmisc 2009/09/15 v5.5a a miscellany of footnote facilities
+\FN@temptoken=\toks19
+\footnotemargin=\dimen141
+\c@pp@next@reset=\count119
+Package footmisc Info: Declaring symbol style bringhurst on input line 855.
+Package footmisc Info: Declaring symbol style chicago on input line 863.
+Package footmisc Info: Declaring symbol style wiley on input line 872.
+Package footmisc Info: Declaring symbol style lamport-robust on input line 883.
+
+Package footmisc Info: Declaring symbol style lamport* on input line 903.
+Package footmisc Info: Declaring symbol style lamport*-robust on input line 924
+.
+)
+(/usr/share/texmf-texlive/tex/latex/natbib/natbib.sty
+Package: natbib 2009/07/16 8.31 (PWD, AO)
+\bibhang=\skip45
+\bibsep=\skip46
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count120
+) (./aas_macros.sty)
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2009/06/22 v3.00
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
+\@emptytoks=\toks20
+\symAMSa=\mathgroup6
+\symAMSb=\mathgroup7
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+))
+\@indexfile=\write4
+\openout4 = `chapter13.idx'.
+
+
+Writing index file chapter13.idx
+(./chapter13.aux)
+\openout1 = `chapter13.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 45.
+ (/usr/share/texmf-texlive/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count121
+\scratchdimen=\dimen142
+\scratchbox=\box55
+\nofMPsegments=\count122
+\nofMParguments=\count123
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count124
+\MPscratchDim=\dimen143
+\MPnumerator=\count125
+\everyMPtoPDFconversion=\toks22
+)
+\big@size=\dimen144
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+
+
+Package mathptmx Warning: There are no bold math fonts on input line 63.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <16> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+LaTeX Font Info:    Calculating math sizes for size <8.5> on input line 63.
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 63
+.
+(/usr/share/texmf-texlive/tex/latex/psnfss/ot1ztmcm.fd
+File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 63
+.
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/omlztmcm.fd
+File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 63
+.
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/omsztmcm.fd
+File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 63
+.
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/omxztmcm.fd
+File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8.5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6.29004> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5.10005> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 105.
+ [1
+
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+<figures/LOFAR_stations_map.jpg, id=7, 1010.0937pt x 603.2136pt>
+File: figures/LOFAR_stations_map.jpg Graphic file (type jpg)
+
+<use figures/LOFAR_stations_map.jpg>
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 148.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/uv_cov.png, id=8, 523.4757pt x 129.3633pt>
+File: figures/uv_cov.png Graphic file (type png)
+ <use figures/uv_cov.png>
+[2 <./figures/LOFAR_stations_map.jpg>] [3 <./figures/uv_cov.png>] [4] [5]
+[6] [7] <figures/J0958Hdelays-crop.pdf, id=38, 520.94624pt x 229.85875pt>
+File: figures/J0958Hdelays-crop.pdf Graphic file (type pdf)
+
+<use figures/J0958Hdelays-crop.pdf>
+<figures/J0958Hrates-crop.pdf, id=39, 517.935pt x 232.87pt>
+File: figures/J0958Hrates-crop.pdf Graphic file (type pdf)
+
+<use figures/J0958Hrates-crop.pdf>
+<figures/J0958Hfringpsol-crop.pdf, id=40, 517.935pt x 232.87pt>
+File: figures/J0958Hfringpsol-crop.pdf Graphic file (type pdf)
+
+<use figures/J0958Hfringpsol-crop.pdf> [8] [9 <./figures/J0958Hdelays-crop.pdf>
+ <./figures/J0958Hrates-crop.pdf> <./figures/J0958Hfringpsol-crop.pdf>]
+[10] <figures/amp_uv_CSRS_TSRS.png, id=65, 1193.20781pt x 716.6775pt>
+File: figures/amp_uv_CSRS_TSRS.png Graphic file (type png)
+
+<use figures/amp_uv_CSRS_TSRS.png> [11 <./figures/amp_uv_CSRS_TSRS.png>]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 691.
+
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 691.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 692.
+
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Overfull \hbox (3.10277pt too wide) in paragraph at lines 692--693
+\OT1/pcr/m/n/10 in=[input-MS] out=[output-FITS-file] writesyscal=False 
+ []
+
+[12] [13]
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `htbp') on input line 767.
+
+<figures/vlbi_sketch.pdf, id=78, 420.5307pt x 207.92181pt>
+File: figures/vlbi_sketch.pdf Graphic file (type pdf)
+
+<use figures/vlbi_sketch.pdf>
+
+LaTeX Warning: Reference `results' on page 14 undefined on input line 788.
+
+
+LaTeX Warning: Reference `sec:obs' on page 14 undefined on input line 790.
+
+[14 <./figures/vlbi_sketch.pdf>]
+<figures/4C19.44_165MHz_lowres+highres.png, id=89, 1204.5pt x 1033.61156pt>
+File: figures/4C19.44_165MHz_lowres+highres.png Graphic file (type png)
+
+<use figures/4C19.44_165MHz_lowres+highres.png> (./chapter13.bbl [15 <./figures
+/4C19.44_165MHz_lowres+highres.png (PNG copy)>]) [16] (./chapter13.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 2830 strings out of 495061
+ 35763 string characters out of 1182621
+ 105356 words of memory out of 3000000
+ 5936 multiletter control sequences out of 15000+50000
+ 46969 words of font info for 106 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 29i,11n,25p,2443b,260s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-texli
+ve/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-texlive/fonts/ty
+pe1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts/type1/public/
+amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/
+cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/symbols/msam10
+.pfb></usr/share/texmf-texlive/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/t
+exmf-texlive/fonts/type1/urw/symbol/usyr.pfb></usr/share/texmf-texlive/fonts/ty
+pe1/urw/times/utmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmbi8
+a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb></usr/share/te
+xmf-texlive/fonts/type1/urw/times/utmri8a.pfb>
+Output written on chapter13.pdf (16 pages, 1211083 bytes).
+PDF statistics:
+ 131 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+

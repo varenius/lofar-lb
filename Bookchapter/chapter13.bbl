@@ -1,0 +1,93 @@
+\begin{thebibliography}{11}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{{Cordes} \& {Lazio}(2002)}]{cordes02}
+{Cordes}, J.~M. \& {Lazio}, T.~J.~W. 2002, ArXiv Astrophysics e-prints
+
+\bibitem[{{Greisen}(2003)}]{greisen03a}
+{Greisen}, E.~W. 2003, Information Handling in Astronomy - Historical Vistas,
+  285, 109
+
+\bibitem[{{Heald} \& {LOFAR Collaboration}(2014)}]{heald14}
+{Heald}, G. \& {LOFAR Collaboration}. 2014, in American Astronomical Society
+  Meeting Abstracts, Vol. 223, American Astronomical Society Meeting Abstracts
+  \#223, 236.07
+
+\bibitem[{{Lane} {et~al.}(2012){Lane}, {Cotton}, {Helmboldt}, \&
+  {Kassim}}]{lane12a}
+{Lane}, W.~M., {Cotton}, W.~D., {Helmboldt}, J.~F., \& {Kassim}, N.~E. 2012,
+  Radio Science, 47, 0
+
+\bibitem[{{Mart{\'{\i}}-Vidal}(2010)}]{marti-vidal10}
+{Mart{\'{\i}}-Vidal}, I. 2010, \aap, 517, A83
+
+\bibitem[{{Moldon} \& {et al.}(2014)}]{moldon14}
+{Moldon}, J. \& {et al.} 2014, \aap, submitted
+
+\bibitem[{{Nigl} {et~al.}(2007){Nigl}, {Zarka}, {Kuijpers}, {Falcke},
+  {B{\"a}hren}, \& {Denis}}]{nigl07}
+{Nigl}, A., {Zarka}, P., {Kuijpers}, J., {et~al.} 2007, \aap, 471, 1099
+
+\bibitem[{{Rengelink} {et~al.}(1997){Rengelink}, {Tang}, {de Bruyn}, {Miley},
+  {Bremer}, {Roettgering}, \& {Bremer}}]{rengelink97}
+{Rengelink}, R.~B., {Tang}, Y., {de Bruyn}, A.~G., {et~al.} 1997, \aaps, 124,
+  259
+
+\bibitem[{{Sotomayor-Beltran} {et~al.}(2013){Sotomayor-Beltran}, {Sobey},
+  {Hessels}, {de Bruyn}, {Noutsos}, {Alexov}, {Anderson}, {Asgekar}, {Avruch},
+  {Beck}, {Bell}, {Bell}, {Bentum}, {Bernardi}, {Best}, {Birzan}, {Bonafede},
+  {Breitling}, {Broderick}, {Brouw}, {Br{\"u}ggen}, {Ciardi}, {de Gasperin},
+  {Dettmar}, {van Duin}, {Duscha}, {Eisl{\"o}ffel}, {Falcke}, {Fallows},
+  {Fender}, {Ferrari}, {Frieswijk}, {Garrett}, {Grie{\ss}meier}, {Grit},
+  {Gunst}, {Hassall}, {Heald}, {Hoeft}, {Horneffer}, {Iacobelli}, {Juette},
+  {Karastergiou}, {Keane}, {Kohler}, {Kramer}, {Kondratiev}, {Koopmans},
+  {Kuniyoshi}, {Kuper}, {van Leeuwen}, {Maat}, {Macario}, {Markoff}, {McKean},
+  {Mulcahy}, {Munk}, {Orru}, {Paas}, {Pandey-Pommier}, {Pilia}, {Pizzo},
+  {Polatidis}, {Reich}, {R{\"o}ttgering}, {Serylak}, {Sluman}, {Stappers},
+  {Tagger}, {Tang}, {Tasse}, {ter Veen}, {Vermeulen}, {van Weeren}, {Wijers},
+  {Wijnholds}, {Wise}, {Wucknitz}, {Yatawatta}, \& {Zarka}}]{sotomayor13a}
+{Sotomayor-Beltran}, C., {Sobey}, C., {Hessels}, J.~W.~T., {et~al.} 2013, \aap,
+  552, A58
+
+\bibitem[{{Taylor} {et~al.}(1999){Taylor}, {Carilli}, \& {Perley}}]{taylor99}
+{Taylor}, G.~B., {Carilli}, C.~L., \& {Perley}, R.~A., eds. 1999, Astronomical
+  Society of the Pacific Conference Series, Vol. 180, {Synthesis Imaging in
+  Radio Astronomy II}
+
+\bibitem[{{van Haarlem} {et~al.}(2013){van Haarlem}, {Wise}, {Gunst}, {Heald},
+  {McKean}, {Hessels}, {de Bruyn}, {Nijboer}, {Swinbank}, {Fallows},
+  {Brentjens}, {Nelles}, {Beck}, {Falcke}, {Fender}, {H{\"o}randel},
+  {Koopmans}, {Mann}, {Miley}, {R{\"o}ttgering}, {Stappers}, {Wijers},
+  {Zaroubi}, {van den Akker}, {Alexov}, {Anderson}, {Anderson}, {van Ardenne},
+  {Arts}, {Asgekar}, {Avruch}, {Batejat}, {B{\"a}hren}, {Bell}, {Bell}, {van
+  Bemmel}, {Bennema}, {Bentum}, {Bernardi}, {Best}, {B{\^i}rzan}, {Bonafede},
+  {Boonstra}, {Braun}, {Bregman}, {Breitling}, {van de Brink}, {Broderick},
+  {Broekema}, {Brouw}, {Br{\"u}ggen}, {Butcher}, {van Cappellen}, {Ciardi},
+  {Coenen}, {Conway}, {Coolen}, {Corstanje}, {Damstra}, {Davies}, {Deller},
+  {Dettmar}, {van Diepen}, {Dijkstra}, {Donker}, {Doorduin}, {Dromer}, {Drost},
+  {van Duin}, {Eisl{\"o}ffel}, {van Enst}, {Ferrari}, {Frieswijk}, {Gankema},
+  {Garrett}, {de Gasperin}, {Gerbers}, {de Geus}, {Grie{\ss}meier}, {Grit},
+  {Gruppen}, {Hamaker}, {Hassall}, {Hoeft}, {Holties}, {Horneffer}, {van der
+  Horst}, {van Houwelingen}, {Huijgen}, {Iacobelli}, {Intema}, {Jackson},
+  {Jelic}, {de Jong}, {Juette}, {Kant}, {Karastergiou}, {Koers}, {Kollen},
+  {Kondratiev}, {Kooistra}, {Koopman}, {Koster}, {Kuniyoshi}, {Kramer},
+  {Kuper}, {Lambropoulos}, {Law}, {van Leeuwen}, {Lemaitre}, {Loose}, {Maat},
+  {Macario}, {Markoff}, {Masters}, {McFadden}, {McKay-Bukowski}, {Meijering},
+  {Meulman}, {Mevius}, {Middelberg}, {Millenaar}, {Miller-Jones}, {Mohan},
+  {Mol}, {Morawietz}, {Morganti}, {Mulcahy}, {Mulder}, {Munk}, {Nieuwenhuis},
+  {van Nieuwpoort}, {Noordam}, {Norden}, {Noutsos}, {Offringa}, {Olofsson},
+  {Omar}, {Orr{\'u}}, {Overeem}, {Paas}, {Pandey-Pommier}, {Pandey}, {Pizzo},
+  {Polatidis}, {Rafferty}, {Rawlings}, {Reich}, {de Reijer}, {Reitsma},
+  {Renting}, {Riemers}, {Rol}, {Romein}, {Roosjen}, {Ruiter}, {Scaife}, {van
+  der Schaaf}, {Scheers}, {Schellart}, {Schoenmakers}, {Schoonderbeek},
+  {Serylak}, {Shulevski}, {Sluman}, {Smirnov}, {Sobey}, {Spreeuw}, {Steinmetz},
+  {Sterks}, {Stiepel}, {Stuurwold}, {Tagger}, {Tang}, {Tasse}, {Thomas},
+  {Thoudam}, {Toribio}, {van der Tol}, {Usov}, {van Veelen}, {van der Veen},
+  {ter Veen}, {Verbiest}, {Vermeulen}, {Vermaas}, {Vocks}, {Vogt}, {de Vos},
+  {van der Wal}, {van Weeren}, {Weggemans}, {Weltevrede}, {White}, {Wijnholds},
+  {Wilhelmsson}, {Wucknitz}, {Yatawatta}, {Zarka}, {Zensus}, \& {van
+  Zwieten}}]{vanhaarlem13}
+{van Haarlem}, M.~P., {Wise}, M.~W., {Gunst}, A.~W., {et~al.} 2013, \aap, 556,
+  A2
+
+\end{thebibliography}
