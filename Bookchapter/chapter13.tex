@@ -105,33 +105,37 @@ calibrate a long-baseline observation at low frequencies.}
 \section{Introduction}
 \label{sec:introduction}
 
-In this chapter we focus on the calibration of International LOFAR, which
-includes the long baselines provided by international stations, to produce
-high-resolution radio images. The Very Long Baseline Interferometry (VLBI)
-techniques are explained, as well as the different steps required to properly
-calibrate a long-baseline observation at low frequencies. Some of the
-discussions will be focused on the LOFAR HBA, since currently the LBA
-calibration process is still not well understood and optimized.
+The prime reason to use long baselines is to obtain very high-resolution images.
+Using the longest LOFAR baselines, subarcsecond imaging is possible in the HBA
+band and the upper part of the LBA band. Early science results include 
+detailed images of quasar jets, and imaging of individual supernova remnants
+in M82. In this chapter we describe calibration and imaging of international LOFAR
+stations. The Very Long Baseline Interferometry (VLBI) techniques are
+explained, as well as the different steps required to properly calibrate the
+international stations. Some of the discussions will be focused on the LOFAR
+HBA; calibration and imaging of long baseline data from LBA stations is more
+challenging and still need additional testing and optimization.
 
 % JM: I have to think about a few lines with science motivation
+% EV: I added a few lines, feel free to revert back if you like.
 
-\section{Long baselines with International LOFAR}
+\section{International LOFAR stations}
+The majority of the LOFAR stations, namely the core and remote stations, are
+distributed over an area roughly 180 km in diameter predominantly in the
+northeastern Dutch province of Drenthe. Currently, the array also includes 8
+international LOFAR stations across Europe that provide maximum baselines up to
+1292~km. One additional station is planned to be completed in Hamburg (Germany)
+in 2014, and three stations in Poland will commence construction in 2014,
+extending the maximum baseline to $\sim$2000~km. Fig.~\ref{fig:stations} shows
+the distribution of current and planned stations of International LOFAR.
 
 Observations with the LOFAR international stations are mainly different from
 the Dutch array observations in that station separations above 200~km provide
 different scales that require different approaches. The main differences in the
 array itself are that the density of stations is scarce, and provides a less
-dense uv-coverage, that the instrument has a much reduced field of view (FoV),
+dense uv-coverage, that the instrument has a reduced field of view (FoV),
 and that the atmospheric conditions above each station are highly uncorrelated,
-making the phase calibration much more delicate. The majority of the LOFAR
-stations, namely the core and remote stations, are distributed over an area
-roughly 180 km in diameter predominantly in the northeastern Dutch province of
-Drenthe. Currently, the array also includes 8 international LOFAR stations
-across Europe that provide maximum baselines up to 1292~km. One additional
-station is planned to be completed in Hamburg (Germany) in 2014, and three
-stations in Poland will commence construction in 2014, extending the maximum
-baseline to $\sim$2000~km. Fig.~\ref{fig:stations} shows the distribution of
-current and planned stations of International LOFAR.
+making the phase calibration much more delicate. 
 
 %\footnote{An up-to-date map of all LOFAR stations can be found at \url{http://www.astron.nl/~heald/lofarStatusMap.html}.}.  
 
@@ -218,13 +222,14 @@ stations are plotted in red.}
 %\end{table}
 
 
-\subsection{International LOFAR field of view (FoV)}\label{sec:fov}
+\subsection{Field of view (FoV) and averaging}\label{sec:fov}
 
 The area possible to image in a single LOFAR observation (NL or international)
 is limited by several factors such as the station beam, geometrical/projection
-effects, such as W-projection artefacts, variations in the atmosphere within
+effects, W-projection artefacts, variations in the atmosphere within
 the image, and averaging of visibility data, also referred to as time and
-frequency \emph{smearing}. Here we will focus on describing the latter.
+frequency \emph{smearing}. The latter is mainly important for long
+baselines and in this section we describe this effect in more detail. 
 
 Since correlators output a discrete set of visibilities (i.e. samples in time
 and frequency), averaging is to some extent always done on interferometric
@@ -318,7 +323,7 @@ bandwidth is important.
 \end{table}
 
 
-\subsection{Importance of the phase delay. Main contributions}
+\subsection{Differential delay: cause and effects}
 
 The interferometric phase depends on the time delay of the signal to reach two
 different stations. In particular, the phase delay is
@@ -640,6 +645,10 @@ calibration solutions to the international stations with FRING, and can be used
 as a reference station. In Fig.~\ref{fig:CSvsTS} we show calibrated amplitudes
 and phases for some baselines from some remote stations to a single core
 station and to the tied station formed by coherently combining 23 core stations.
+{\bf Note:} A tied-station formed by adding the whole core 
+has a very small (5\% amplitude loss at 30$''$ distance from phase center) 
+field of view. Although this is rarely a problem for deriving FRING solutions,
+care is needed if using such combined data to image extended objects.
 % JM: The plot is not very nice, and does not give too much information. Maybe
 % include CS-International and TS-International baselines to see some amp/phase
 % variations? Maybe include some numbers on the dispersions?
@@ -661,9 +670,12 @@ Differential Faraday rotation introduces rapid phase changes with frequency
 into linear polarisation data on long baselines. For long-baseline observations
 is preferable to work in a circular (R,L) polarisation basis. In this basis,
 the ionospheric disturbances are transformed from coupled amplitude/phase
-effects (as in the linear X,Y basis) to phase only effects. Since differential Faraday rotation does not mix R and L
-polarisations we may calibrate RR and LL independently. Furthermore, standard VLBI techniques like fringe fitting work in a circular (R,L)
-polarisation basis. Therefore, the data have to be converted to circular polarisation before the phase calibration of the long baselines.
+effects (as in the linear X,Y basis) to phase only effects. Since differential
+Faraday rotation does not mix R and L polarisations we may calibrate RR and LL
+independently. Furthermore, standard VLBI techniques like fringe fitting work
+in a circular (R,L) polarisation basis. Therefore, the data have to be
+converted to circular polarisation before the phase calibration of the long
+baselines.
 % JM: this paragraph can be more clear and straightforward.
 
 Conversion to circular polarisation can be done using the Table Query Language
@@ -671,10 +683,18 @@ Conversion to circular polarisation can be done using the Table Query Language
 effects of the station beam should be calibrated with BBS before converting the
 data. As the effects of the station beam were already calibrated, this is a
 simple operation. However, we note that since BBS calibrates the XX and YY
-components independently, an overall phase-offset between X and Y may remain. Another tool to convert from linear to circular polarisation is \emph{mscorpol} v1.6, developed by T. D. Carozzi.
+components independently, an overall phase-offset between X and Y may remain.
+Another tool to convert from linear to circular polarisation is \emph{mscorpol}, 
+developed by T. D. Carozzi.
 
 
 % JM: it is recommended to use BBS corrections + taql conversion over mscorpol. The main reason is because eventually the beam model in BBS should be more accurate. Other reasons are that they are official LOFAR tools, that will probably get more maintenance, and have some additions, such as accounting for failing tiles, etc.  
+% EV: The beam model problems in LOFAR seem to be so serious at the moment that
+% I cannot recommend anyone using that route if they want to get reliable results.
+% Unfortunately, I think we need a very firm testing of the LOFAR beam models
+% before we can reccommend this kind of procedure. 
+% I understand the politically correct point of view, but explicitly reccomending
+% a system which may cause serious errors feels wrong.
 
 %The M82 data \cite{varenius2014} were converted from linear to circular using
 %the tool \emph{mscorpol} v1.6, developed by T. D. Carozzi.  This tool
@@ -688,20 +708,22 @@ components independently, an overall phase-offset between X and Y may remain. An
 Since AIPS understands the UVFITS-format, but not Measurement Sets (MS)
 we need to convert the data from MS to UVFITS. There are several ways to do this:
 \begin{itemize}
-\item You may use the function \emph{exportuvfits} in CASA.
 \item You may use the tool \emph{ms2uvfits} available at the LOFAR cluster, as {\tt ms2uvfits in=[input-MS] out=[output-FITS-file] writesyscal=False}
+\item You may use the function \emph{exportuvfits} in CASA.
 \end{itemize}
-Note that in a UVFITS file there MUST be data for all baselines included, although
-data can be flagged if baselines are bad. If one tries to reduce data size by exluding particular subarrays
-with NDPPP one may run into very strange errors in AIPS, since the basic assumptions of UVFITS are not valid.
-Hence, it is important to ensure that data are contigous in frequency (e.g. by inserting fake data as explained above)
-and that there are data present for all baselines in the dataset. 
+Note that in a UVFITS file there MUST be data for all baselines included,
+although data can be flagged if baselines are bad. If one tries to reduce data
+size by exluding particular subarrays with NDPPP one may run into very strange
+errors in AIPS, since the basic assumptions of UVFITS are not valid.  Hence, it
+is important to ensure that data are contigous in frequency (e.g. by inserting
+fake data as explained above) and that there are data present for all baselines
+in the dataset. 
 
 The AIPS task FITLD can be used to load the data in to AIPS. For LOFAR data,
 the parameters digicor=-1 and douvcomp=-1 should be used.
 
 
-\subsection{Brief instroduction to calibration tables in AIPS}\label{sec:aips}
+\subsection{Brief introduction to calibration tables in AIPS}\label{sec:aips}
 
 In AIPS one calibrates data by sucessively finding and improving corrections
 for the amplitude and phase of visibilites. These corrections are stored in
@@ -718,8 +740,8 @@ UVFITS file with the corrected data.
 \section{Finding calibrators}
 
 Until a good catalogue of compact sources at MHz frequencies is available, it
-is important to take into account that a science observation might require a
-previous search of calibrators. A fast method using the distribution of
+is important to take into account that a science observation might require an
+preparatory search of calibrators. A fast method using the distribution of
 bandwidth between many sources (see Sect.~\ref{sec:bandwidth}) is described in
 \cite{moldon14}. A pre-selection based on a number of parameters from existing
 catalogues, such as the low-frequency spectral index, and the flux, ca be
@@ -782,7 +804,7 @@ left panel).}
 \end{figure*}
 
 
-We propose the following approach for an International LOFAR observation: 
+\cite{moldon14} propose the following approach for an International LOFAR observation: 
 \begin{enumerate}
 \item Identify candidate primary calibrators up to separations of a few degrees 
 by using any of the criteria discussed in Sect.~\ref{results};
