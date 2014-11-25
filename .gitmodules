@@ -1,0 +1,3 @@
+[submodule "mscorpol"]
+	path = mscorpol
+	url = https://github.com/2baOrNot2ba/mscorpol.git
