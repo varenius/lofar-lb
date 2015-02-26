@@ -2,44 +2,44 @@ This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
 The top-level auxiliary file: chapter13.aux
 The style file: aa.bst
 Database file #1: chapter13.bib
-You've used 11 entries,
+You've used 12 entries,
             2947 wiz_defined-function locations,
-            713 strings with 11837 characters,
-and the built_in function-call counts, 17841 in all, are:
-= -- 1244
-> -- 2814
-< -- 7
-+ -- 938
-- -- 927
-* -- 1765
-:= -- 3378
-add.period$ -- 11
-call.type$ -- 11
-change.case$ -- 353
-chr.to.int$ -- 11
-cite$ -- 11
-duplicate$ -- 216
-empty$ -- 292
-format.name$ -- 958
-if$ -- 3448
+            719 strings with 14097 characters,
+and the built_in function-call counts, 23401 in all, are:
+= -- 1610
+> -- 3813
+< -- 6
++ -- 1272
+- -- 1260
+* -- 2351
+:= -- 4438
+add.period$ -- 12
+call.type$ -- 12
+change.case$ -- 468
+chr.to.int$ -- 12
+cite$ -- 12
+duplicate$ -- 234
+empty$ -- 324
+format.name$ -- 1290
+if$ -- 4518
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 9
-newline$ -- 37
-num.names$ -- 45
-pop$ -- 359
+missing$ -- 10
+newline$ -- 40
+num.names$ -- 49
+pop$ -- 470
 preamble$ -- 1
-purify$ -- 353
+purify$ -- 468
 quote$ -- 0
-skip$ -- 186
+skip$ -- 205
 stack$ -- 0
-substring$ -- 197
+substring$ -- 231
 swap$ -- 16
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 99
+type$ -- 108
 warning$ -- 0
-while$ -- 41
+while$ -- 46
 width$ -- 0
-write$ -- 110
+write$ -- 121

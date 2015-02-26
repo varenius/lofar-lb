@@ -1,4 +1,4 @@
-\begin{thebibliography}{11}
+\begin{thebibliography}{12}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{{Cordes} \& {Lazio}(2002)}]{cordes02}
@@ -21,8 +21,23 @@
 \bibitem[{{Mart{\'{\i}}-Vidal}(2010)}]{marti-vidal10}
 {Mart{\'{\i}}-Vidal}, I. 2010, \aap, 517, A83
 
-\bibitem[{{Moldon} \& {et al.}(2014)}]{moldon14}
-{Moldon}, J. \& {et al.} 2014, \aap, submitted
+\bibitem[{{Mold{\'o}n} {et~al.}(2015){Mold{\'o}n}, {Deller}, {Wucknitz},
+  {Jackson}, {Drabent}, {Carozzi}, {Conway}, {Kapi{\'n}ska}, {McKean},
+  {Morabito}, {Varenius}, {Zarka}, {Anderson}, {Asgekar}, {Avruch}, {Bell},
+  {Bentum}, {Bernardi}, {Best}, {B{\^i}rzan}, {Bregman}, {Breitling},
+  {Broderick}, {Br{\"u}ggen}, {Butcher}, {Carbone}, {Ciardi}, {de Gasperin},
+  {de Geus}, {Duscha}, {Eisl{\"o}ffel}, {Engels}, {Falcke}, {Fallows},
+  {Fender}, {Ferrari}, {Frieswijk}, {Garrett}, {Grie{\ss}meier}, {Gunst},
+  {Hamaker}, {Hassall}, {Heald}, {Hoeft}, {Juette}, {Karastergiou},
+  {Kondratiev}, {Kramer}, {Kuniyoshi}, {Kuper}, {Maat}, {Mann}, {Markoff},
+  {McFadden}, {McKay-Bukowski}, {Morganti}, {Munk}, {Norden}, {Offringa},
+  {Orru}, {Paas}, {Pandey-Pommier}, {Pizzo}, {Polatidis}, {Reich},
+  {R{\"o}ttgering}, {Rowlinson}, {Scaife}, {Schwarz}, {Sluman}, {Smirnov},
+  {Stappers}, {Steinmetz}, {Tagger}, {Tang}, {Tasse}, {Thoudam}, {Toribio},
+  {Vermeulen}, {Vocks}, {van Weeren}, {White}, {Wise}, {Yatawatta}, \&
+  {Zensus}}]{moldon15}
+{Mold{\'o}n}, J., {Deller}, A.~T., {Wucknitz}, O., {et~al.} 2015, \aap, 574,
+  A73
 
 \bibitem[{{Nigl} {et~al.}(2007){Nigl}, {Zarka}, {Kuijpers}, {Falcke},
   {B{\"a}hren}, \& {Denis}}]{nigl07}
@@ -89,5 +104,14 @@
   Zwieten}}]{vanhaarlem13}
 {van Haarlem}, M.~P., {Wise}, M.~W., {Gunst}, A.~W., {et~al.} 2013, \aap, 556,
   A2
+
+\bibitem[{{Varenius} {et~al.}(2015){Varenius}, {Conway}, {Mart{\'{\i}}-Vidal},
+  {Beswick}, {Deller}, {Wucknitz}, {Jackson}, {Adebahr}, {P{\'e}rez-Torres},
+  {Chy{\.z}y}, {Carozzi}, {Mold{\'o}n}, {Aalto}, {Beck}, {Best}, {Dettmar},
+  {van Driel}, {Brunetti}, {Br{\"u}ggen}, {Haverkorn}, {Heald}, {Horellou},
+  {Jarvis}, {Morabito}, {Miley}, {R{\"o}ttgering}, {Toribio}, \&
+  {White}}]{varenius15}
+{Varenius}, E., {Conway}, J.~E., {Mart{\'{\i}}-Vidal}, I., {et~al.} 2015, \aap,
+  574, A114
 
 \end{thebibliography}
