@@ -472,8 +472,7 @@ Instabilities in the rubidium clocks used at the international stations (the
 core stations share a single clock) can produce delay rates up to 20 ns per 20
 min, which corresponds to about a radian per minute at 150~MHz
 \citep{vanhaarlem13}.  
-TODO: WHAT DOES THIS RADIAN PER MINUTE MEAN?
-In total, non-dispersive instrumental delays of up to $\sim100$~ns and delay
+In total, non-dispersive delays of up to $\sim100$~ns and delay
 rates of up to $\sim$20~ns~h$^{-1}$ are expected.  
 
 The ionospheric contribution to the delay changes as a function of time,
@@ -585,6 +584,7 @@ under the latter set of conditions, where solution bandwidths are limited to no
 more than a few MHz and time intervals of a few minutes.
 
 \subsubsection{What is a bright enough calibrator?}
+\label{sect:brightcal}
 To derive delay and rate corrections we need to find a calibrator which is
 bright enough to find solutions in a small enough block in time and frequency
 so that the linear approximation is valid. 
@@ -593,49 +593,55 @@ approximately 1500~Jy\footnote{A LOFAR core station consists of two
 sub-stations ($2\times24$ tiles) in the HBA.} at a frequency of $\sim$140~MHz
 \citep{vanhaarlem13}.  An international station has twice the collecting area
 of a core station at $\sim$140~MHz, so the expected SEFD is around 750 Jy.  
+The theoretical 1$\sigma$ baseline sensitivity of an international
+station to a (joined) HBA core station, given 3~MHz of bandwidth and 4 minutes
+of observing time, is 40~mJy in a single polarisation.  
+%Google: sqrt(750*1500)/(sqrt(3MHz*4*60seconds))*1000
+If we require a minimum signal to noise ratio of 5 for fringe-fitting,
+this means we need a calibrator brighter than 200\,mJy.
 
-The 24 core stations can be coherently combined into a single phased array with
-an SEFD of $\sim$65~Jy (see Sect. \ref{sect:ts001}), in the absence of correlated noise (i.e., when the
-observed field only contains sources significantly fainter than the station
-SEFD).  The theoretical 1$\sigma$ baseline sensitivity of an international
-station to the phased-up core station, given 3~MHz of bandwidth and 4 minutes
-of observing time, is hence 8~mJy in a single polarisation.  
-
-A source with a compact flux density of 50~mJy yields a theoretical baseline
-signal-to-noise ratio of 6, and is therefore a potential primary calibrator. In
-the real world, the sensitivity of the phased-up core station will be reduced
-by failing tiles, imperfect calibration and correlated (astronomical) noise,
-and solution intervals shorter than 4 minutes could be required under suboptimal 
-ionospheric conditions.  Therefore, 50~mJy should be considered a lower
-limit for a useful delay/rate calibrator flux density, being 100--150~mJy a
-reasonable reference.
+It is possible to use even weaker calibrators by forming a combined station of
+all the core stations, resulting in a very sensitive station wieh an SEFD of
+$\sim$65~Jy (see Sect. \ref{sect:ts001}).  The theoretical 1$\sigma$ baseline
+sensitivity of an international station to the phased-up core station, given
+3~MHz of bandwidth and 4 minutes of observing time, is hence 8~mJy in a single
+polarisation.  Given this increase in sensitivity, sources with flux densities
+as low as 50~mJy could in theory be used as delay/rate calibrators. However, in
+practice the sensitivity may be reduced by failing tiles, imperfect station
+calibration and correlated (astronomical) noise.  Also, solution intervals
+shorter than 4 minutes could be required under suboptimal ionospheric
+conditions.  Therefore, 50~mJy should be considered a lower limit for a useful
+delay/rate calibrator flux density. 
 
 \subsubsection{What is a close enough calibrator?}
-In addition to being sufficiently bright, the primary calibrator must be close
-enough to the secondary calibrator/target field that the differential delay
-between the two fields does not lead to decorrelation when phase-only secondary
-calibration is performed (just as for cm~VLBI).  The solution bandwidths are
-narrower by a factor of $\gtrsim$10 than for cm~VLBI, which is helpful, but the
-ionospheric delay (inversely proportional to observing frequency squared) is
-much greater, meaning that on balance a calibrator closer than the $\lesssim$5
-degrees typical for cm~VLBI will be needed.  The maximum acceptable separation
-will be a strong function of ionospheric conditions and elevation, but at face
-value, given a bandwidth 20 times narrower (e.g., 3 MHz vs 64 MHz) and
-frequency 10 times lower (140 MHz vs 1400 MHz), one would expect that the
-calibrator would need to be separated by $\lesssim$1 degree.  This is borne out
-by commissioning observations with LOFAR, which have shown acceptable results
-with separations up to several degrees in favourable ionospheric conditions,
-and unacceptable results with separations as small as $\sim$0.8 degrees in poor
-conditions.  Ideally, then, a primary calibrator for International LOFAR
-observations would be located $\lesssim$1 degree from the secondary
-calibrator/target field to give acceptable calibration under most
-circumstances. Exploration of the distribution of compact sources at 140~MHz
-has shown that the density of calibrators on the sky could be enough to
-overcome this restriction \citep{moldon15}. This leads to the one calibration
-advantage of International LOFAR compared to cm~VLBI; since the beam of an
-International LOFAR station is $\gtrsim$2 degrees across, the primary
-calibrator will by necessity be observed contemporaneously with the target
-source.
+In addition to being sufficiently bright, the delay/rate calibrator must be
+close enough to the target field that the differential delay between the two
+fields does not lead to decorrelation when phase-only secondary calibration is
+performed (as done for cm~VLBI, either using the target itself or using another
+calibrator).  The solution bandwidths are narrower by a factor of $\gtrsim$10
+than for cm~VLBI, which is helpful, but the ionospheric delay (inversely
+proportional to observing frequency squared) is much greater, meaning that on
+balance a calibrator closer than the $\lesssim$5 degrees typical for cm~VLBI
+will be needed.  The maximum acceptable separation will be a strong function of
+ionospheric conditions and elevation, but at face value, given a bandwidth 20
+times narrower (e.g., 3 MHz vs 64 MHz) and frequency 10 times lower (140 MHz vs
+1400 MHz), one would expect that the calibrator would typically need to be
+separated by $\lesssim$1 degree.  This is borne out by commissioning
+observations with LOFAR, which have shown acceptable results with separations
+up to several degrees in favourable ionospheric conditions, and unacceptable
+results with separations as small as $\sim$0.8 degrees in poor conditions.
+Ideally, then, a primary calibrator for International LOFAR observations would
+be located $\lesssim$1 degree from the secondary calibrator/target field to
+give acceptable calibration under most circumstances. Exploration of the
+distribution of compact sources at 140~MHz has shown that the density of
+calibrators on the sky could be enough to overcome this restriction
+\citep{moldon15}. This leads to the one calibration advantage of International
+LOFAR compared to cm~VLBI; since the beam of an International LOFAR station is
+$\gtrsim$2 degrees across, the calibrator may easily be observed simultaneously
+with the target source. Note however that care has to be taken when averaging
+the data to not reduce amplitudes severely by smearing, see Sect.
+\ref{sect:smearing}.  This can for example be avoided by using the
+\emph{shift+averaging procedure}, see Sect. \ref{sect:shift}.
 
 
 \begin{figure*}[htbp]
@@ -667,8 +673,9 @@ with known flux density.
 
 For core and remote stations one can use, for example, standard flux density
 calibrators such as 3C196, or bright sources in low frequency catalogs such as
-MSSS \citep{heald14}. However, for International LOFAR that is in general not
-possible. The bright standard flux calibrators, e.g. 3C196, have a very complex
+MSSS \citep{heald14}. However, for international stations this is in general not
+possible because of the small spatial scales sampled by baselines to these stations. 
+The bright standard flux calibrators, e.g. 3C196, have a very complex
 structure at subarcsecond scales. If we had a good model of this structure at
 our frequency of observation, we could account for it in the calibration of the
 international stations. Work is being done to map well known flux density
@@ -677,19 +684,22 @@ we have to rely on another boot-strapping technique.
 
 The current best approach is to include two calibrators in the observations: a
 well monitored flux density calibrator (for instance 3C196 or 3C84) and another
-compact source with flux density of a few hundred mJy. While this compact
-source can be variable in time, and hence not a suitable absolute flux density
-reference, it can be used to calibrate the relative amplitudes of all
-baselines, including international stations. The absolute flux density
-scale is then set by fitting one scaling factor for all visibilities, using
-data on the short (NL) baselines for the standard flux density calibrator.
-The compact calibrator can be the same as use to derive delay/rate solutions,
-given that it is bright enough.
+compact source with flux density of a few hundred mJy.  The compact calibrator
+can often be the same as used to derive delay/rate solutions, see Sect,
+\ref{sect:brightcal}.  While this compact source can be variable (on timescales
+longer than the observation), and hence not a suitable \emph{absolute} flux density
+reference, it can be used to calibrate the \emph{relative} amplitudes of all
+baselines, including international stations. The absolute flux density scale can 
+then be set by fitting a common scaling factor for all visibilities (including
+the international baselines), by comparing the derived flux density 
+for the standard flux density calibrator on short (NL) baselines, where
+subarcsecond scale structure is not important.
 
 After a phase and amplitude calibration of an International LOFAR observation,
 the resulting visibilities should look similar to the ones shown in
 Fig.~\ref{fig:radplot}, where we show the calibrator J0958+6533 used in
-\cite{varenius15}. 
+\cite{varenius15} to derive delay and rate corrections as well as the relative
+amplitude scale. 
 
 \begin{figure*}[htbp]
 \begin{center}
@@ -790,73 +800,19 @@ to all International LOFAR observers, delivering a reduced data volume for
 long-baseline observations and enabling calibrated data to be more quickly
 produced.
 
-%\subsection{Using two calibrators}
-%
-%For cm VLBI, the dispersive delay due to the ionosphere is small (and so are
-%the changes with time), meaning that solution intervals of minutes and widths
-%of tens to hundreds of MHz are generally permissible.  After application of the
-%solutions from the primary calibrator it is common to use a secondary
-%calibrator\footnote{A secondary calibrator is often referred to as an
-%``in-beam'' calibrator in VLBI if it is close enough to the target source to be
-%observed contemporaneously} closer to the target source (separation
-%$\sim$arcmin), or to use the target source if it is bright enough for
-%``self-calibration'', solving only for the phase (no delay or rate). This
-%second phase-only calibration is used to refine the calibration errors that
-%result from the spatial or temporal interpolation of the primary solutions.
-%Because this is a problem with fewer degrees of freedom, lower signal-to-noise
-%ratio (S/N) data can be used.  Additionally, because the bulk delay has already
-%been removed, even more bandwidth can be combined in a single solution for a
-%further improvement in S/N.  A secondary calibrator can therefore be
-%considerably fainter (usually $\sim$1-10 mJy versus $>$100 mJy for a primary
-%calibrator).  This typical VLBI calibration strategy is illustrated in
-%Figure~\ref{fig:calstrategy}.
-%
-%\begin{figure*}[] %figure1
-%\center
-%%\resizebox{1.0\hsize}{!}{
-%\includegraphics[width=\textwidth]{figures/vlbi_sketch.pdf}
-%%}
-%\caption{Typical calibration setup for cm VLBI (left) and International LOFAR
-%(right).  Note that in some cases the target may itself function as the
-%secondary calibrator.  A secondary calibrator is not always required for cm
-%VLBI, but will almost always be needed for International LOFAR, unless the
-%primary calibrator is fortuitously close.  The larger field of view of LOFAR
-%means that both the primary and secondary calibrators will always be observed
-%contemporaneously, unlike in cm VLBI, where nodding between the primary
-%calibrator and target is typically required (shown by the double arrow in the
-%left panel).}
-%\label{fig:calstrategy}
-%\end{figure*}
-%
-\subsection{Finding calibrators}\label{findcalib}
-
-Until a good catalogue of compact sources at MHz frequencies is available, it
-is important to take into account that a science observation might require a
-preparatory search of calibrators. A fast method using the distribution of
-bandwidth between many sources (see Sect.~\ref{sec:bandwidth}) is described in
-\cite{moldon15}. A pre-selection based on a number of parameters from existing
-catalogues, such as the low-frequency spectral index, and the flux, can be
-performed to optimize the search. In particular the most useful catalogues are
-the VLSS, at 74~MHz, 4~m wavelength \citep{lane12a}, the WENSS catalogue at
-325~MHz, 92 cm wavelength \citep{rengelink97}, and specially The Multifrequency
-Snapshot Sky Survey (MSSS), which comes from LOFAR observations
-\citep{heald14}. 
-
-\cite{moldon15} showed that there is a density of $\sim1$ good calibrator per
-square degree based on two fields with Galactic latitudes of $+26.6^{\circ}$
-and $+43.4^{\circ} $. However, we expect less compact sources at lower Galactic
-latitudes due to interstellar scattering. The Galactic electron density model
-NE2001 \citep{cordes02} predicts an scattering at a galactic latitude of
-$50^{\circ}$ of almost 100~mas at 150~MHz, which is five times smaller than our
-resolution. However, the scattering is about 300~mas, similar to our beamsize,
-at latitudes of 5--10$^{\circ}$, depending on the longitude. Therefore,
-observations below a Galactic latitude of 10$^{\circ}$ are likely to be
-affected by scattering on the longest baselines, and the effect should be
-severe below about 2$^{\circ}$, especially towards the Galactic Center. 
-
 
 \section{Practical considerations}
 \label{sec:practical}
+
+The calibration of International LOFAR data is not fundamentally different from
+any other radio interferometric data, although special care should be taken
+regarding, for example, the phase calibration using VLBI techniques. However, there are some
+particular practical considerations that could help the observer to reduce an
+International LOFAR observation. A detailed description of the particular
+steps and software generally used to reduce these type of data can be found in
+The LOFAR Imaging
+Cookbook\footnote{\url{http://www.astron.nl/radio-observatory/lofar/lofar-imaging-cookbook}}.
+Here we describe some of this
 
 
 \subsection{Optimising use of available bandwidth}\label{sec:bandwidth}
@@ -870,7 +826,8 @@ generate 30 beams to observe simultaneously 30 sources with 3~MHz bandwith as a
 fast way to search for suitable compact calibrators for an
 International LOFAR observation \citep[see i.e.][]{moldon15}. 
 
-\subsubsection{Unequal distribution of subbands on target and calibrators} 
+\subsubsection{Unequal distribution of subbands on target and
+calibrators}\label{sec:bwdist} 
 If your calibrator is bright, you can use fewer subbands on the calibrator, and
 thereby get better sensitivity on the target. To use fringe finding, we need to
 sample accurately the residual delay/rate slope (and possibly curvature at low
@@ -889,7 +846,7 @@ weaker than you think. A detailed discussion can be found in
 \cite{marti-vidal10}, where the authors analyse how to distribute subbands
 specifically for LOFAR observations for optimal fringe detection.
 
-\subsubsection{The shift + averaging procedure}\label{sec:shift}
+\subsubsection{The shift + averaging procedure}\label{sect:shift}
 Given the high resolution obtained with the
 International LOFAR observations, imaging of the region restricted by the time
 and frequency average of the data (see Table~\ref{tab:res}) would require a
@@ -900,6 +857,36 @@ dataset can be shifted and averaged multiple times, to the positions of all the
 target sources and possibly to one or more nearby calibrators. Starting in
 cycle four, it will be possible to request shifting and averaging of data to
 multiple phase centers within a beam as a part of a normal observation.
+
+\subsection{Finding calibrators}\label{findcalib}
+
+Until a good catalogue of compact sources at MHz frequencies is available, it is
+important to take into account that a science observation might require a
+preparatory search of calibrators. A fast method using the distribution of
+bandwidth between many sources (see Sect.~\ref{sec:bwdist}) is described in
+\cite{moldon15}. A pre-selection based on a number of parameters from existing
+catalogues, such as the low-frequency spectral index, and the flux, can be
+performed to optimize the search. In particular the most useful catalogues are
+the VLSS, at 74~MHz, 4~m wavelength \citep{lane12a}, the WENSS catalogue at
+325~MHz, 92 cm wavelength \citep{rengelink97}, and specially The Multifrequency
+Snapshot Sky Survey (MSSS), which comes from LOFAR observations \citep{heald14}.
+Also, compact calibrators at mas scales detected with cm-VLBI are probably also
+compact at LOFAR frequencies. Although there is a strong correlation, a cm-VLBI
+calibrator may not be suitable for LOFAR in case it is variable or if they have
+inverted or gigahertz peaked spectra. An updated list of cm-VLBI calibrators
+covering the whole sky can be found in \url{http://astrogeo.org/rfc/}.
+
+\cite{moldon15} showed that there is a density of $\sim1$ good calibrator per
+square degree based on two fields with Galactic latitudes of $+26.6^{\circ}$ and
+$+43.4^{\circ} $. However, we expect less compact sources at lower Galactic
+latitudes due to interstellar scattering. The Galactic electron density model
+NE2001 \citep{cordes02} predicts an scattering at a galactic latitude of
+$50^{\circ}$ of almost 100~mas at 150~MHz, which is five times smaller than our
+resolution. However, the scattering is about 300~mas, similar to our beamsize,
+at latitudes of 5--10$^{\circ}$, depending on the longitude. Therefore,
+observations below a Galactic latitude of 10$^{\circ}$ are likely to be affected
+by scattering on the longest baselines, and the effect should be severe below
+about 2$^{\circ}$, especially towards the Galactic Center. 
 
 \subsection{Form a combined station}
 \label{sect:ts001}
@@ -916,12 +903,12 @@ original visibilities with core-core baselines can be discarded using the NDPPP
 task ``Filter'' to significantly reduce the data volume.
 
 One important benefit of having a tied station is that it works as a very
-sensitive station. This tied-array station aids in the derivation of
-calibration solutions to the international stations with FRING, and can be used
-as a reference station. We note that a tied-station formed by adding the whole
-core has a very small (5\% amplitude loss at 30$''$ distance from phase center)
-field of view. Although this is rarely a problem for deriving FRING solutions,
-care is needed if using such combined data to image extended objects.
+sensitive station. This tied-array station aids in the derivation of calibration
+solutions to the international stations with FRING, and can be used as a
+reference station. We note that a tied-station formed by adding the whole core
+has a very small (5\% amplitude loss at 30$''$ distance from phase center) field
+of view. Although this is rarely a problem for deriving FRING solutions, care is
+needed if using such combined data to image extended objects.
 
 %In Fig.~\ref{fig:CSvsTS} we show calibrated amplitudes and phases for some
 %baselines from some remote stations to a single core station and to the tied
