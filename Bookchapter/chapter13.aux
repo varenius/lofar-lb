@@ -1,83 +1,105 @@
 \relax 
 \immediate\closeout\minitoc
 \let \MiniTOC =N
+\citation{varenius15}
+\citation{varenius15}
 \@writefile{toc}{\contentsline {title}{Long baseline imaging with LOFAR}{1}}
 \@writefile{toc}{\authcount {1}}
 \@writefile{toc}{\contentsline {author}{Javier Mold\'{o}n and Eskil Varenius}{1}}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \newlabel{sec:introduction}{{1}{1}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}International LOFAR stations}{1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces LOFAR is composed by 24 core stations and 13 remote stations in the Netherlands, and 8 (+4 planned) international stations.}}{2}}
-\newlabel{fig:stations}{{1}{2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}uv-coverage}{2}}
-\newlabel{sec:uvcoverage}{{2.1}{2}}
-\citation{taylor99}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces $uv$ coverage for a 4-hr observation of a source at declination $+48^{\circ }$ with a single subband centred at 140\nobreakspace  {}MHz. Only one visibility every 160 seconds is shown. The rectangles in the last three panels show the area covered by the previous panel. Visibilities corresponding to baselines with international stations are plotted in red.}}{3}}
-\newlabel{fig:uvcoverage}{{2}{3}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Separation in km between the main core and the currently available international stations. }}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}The international LOFAR stations}{1}}
+\citation{varenius15}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Combined high resolution and low resolution image of M82 illustrating the relative brightness between the compact and extended emission at 154\,MHz. The synthesized beam size of the International LOFAR image is $0.36''\times 0.23''$ and has an rms noise level of 0.15\nobreakspace  {}mJy/beam. \citep  {varenius15}}}{2}}
+\newlabel{fig:m82}{{1}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Sampling of Fourier space}{2}}
+\newlabel{sec:uvcoverage}{{1.2}{2}}
+\citation{vanhaarlem13}
+\citation{varenius15}
+\citation{varenius15}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces LOFAR is composed by 24 core stations and 13 remote stations in the Netherlands, and 9 international stations (+3 under construction).}}{3}}
+\newlabel{fig:stations}{{2}{3}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Separation in km between the Dutch core and the currently available international stations. }}{3}}
 \newlabel{tab:baselines}{{1}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Field of view (FoV) and averaging}{3}}
-\newlabel{sec:fov}{{2.2}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Resolution and sensitivity}{3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces $uv$ coverage for a 4-hr observation of a source at declination $+48^{\circ }$ with a single subband centred at 140\nobreakspace  {}MHz. Only one visibility every 160 seconds is shown. The rectangles in the last three panels show the area covered by the previous panel. Visibilities corresponding to baselines with international stations are plotted in red.}}{4}}
+\newlabel{fig:uvcoverage}{{3}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Field of view}{4}}
+\newlabel{sec:fov}{{1.4}{4}}
+\citation{taylor99}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.4.1}Time and frequency smearing}{5}}
+\newlabel{sect:smearing}{{1.4.1}{5}}
+\newlabel{eqn:freqloss}{{1}{5}}
 \citation{vanhaarlem13}
 \citation{vanhaarlem13}
+\newlabel{eqn:timeloss}{{2}{6}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Station FWHM Values taken from \cite  [App. B]{vanhaarlem13}. Loss due to time- and frequency averaging as calculated using equations 2\hbox {} and 1\hbox {} assuming a 1300\,km baseline. Note that the expression given for frequency smearing is independent of observing frequency, only the channel bandwidth is important. }}{6}}
+\newlabel{tab:res}{{2}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Calibration of international LOFAR stations}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Phase calibration using international stations}{6}}
 \citation{vanhaarlem13}
-\newlabel{eqn:freqloss}{{1}{4}}
-\newlabel{eqn:timeloss}{{2}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Differential delay: cause and effects}{4}}
 \citation{nigl07}
 \citation{sotomayor13a}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Station FWHM Values taken from \cite  [App. B]{vanhaarlem13}. Loss due to time- and frequency averaging as calculated using eqns. 2\hbox {} and 1\hbox {}. Note that the expression given for frequency smearing is in fact independent of central frequency since the synthesised beam also scales with frequency, only the bandwidth is important. }}{5}}
-\newlabel{tab:res}{{2}{5}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Approximate delay contributions at 140\nobreakspace  {}MHz to a 700\nobreakspace  {}km baseline.}}{6}}
-\newlabel{tab:expecteddelay}{{3}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Long baseline calibration}{7}}
-\newlabel{sec:calibration}{{3}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Phase calibration}{7}}
-\citation{vanhaarlem13}
-\citation{moldon15}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Residual delays and rates}{7}}
+\newlabel{fig:J0958Hprefring}{{4(a)}{8}}
+\newlabel{sub@fig:J0958Hprefring}{{(a)}{8}}
+\newlabel{fig:J0958Hpostfring}{{4(b)}{8}}
+\newlabel{sub@fig:J0958Hpostfring}{{(b)}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  Two figures showing the effect of fringe fitting on two minutes of data on the baseline CS001HBA - DE601HBA for source J0958+6533 in project LC0\_26. Both polarisations are shown, and the data are divided in three spectral windows (IFs in AIPS) of 5.3\,MHz each. After applying the corrections from FRING, the phase is flat with respect to frequency, see (b)\hbox {}, as it should be for a point source.  }}{8}}
+\newlabel{fig:fringex}{{4}{8}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Before fringe fitting}}}{8}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {After fringe fitting}}}{8}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Approximate delay contributions at 140\nobreakspace  {}MHz to a 700\nobreakspace  {}km baseline.}}{9}}
+\newlabel{tab:expecteddelay}{{3}{9}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}Correcting residual delays and rates}{9}}
+\newlabel{sec:calibration}{{2.1.2}{9}}
 \citation{greisen03a}
-\citation{heald14}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  Delay (top), rate (middle) and phase(bottom) corrections derived for the source J0958+6533 at 154\,MHz by FRING for station DE601HBA for right and left circular polarisation. These plots show the corrections derived for a 10 hour observation (the first segment of project LC0\_026). It is clear from the rates and phases that phases changes rapidly during the first and last hours of the experiment. The delay solutions are more stable, although there is a large change during the first hour. In general, the ionosphere is more stable during midnight than at sunset or sunrise. }}{9}}
-\citation{varenius15}
+\citation{vanhaarlem13}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.3}What is a bright enough calibrator?}{10}}
 \citation{moldon15}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Amplitude calibration}{10}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Practical considerations}{10}}
-\newlabel{sec:practical}{{4}{10}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Shift+average}{10}}
-\newlabel{sec:shift}{{4.1}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Amplitude (top) and phase (bottom) vs $uv$ distance for a calibrated dataset of J0958+6533. This calibrator has a very compact component of 0.5\nobreakspace  {}Jy, mainly unresolved with the longest LOFAR baselines. We can see how the shorter baselines are sensitive to a much more complex structure and possibly other sources in the field.}}{11}}
-\newlabel{fig:radplot}{{4}{11}}
-\citation{marti-vidal10}
-\citation{marti-vidal10}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Distributing bandwidth on different sources}{12}}
-\newlabel{sec:bandwidth}{{4.2}{12}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Form a combined station}{12}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Linear to circular polarization}{13}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Convert to UVFITS}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Using two calibrators}{11}}
 \citation{moldon15}
 \citation{lane12a}
 \citation{rengelink97}
 \citation{heald14}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  Delay (top), rate (middle) and phase(bottom) corrections derived for the source J0958+6533 at 154\,MHz by FRING for station DE601HBA for right and left circular polarisation. These plots show the corrections derived for a 10 hour observation (the first segment of project LC0\_026). It is clear from the rates and phases that phases changes rapidly during the first and last hours of the experiment. The delay solutions are more stable, although there is a large change during the first hour. In general, the ionosphere is more stable during midnight than at sunset or sunrise. }}{12}}
 \citation{moldon15}
 \citation{cordes02}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Brief introduction to calibration tables in AIPS}{14}}
-\newlabel{sec:aips}{{4.6}{14}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Finding calibrators}{14}}
-\newlabel{findcalib}{{5}{14}}
-\citation{moldon15}
-\citation{moldon15}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Observing strategy}{15}}
+\citation{heald14}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Typical calibration setup for cm VLBI (left) and International LOFAR (right). Note that in some cases the target may itself function as the secondary calibrator. A secondary calibrator is not always required for cm VLBI, but will almost always be needed for International LOFAR, unless the primary calibrator is fortuitously close. The larger field of view of LOFAR means that both the primary and secondary calibrators will always be observed contemporaneously, unlike in cm VLBI, where nodding between the primary calibrator and target is typically required (shown by the double arrow in the left panel).}}{13}}
+\newlabel{fig:calstrategy}{{6}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Finding calibrators}{13}}
+\newlabel{findcalib}{{2.3}{13}}
 \citation{varenius15}
+\citation{moldon15}
+\citation{moldon15}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Amplitude calibration of international stations}{14}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Observing strategy}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Amplitude (top) and phase (bottom) vs $uv$ distance for a calibrated dataset of J0958+6533. This calibrator has a very compact component of 0.5\nobreakspace  {}Jy, mainly unresolved with the longest LOFAR baselines. We can see how the shorter baselines are sensitive to a much more complex structure and possibly other sources in the field.}}{15}}
+\newlabel{fig:radplot}{{7}{15}}
+\citation{moldon15}
+\citation{marti-vidal10}
+\citation{marti-vidal10}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Practical considerations}{16}}
+\newlabel{sec:practical}{{4}{16}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Optimising use of available bandwidth}{16}}
+\newlabel{sec:bandwidth}{{4.1}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Unequal distribution of subbands on target and calibrators}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}The shift + averaging procedure}{17}}
+\newlabel{sec:shift}{{4.1.2}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Form a combined station}{17}}
+\newlabel{sect:ts001}{{4.2}{17}}
 \bibstyle{aa}
 \bibdata{chapter13}
 \bibcite{cordes02}{{1}{2002}{{{Cordes} \& {Lazio}}}{{}}}
 \bibcite{greisen03a}{{2}{2003}{{Greisen}}{{}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Getting LOFAR data into AIPS}{18}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Converting linear to circular polarisation}{18}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Converting measurement set to UVFITS}{18}}
+\@writefile{toc}{\contentsline {section}{References}{18}}
+\@mtwritefile{\contentsline {mtchap}{References}{18}}
 \bibcite{heald14}{{3}{2014}{{{Heald} \& {LOFAR Collaboration}}}{{}}}
 \bibcite{lane12a}{{4}{2012}{{{Lane} {et~al.}}}{{{Lane}, {Cotton}, {Helmboldt}, \& {Kassim}}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Typical calibration setup for cm VLBI (left) and International LOFAR (right). Note that in some cases the target may itself function as the secondary calibrator. A secondary calibrator is not always required for cm VLBI, but will almost always be needed for International LOFAR, unless the primary calibrator is fortuitously close. The larger field of view of LOFAR means that both the primary and secondary calibrators will always be observed contemporaneously, unlike in cm VLBI, where nodding between the primary calibrator and target is typically required (shown by the double arrow in the left panel).}}{16}}
-\newlabel{fig:calstrategy}{{5}{16}}
-\@writefile{toc}{\contentsline {section}{References}{16}}
-\@mtwritefile{\contentsline {mtchap}{References}{16}}
 \bibcite{marti-vidal10}{{5}{2010}{{Mart{\'{\i }}-Vidal}}{{}}}
 \bibcite{moldon15}{{6}{2015}{{{Mold{\'o}n} {et~al.}}}{{{Mold{\'o}n}, {Deller}, {Wucknitz}, {Jackson}, {Drabent}, {Carozzi}, {Conway}, {Kapi{\'n}ska}, {McKean}, {Morabito}, {Varenius}, {Zarka}, {Anderson}, {Asgekar}, {Avruch}, {Bell}, {Bentum}, {Bernardi}, {Best}, {B{\^i}rzan}, {Bregman}, {Breitling}, {Broderick}, {Br{\"u}ggen}, {Butcher}, {Carbone}, {Ciardi}, {de Gasperin}, {de Geus}, {Duscha}, {Eisl{\"o}ffel}, {Engels}, {Falcke}, {Fallows}, {Fender}, {Ferrari}, {Frieswijk}, {Garrett}, {Grie{\ss }meier}, {Gunst}, {Hamaker}, {Hassall}, {Heald}, {Hoeft}, {Juette}, {Karastergiou}, {Kondratiev}, {Kramer}, {Kuniyoshi}, {Kuper}, {Maat}, {Mann}, {Markoff}, {McFadden}, {McKay-Bukowski}, {Morganti}, {Munk}, {Norden}, {Offringa}, {Orru}, {Paas}, {Pandey-Pommier}, {Pizzo}, {Polatidis}, {Reich}, {R{\"o}ttgering}, {Rowlinson}, {Scaife}, {Schwarz}, {Sluman}, {Smirnov}, {Stappers}, {Steinmetz}, {Tagger}, {Tang}, {Tasse}, {Thoudam}, {Toribio}, {Vermeulen}, {Vocks}, {van Weeren}, {White}, {Wise}, {Yatawatta}, \& {Zensus}}}}
 \bibcite{nigl07}{{7}{2007}{{{Nigl} {et~al.}}}{{{Nigl}, {Zarka}, {Kuijpers}, {Falcke}, {B{\"a}hren}, \& {Denis}}}}
@@ -87,5 +109,3 @@
 \bibcite{vanhaarlem13}{{11}{2013}{{{van Haarlem} {et~al.}}}{{{van Haarlem}, {Wise}, {Gunst}, {Heald}, {McKean}, {Hessels}, {de Bruyn}, {Nijboer}, {Swinbank}, {Fallows}, {Brentjens}, {Nelles}, {Beck}, {Falcke}, {Fender}, {H{\"o}randel}, {Koopmans}, {Mann}, {Miley}, {R{\"o}ttgering}, {Stappers}, {Wijers}, {Zaroubi}, {van den Akker}, {Alexov}, {Anderson}, {Anderson}, {van Ardenne}, {Arts}, {Asgekar}, {Avruch}, {Batejat}, {B{\"a}hren}, {Bell}, {Bell}, {van Bemmel}, {Bennema}, {Bentum}, {Bernardi}, {Best}, {B{\^i}rzan}, {Bonafede}, {Boonstra}, {Braun}, {Bregman}, {Breitling}, {van de Brink}, {Broderick}, {Broekema}, {Brouw}, {Br{\"u}ggen}, {Butcher}, {van Cappellen}, {Ciardi}, {Coenen}, {Conway}, {Coolen}, {Corstanje}, {Damstra}, {Davies}, {Deller}, {Dettmar}, {van Diepen}, {Dijkstra}, {Donker}, {Doorduin}, {Dromer}, {Drost}, {van Duin}, {Eisl{\"o}ffel}, {van Enst}, {Ferrari}, {Frieswijk}, {Gankema}, {Garrett}, {de Gasperin}, {Gerbers}, {de Geus}, {Grie{\ss }meier}, {Grit}, {Gruppen}, {Hamaker}, {Hassall}, {Hoeft}, {Holties}, {Horneffer}, {van der Horst}, {van Houwelingen}, {Huijgen}, {Iacobelli}, {Intema}, {Jackson}, {Jelic}, {de Jong}, {Juette}, {Kant}, {Karastergiou}, {Koers}, {Kollen}, {Kondratiev}, {Kooistra}, {Koopman}, {Koster}, {Kuniyoshi}, {Kramer}, {Kuper}, {Lambropoulos}, {Law}, {van Leeuwen}, {Lemaitre}, {Loose}, {Maat}, {Macario}, {Markoff}, {Masters}, {McFadden}, {McKay-Bukowski}, {Meijering}, {Meulman}, {Mevius}, {Middelberg}, {Millenaar}, {Miller-Jones}, {Mohan}, {Mol}, {Morawietz}, {Morganti}, {Mulcahy}, {Mulder}, {Munk}, {Nieuwenhuis}, {van Nieuwpoort}, {Noordam}, {Norden}, {Noutsos}, {Offringa}, {Olofsson}, {Omar}, {Orr{\'u}}, {Overeem}, {Paas}, {Pandey-Pommier}, {Pandey}, {Pizzo}, {Polatidis}, {Rafferty}, {Rawlings}, {Reich}, {de Reijer}, {Reitsma}, {Renting}, {Riemers}, {Rol}, {Romein}, {Roosjen}, {Ruiter}, {Scaife}, {van der Schaaf}, {Scheers}, {Schellart}, {Schoenmakers}, {Schoonderbeek}, {Serylak}, {Shulevski}, {Sluman}, {Smirnov}, {Sobey}, {Spreeuw}, {Steinmetz}, {Sterks}, {Stiepel}, {Stuurwold}, {Tagger}, {Tang}, {Tasse}, {Thomas}, {Thoudam}, {Toribio}, {van der Tol}, {Usov}, {van Veelen}, {van der Veen}, {ter Veen}, {Verbiest}, {Vermeulen}, {Vermaas}, {Vocks}, {Vogt}, {de Vos}, {van der Wal}, {van Weeren}, {Weggemans}, {Weltevrede}, {White}, {Wijnholds}, {Wilhelmsson}, {Wucknitz}, {Yatawatta}, {Zarka}, {Zensus}, \& {van Zwieten}}}}
 \bibcite{varenius15}{{12}{2015}{{{Varenius} {et~al.}}}{{{Varenius}, {Conway}, {Mart{\'{\i }}-Vidal}, {Beswick}, {Deller}, {Wucknitz}, {Jackson}, {Adebahr}, {P{\'e}rez-Torres}, {Chy{\.z}y}, {Carozzi}, {Mold{\'o}n}, {Aalto}, {Beck}, {Best}, {Dettmar}, {van Driel}, {Brunetti}, {Br{\"u}ggen}, {Haverkorn}, {Heald}, {Horellou}, {Jarvis}, {Morabito}, {Miley}, {R{\"o}ttgering}, {Toribio}, \& {White}}}}
 \immediate\closeout\minitoc
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Combined high resolution and low resolution image of M82 illustrating the relative brightness between the compact and extended emission at 154\,MHz. The synthesized beam size of the International LOFAR image is $0.36''\times 0.23''$ and has an rms noise level of 0.15\nobreakspace  {}mJy/beam.}}{17}}
-\newlabel{fig:final}{{6}{17}}

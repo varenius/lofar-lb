@@ -28,7 +28,7 @@ def bs_freq (offset_rad):
 # and bandwidth (per channel)
 tavg = 1 # seconds
 b = 1000.0e3 # m, longest baseline
-bw = 0.1953125*1e6/64.0 # Bandwidth, Hz, assuming 195kHz bandwidth per subband
+bw = 0.1953125*1e6/4.0 # Bandwidth, Hz, assuming 195kHz bandwidth per subband
 
 # List all frequencies used in App B by Van Haarlem et al 2013.
 nus = np.array([15,30,45,60,75,120,150,180,200,210,240])*1e6 # Hz
