@@ -601,16 +601,16 @@ SEFD).  The theoretical 1$\sigma$ baseline sensitivity of an international
 station to the phased-up core station, given 3~MHz of bandwidth and 4 minutes
 of observing time, is hence 8~mJy in a single polarisation.  
 
-A source with a
-compact flux density of 50~mJy yields a theoretical baseline signal-to-noise
-ratio of 6, and is therefore a potential primary calibrator. In the real world,
-the sensitivity of the phased-up core station will be reduced by failing tiles,
-imperfect calibration and correlated (astronomical) noise, and solution
-intervals shorter than 4 minutes could be required under not optimal
-ionospheric conditions.  Therefore, 50~mJy should be considered a lower limit
-for a useful primary calibrator flux density, being 100--150~mJy a reasonable
-reference.
+A source with a compact flux density of 50~mJy yields a theoretical baseline
+signal-to-noise ratio of 6, and is therefore a potential primary calibrator. In
+the real world, the sensitivity of the phased-up core station will be reduced
+by failing tiles, imperfect calibration and correlated (astronomical) noise,
+and solution intervals shorter than 4 minutes could be required under suboptimal 
+ionospheric conditions.  Therefore, 50~mJy should be considered a lower
+limit for a useful delay/rate calibrator flux density, being 100--150~mJy a
+reasonable reference.
 
+\subsubsection{What is a close enough calibrator?}
 In addition to being sufficiently bright, the primary calibrator must be close
 enough to the secondary calibrator/target field that the differential delay
 between the two fields does not lead to decorrelation when phase-only secondary
@@ -659,6 +659,80 @@ midnight than at sunset or sunrise.  }
 \end{center}
 \end{figure*}
 
+\subsection{Amplitude calibration of international stations}
+In principle, instrumental gains within LOFAR could be tracked with time as
+done in cm-VLBI (this option is currently being commissioning with the COBALT
+correlator), but since this option is not yet available we rely on calibrators
+with known flux density.
+
+For core and remote stations one can use, for example, standard flux density
+calibrators such as 3C196, or bright sources in low frequency catalogs such as
+MSSS \citep{heald14}. However, for International LOFAR that is in general not
+possible. The bright standard flux calibrators, e.g. 3C196, have a very complex
+structure at subarcsecond scales. If we had a good model of this structure at
+our frequency of observation, we could account for it in the calibration of the
+international stations. Work is being done to map well known flux density
+calibrators with high enough resolution, but until these models are available
+we have to rely on another boot-strapping technique. 
+
+The current best approach is to include two calibrators in the observations: a
+well monitored flux density calibrator (for instance 3C196 or 3C84) and another
+compact source with flux density of a few hundred mJy. While this compact
+source can be variable in time, and hence not a suitable absolute flux density
+reference, it can be used to calibrate the relative amplitudes of all
+baselines, including international stations. The absolute flux density
+scale is then set by fitting one scaling factor for all visibilities, using
+data on the short (NL) baselines for the standard flux density calibrator.
+The compact calibrator can be the same as use to derive delay/rate solutions,
+given that it is bright enough.
+
+After a phase and amplitude calibration of an International LOFAR observation,
+the resulting visibilities should look similar to the ones shown in
+Fig.~\ref{fig:radplot}, where we show the calibrator J0958+6533 used in
+\cite{varenius15}. 
+
+\begin{figure*}[htbp]
+\begin{center}
+\includegraphics[width=\textwidth]{figures/radplot.png}
+\caption{Amplitude (top) and phase (bottom) vs $uv$ distance for a calibrated
+dataset of J0958+6533. This calibrator has a very compact component of 0.5~Jy,
+mainly unresolved with the longest LOFAR baselines. We can see how the shorter
+baselines are sensitive to a much more complex structure and possibly other
+sources in the field.}
+\label{fig:radplot}
+\end{center}
+\end{figure*}
+
+\section{Observing strategy}
+\cite{moldon15} proposed the following approach for an International LOFAR observation: 
+\begin{enumerate}
+\item Identify candidate primary calibrators up to separations of a few degrees 
+    by using any of the criteria discussed in Sect.~5.3 in
+    \cite{moldon15};
+\item Conduct a short observation in snapshot mode as described
+in Sect.~\ref{findcalib} before the science observation to identify
+the best primary calibrator (or calibrators).
+\item If required and time permits, follow up with a ``full bandwidth'' snapshot observation to 
+identify one or more secondary calibrators;
+\item Set up the scientific observation to dwell on the field 
+containing the primary calibrator and the target/secondary calibrator;
+\item Include periodic scans (every $\sim$ hour) on a bright Dutch array 
+calibrator to calibrate the core stations in order to form the tied station.
+\item Shift phase centre to primary calibrator, preprocess and obtain delay solutions 
+as described in this paper, apply them to the unshifted dataset;
+\item If a secondary calibrator is to be used and is not yet identified, select 10 minutes
+of data and perform shift/averaging to candidate secondary calibrator sources;
+\item If secondary calibrator is used: shift and average primary-calibrated dataset, 
+image and selfcalibrate, apply solutions to the unshifted dataset;
+\item Shift and average calibrated dataset, image and (if needed) selfcalibrate target.
+\end{enumerate}
+
+In the near future, the pipeline used for this project will be developed, in
+collaboration with the LOFAR operations team, into an expanded form capable of
+carrying out the approach described above.  This pipeline will be made available
+to all International LOFAR observers, delivering a reduced data volume for
+long-baseline observations and enabling calibrated data to be more quickly
+produced.
 
 \subsection{Using two calibrators}
 
@@ -723,84 +797,6 @@ at latitudes of 5--10$^{\circ}$, depending on the longitude. Therefore,
 observations below a Galactic latitude of 10$^{\circ}$ are likely to be
 affected by scattering on the longest baselines, and the effect should be
 severe below about 2$^{\circ}$, especially towards the Galactic Center. 
-
-\subsection{Amplitude calibration of international stations}
-
-The amplitude calibration requires finding the station gain factors that scale
-the raw response of each station to the real flux density measured.  These
-scaling factors can be found calibrating the data with a bright source with
-known flux density and structure (for example a point-like calibrator).  For
-core and remote stations one can use, for example, bright sources in low
-frequency catalogs such as MSSS \citep{heald14}. However, for International
-LOFAR that is in general not possible because (1) there is not yet a
-high resolution source catalogue, and therefore the structure of bright sources
-is unknown at these scales, (2) the international stations sample only very long
-$uv$ distances (see Fig.~\ref{fig:uvcoverage}, right panel) that not overlap
-with the shorter baselines that can be corrected, and (3) compact and bright
-regions of potential calibrators, usually AGN, are expected to change with
-time. In principle, instrumental gains within LOFAR could be tracked with time
-(this option is currently being commissioning with the COBALT correlator), but
-since this option is not yet available, making a sufficiently  accurate a
-priori calibration is also not feasible. Therefore, the current approach
-requires to self-calibrate a bright calibrator to find its small-scale
-structure, and bootstrap its flux density between the long and the short
-baselines, assuming that the low-resolution flux density of the source is
-stable and known. 
-
-For a science observation, it is recommended to include runs on very a bright
-and known calibrator (for instance 3C196 or 3C84) and a compact source
-(for instance a cm-VLBI calibrator or a bright pulsar) to set the amplitude
-scale, and link the short/long-baselines flux density, respectively. We
-note that a proper amplitude calibration requires also a good model of the
-spectral index of the reference calibrator.  
-
-After a phase and amplitude calibration of an International LOFAR observation,
-the resulting visibilities should look similar to the ones shown in
-Fig.~\ref{fig:radplot}, where we show the calibrator J0958+6533 used in
-\cite{varenius15}. 
-
-\begin{figure*}[htbp]
-\begin{center}
-\includegraphics[width=\textwidth]{figures/radplot.png}
-\caption{Amplitude (top) and phase (bottom) vs $uv$ distance for a calibrated
-dataset of J0958+6533. This calibrator has a very compact component of 0.5~Jy,
-mainly unresolved with the longest LOFAR baselines. We can see how the shorter
-baselines are sensitive to a much more complex structure and possibly other
-sources in the field.}
-\label{fig:radplot}
-\end{center}
-\end{figure*}
-
-\section{Observing strategy}
-\cite{moldon15} proposed the following approach for an International LOFAR observation: 
-\begin{enumerate}
-\item Identify candidate primary calibrators up to separations of a few degrees 
-    by using any of the criteria discussed in Sect.~5.3 in
-    \cite{moldon15};
-\item Conduct a short observation in snapshot mode as described
-in Sect.~\ref{findcalib} before the science observation to identify
-the best primary calibrator (or calibrators).
-\item If required and time permits, follow up with a ``full bandwidth'' snapshot observation to 
-identify one or more secondary calibrators;
-\item Set up the scientific observation to dwell on the field 
-containing the primary calibrator and the target/secondary calibrator;
-\item Include periodic scans (every $\sim$ hour) on a bright Dutch array 
-calibrator to calibrate the core stations in order to form the tied station.
-\item Shift phase centre to primary calibrator, preprocess and obtain delay solutions 
-as described in this paper, apply them to the unshifted dataset;
-\item If a secondary calibrator is to be used and is not yet identified, select 10 minutes
-of data and perform shift/averaging to candidate secondary calibrator sources;
-\item If secondary calibrator is used: shift and average primary-calibrated dataset, 
-image and selfcalibrate, apply solutions to the unshifted dataset;
-\item Shift and average calibrated dataset, image and (if needed) selfcalibrate target.
-\end{enumerate}
-
-In the near future, the pipeline used for this project will be developed, in
-collaboration with the LOFAR operations team, into an expanded form capable of
-carrying out the approach described above.  This pipeline will be made available
-to all International LOFAR observers, delivering a reduced data volume for
-long-baseline observations and enabling calibrated data to be more quickly
-produced.
 
 
 \section{Practical considerations}

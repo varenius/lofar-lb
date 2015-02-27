@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.6.30)  27 FEB 2015 03:08
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.6.30)  27 FEB 2015 09:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -510,31 +510,31 @@ File: figures/J0958Hfringpsol-crop.pdf Graphic file (type pdf)
 Package pdftex.def Info: figures/J0958Hfringpsol-crop.pdf used on input line 64
 7.
 (pdftex.def)             Requested size: 249.67291pt x 112.25601pt.
- [11]
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `htbp') on input line 684.
-
-<figures/vlbi_sketch.pdf, id=366, 420.5307pt x 207.92181pt>
-File: figures/vlbi_sketch.pdf Graphic file (type pdf)
-
-<use figures/vlbi_sketch.pdf>
-Package pdftex.def Info: figures/vlbi_sketch.pdf used on input line 687.
-(pdftex.def)             Requested size: 332.89723pt x 164.60223pt.
- [12 <./figures/J0958Hdelays-crop.pdf> <./figures/J0958Hrates-crop.pdf> <./figu
-res/J0958Hfringpsol-crop.pdf>] [13 <./figures/vlbi_sketch.pdf>] <figures/radplo
-t.png, id=396, 913.91437pt x 1058.45438pt>
+ [11] [12 <./figures/J0958Hdelays-crop.pdf> <./figures/J0958Hrates-crop.pdf> <.
+/figures/J0958Hfringpsol-crop.pdf>]
+<figures/radplot.png, id=384, 913.91437pt x 1058.45438pt>
 File: figures/radplot.png Graphic file (type png)
 
 <use figures/radplot.png>
-Package pdftex.def Info: figures/radplot.png used on input line 764.
+Package pdftex.def Info: figures/radplot.png used on input line 696.
 (pdftex.def)             Requested size: 332.89723pt x 385.53317pt.
- [14] [15 <./figures/radplot.png>] [16] [17]
-(./chapter13.bbl [18]) [19] (./chapter13.aux) ) 
+ [13] [14 <./figures/radplot.png>]
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `htbp') on input line 758.
+
+<figures/vlbi_sketch.pdf, id=392, 420.5307pt x 207.92181pt>
+File: figures/vlbi_sketch.pdf Graphic file (type pdf)
+
+<use figures/vlbi_sketch.pdf>
+Package pdftex.def Info: figures/vlbi_sketch.pdf used on input line 761.
+(pdftex.def)             Requested size: 332.89723pt x 164.60223pt.
+ [15 <./figures/vlbi_sketch.pdf>] [16] [17]
+[18] (./chapter13.bbl) [19] (./chapter13.aux) ) 
 Here is how much of TeX's memory you used:
  3571 strings out of 493304
  48361 string characters out of 6139871
- 124452 words of memory out of 5000000
+ 124771 words of memory out of 5000000
  6918 multiletter control sequences out of 15000+600000
  46454 words of font info for 104 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -550,7 +550,7 @@ live/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
 rw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8
 a.pfb>
-Output written on chapter13.pdf (19 pages, 1701462 bytes).
+Output written on chapter13.pdf (19 pages, 1701320 bytes).
 PDF statistics:
  450 PDF objects out of 1000 (max. 8388607)
  112 compressed objects within 2 object streams
