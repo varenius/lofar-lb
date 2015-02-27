@@ -111,15 +111,15 @@ The prime reason to include the international LOFAR stations in the array is to
 obtain very high-resolution images.  Using the longest LOFAR baselines,
 subarcsecond imaging is possible with High Band Array (HBA) and the upper part
 of the Low Band Array (LBA). Early science results include images of AGN jets,
-and of individual supernova remnants in M82 (see Fig. \ref{fig:m82}). In this chapter we describe the
-international LOFAR stations and, in general terms, some important things to
-keep in mind when observing, calibrating and imaging data including \emph{long}
-baselines, i.e.  baselines to international stations.  In particular we
-summarise how techniques from Very Long Baseline Interferometry (VLBI) can be
-used to calibrate LOFAR data using the longest baselines. Some parts of the text are
-focused on HBA data; calibration and imaging of long baseline data from the LBA
-is more challenging and additional work is still needed to find the best
-approach. 
+and of individual supernova remnants in M82 (see Fig. \ref{fig:m82}).  In this
+chapter we describe the international LOFAR stations and, in general terms,
+some important things to keep in mind when observing, calibrating and imaging
+data including \emph{long} baselines, i.e.  baselines to international
+stations.  In particular we summarise how techniques from Very Long Baseline
+Interferometry (VLBI) can be used to calibrate LOFAR data using the longest
+baselines. Some parts of the text are focused on HBA data; calibration and
+imaging of long baseline data from the LBA is more challenging and additional
+work is still needed to find the best approach. 
 
 \begin{figure}
 %\sidecaption[t]
@@ -133,7 +133,15 @@ $0.36''\times0.23''$ and has an rms noise level of 0.15~mJy/beam. \citep{vareniu
 \end{center}
 \end{figure}
 
-\subsection{The international LOFAR stations}
+The outline of this chapter is as follows: in Sect. \ref{sect:intlofar} we
+decribe the international LOFAR stations and what to expect in general in
+terms of resolution, sensitivity and field of view. In Sect. \ref{sect:calibration}
+we describe how to calibrate visibility phases and amplitudes using
+data on the longest LOFAR baselines, in particular how to deal
+with residual delays and rates. In Sect. \ref{sect:obsstrat}
+
+\section{The international LOFAR stations}
+\label{sect:intlofar}
 The majority of the LOFAR stations, namely the core and remote stations, are
 distributed over an area roughly 180 km in diameter predominantly in the
 northeastern Dutch province of Drenthe. Currently, the array also includes 9
@@ -395,6 +403,7 @@ channel bandwidth is important.
 %TODO: Special: phasing up the core, considerations.
 
 \section{Calibration of international LOFAR stations}
+\label{sect:calibration}
 In this section we describe, in general terms, how to calibrate phase
 and amplitudes of visibilites on baselines to international stations.
 Note that this strategy does also calibrate NL-stations, but using
