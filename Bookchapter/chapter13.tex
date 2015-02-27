@@ -152,7 +152,7 @@ northeastern Dutch province of Drenthe. Currently, the array also includes 9
 international LOFAR stations across Europe that provide maximum baselines up to
 1292~km. Three additional stations are under construction in Poland,
 extending the maximum baseline to $\sim$2000~km. Fig.~\ref{fig:stations} shows
-the distribution of stations already existing or currently in construction.
+the distribution of stations already existing or currently under construction.
 
 %Observations with the LOFAR international stations are different from the Dutch
 %array observations in that the number of stations providing baselines above
@@ -178,7 +178,7 @@ Netherlands, and 9 international stations (+3 under construction).}
 The core stations provide maximum baselines of 2.7~km, the remote stations of
 120~km, and the international stations of 1300~km.  Table~\ref{tab:baselines}
 shows the distances between each pair of international stations, including the
-core station CS001 as a reference to the center of the array.  Since there are
+core station CS001 as a reference to the centre of the array.  Since there are
 relatively few international stations, the sampling of Fourier space
 ($uv$-coverage) is less dense for baselines to international stations compared
 to core- and remote baselines.  A typical LOFAR $uv$ coverage is shown in
@@ -188,20 +188,21 @@ imaging to provide very good $uv$-coverage also at the longest baselines.
 
 \begin{table}[h]
 \centering
-\begin{tabular}{cccccccccc}
+\begin{tabular}{ccccccccccc}
 \hline
 \hline
-      & CS001& DE601& DE602& DE603& DE604& DE605& FR606& SE607& UK608\\
+      & CS001& DE609& DE605& DE601& DE603& DE604& DE602& SE607& UK608& FR606 \\
 \hline
- CS001&     0&   266&   581&   396&   419&   226&   700&   594&   602 \\
- DE601&   266&     0&   390&   344&   476&    53&   490&   833&   590 \\
- DE602&   581&   390&     0&   277&   455&   440&   690&   990&   959 \\
- DE603&   396&   344&   277&     0&   186&   372&   800&   714&   920 \\
- DE604&   419&   476&   455&   186&     0&   487&   957&   556&  1005 \\
- DE605&   226&    53&   440&   372&   487&     0&   498&   807&   552 \\
- FR606&   700&   490&   690&   800&   957&   498&     0&  1292&   495 \\
- SE607&   594&   833&   990&   714&   556&   807&  1292&     0&  1110 \\
- UK608&   602&   590&   959&   920&  1005&   552&   495&  1110&     0 \\
+ CS001&     0&   224&   226&   266&   396&   419&   581&   594&   602&   700 \\
+ DE609&   224&     0&   394&   412&   325&   248&   585&   430&   825&   892 \\
+ DE605&   226&   394&     0&    53&   372&   487&   440&   807&   552&   498 \\
+ DE601&   266&   412&    53&     0&   344&   476&   390&   833&   590&   490 \\
+ DE603&   396&   325&   372&   344&     0&   186&   277&   714&   920&   800 \\
+ DE604&   419&   248&   487&   476&   186&     0&   455&   556&  1005&   957 \\
+ DE602&   581&   585&   440&   390&   277&   455&     0&   990&   959&   690 \\
+ SE607&   594&   430&   807&   833&   714&   556&   990&     0&  1110&  1292 \\
+ UK608&   602&   825&   552&   590&   920&  1005&   959&  1110&     0&   495 \\
+ FR606&   700&   892&   498&   490&   800&   957&   690&  1292&   495&     0 \\
 \hline
 \end{tabular}
 \caption{Separation in km between the Dutch core and the currently available
@@ -209,9 +210,7 @@ international stations.
 \label{tab:baselines}}
 \end{table}
 
-% JM: If enough space, this plot can have 2x2 panels for better visibility.
-% JM: it is possible to use different colors for CSCS, RSRS, etc. For visual
-% simplicity, I would use at most one additional color for the CSCS baselines.
+
 \begin{figure}[t]
 \begin{center}
 \includegraphics[width=\textwidth]{figures/uv_cov.png}
@@ -248,26 +247,26 @@ stations are plotted in red.}
 In general, the image resolution from interferometric data depends on the
 sampling of fourier space and relative weighting applied to the visibilities
 when imaging.  A quick estimate can however be obtained using the well known
-expression  $\theta \approx \lambda / D$
-where $\lambda$ is the wavelength of observation, $D$ is the maximum baseline
-length, and $\theta$ is the angular resolution in radians.  For international
-LOFAR baselines we estimate an angular resolution of about 0.3'' at 150\,MHz.
-This is also verified in practice, for example in the observations of M82
-\cite{varenius15}. Estimates for LBA and HBA can be found in Table \ref{tab:res}.
+expression  $\theta \approx \lambda / D$ where $\lambda$ is the wavelength of
+the observation, $D$ is the maximum baseline length, and $\theta$ is the angular
+resolution in radians.  For international LOFAR baselines we estimate an angular
+resolution of about 0.3'' at 150\,MHz.  This is also verified in practice, for
+example in the observations of M82 \cite{varenius15}. Estimates for LBA and HBA
+can be found in Sect.~\ref{sect:smearing}.
 
 The expected image noise depends on many factors, such as which baselines to
 include in the final imaging, but also on the solar activity at the time of
 observation.  For subarcsecond imaging it is common to exclude the NL-baselines
-and only include data on baselines to international stations.  LOFAR HBA is
-most sensitive at frequencies around 150\,MHz \citep[Fig.  22]{vanhaarlem13}.
+and only include data on baselines to international stations.  LOFAR HBA is most
+sensitive at frequencies around 150\,MHz \citep[Fig.  22]{vanhaarlem13}.
 \cite{varenius15} obtained rms noise levels of 0.3\,mJy/beam at 118\,MHz and
 0.15\,mJy/beam at 154\,MHz using 16\,MHz bandwidth and 16 hours of integration,
 in reasonable agreement with theoretical estimates (see \cite{varenius15} for a
-brief discussion on the expected thermal noise).  Since then, more
-international stations have became available and station calibration has been
-improved. It is reasonable to assume similar rms noise levels
-(scaling with bandwidth and intergration time) can be expected in future
-observations using international baselines.
+brief discussion on the expected thermal noise).  Since then, more international
+stations have became available and station calibration has been improved. It is
+reasonable to assume similar rms noise levels (scaling with bandwidth and
+intergration time) can be expected in future observations using international
+baselines.
 
 \subsection{Field of view}
 %\section{The small field of view approximation}
@@ -276,19 +275,18 @@ The sky area possible to image from any LOFAR observation is limited by factors
 such as the station beam, baseline projection effects, and atmospheric
 disturbances across the sky. NL-LOFAR observations are often also limited by
 very bright interfering sources, such as the \emph{A-team}.  International
-baseline imaging is in many aspects simpler than Dutch baseline imaging,
-because we can generally ignore interference from other bright sources in the
-sky.
+baseline imaging is in many aspects simpler than Dutch baseline imaging, because
+we can generally ignore interference from other bright sources in the sky.
 
 For a distant potentially interfering source, the interfering contribution to
 the target source visibility declines by factors of $u^{-1}$ as a function of
 baseline length ($u$)  for both frequency and time decorrelation (also called
-\emph{smearing}.  Furthermore, for  most  of the source population resolved on
+\emph{smearing}).  Furthermore, for  most  of the source population resolved on
 longer Dutch LOFAR baselines, the intrinsic visibility structure decreases
 faster than $u^{-2}$ (a rough approximation based on experience of typical
 dependence of visibility amplitude vs baseline length for resolved radio
 sources), giving a total decrease of interfering signals with baseline length
-scaling as $ u^{-4}$. This means  that the effect of interfering signals is a
+scaling as $ u^{-4}$. This means that the effect of interfering signals is a
 million times less for baselines of 1000\,km as opposed to 30\,km. This effect
 explains why the influence of the brightest sources at LOFAR frequencies, like
 Cassiopeia A or Cygnus A, can be ignored at international baseline resolution,
@@ -299,8 +297,8 @@ covering a small part of the sky. This small field of view regime is where
 cm-VLBI usually operates and this regime greatly simplifies imaging. In this
 regime, target images are generally smaller than the isoplanatic patch, and
 therefore only a single-direction station-dependent correction needs to be
-determined.  Likewise, over such small fields, $w$-term effects and station
-beam variations can generally be ignored.  This is different from LOFAR
+determined.  Likewise, over such small fields, $w$-term effects and station beam
+variations can generally be ignored.  This is different from LOFAR
 core-resolution imaging, where in order to get noise-limited (rather than
 ``dynamic range''-limited) images at any given point in a field the whole field
 must be imaged using multi-directional calibration techniques.
@@ -313,20 +311,20 @@ in cm-VLBI.
 \subsubsection{Time and frequency smearing}
 \label{sect:smearing}
 Although smearing helps to simplify calibration by reducing the influence of
-bright interfering sources, care has to be taken to not average too much so
-that the science targets are affected. In this section we estimate the impact
-of smearing on the field of view.
+bright interfering sources, care has to be taken to not average too much so that
+the science targets are affected. In this section we estimate the impact of
+smearing on the field of view.
 
 For LOFAR, the standard
 \emph{raw} data are delivered from the correlator with resolution 1 second in
 time, and 64 channels per subband.  Each subband (using the standard 200\,MHz
-clock) is 195\,kHz wide, meaning that the default minimum averaging bandwidth
-is 3~kHz. This will limit the dynamic range at some distance from the observed
-phase center, similar to the limit imposed by the station beam.  A detailed
+clock) is 195\,kHz wide, meaning that the default minimum averaging bandwidth is
+3~kHz. This will limit the dynamic range at some distance from the observed
+phase centre, similar to the limit imposed by the station beam.  A detailed
 description of the averaging losses is beyond the scope of this chapter, we
 merely quote the often used results by \cite{taylor99} chapter 18, who derived
 two expressions to estimate the average amplitude loss due to averaging in
-frequency and time, at some distance from the phase center.  For frequency
+frequency and time, at some distance from the phase centre.  For frequency
 smearing, we can use their expression 18-24 assuming a square bandpass and
 circular Gaussian tapering, where the reduction in amplitude at a distance from
 the phase centre $r$ can be estimated as
@@ -353,17 +351,9 @@ What loss to define as acceptable of course depends on your science, in
 particular the brightness of your target, but as a general guide one may
 tolerate 5\% loss in amplitude due to averaging. Using the standard LOFAR raw
 data values, we have calculated the corresponding circle (diameter, to compare
-with station FWHM) for different observing frequencies, see Table
-\ref{tab:res}. We have also included estimates for a typical long baseline 
-observation averaging to 2s and 4ch/subband.
-
-% ** NOTE **
-% JM: It could be interesting to include some more columns, since there is
-% space. For example 20% loss, or add 4s averaging and 4ch/subband. Check
-% numbers and decide if including them or not.
-% JM: another possibility is to do a plot of size vs lambda, and include
-% all those relations, although I like to have the actual numerical values in
-% the table.
+with station FWHM) for different observing frequencies, see Table \ref{tab:res}.
+We have also included estimates for a typical long baseline observation
+averaging to 2s and 4ch/subband.
 
 \begin{table}[h]
 \centering
@@ -421,24 +411,26 @@ source is usually done by finding residual phase errors using a calibrator
 transferring the derived corrections to the target.  In principle, phase
 corrections can be determined separately for each channel if the data has high
 enough signal-to-noise. In practice, the requirement of a nearby calibrator
-often means that the calibrator too weak, and therefore necessary to average in
-time and/or frequency to gain sufficient SNR to find the desired phase
-corrections.  This can however only be done if there is no residual delay
+often means that the calibrator is too weak, and therefore it is necessary to
+average in time and/or frequency to gain sufficient S/N to find the desired
+phase corrections.  This can however only be done if there is no residual delay
 (causing a change of phase with respect to frequency) or rate (causing a change
 of phase with respect to time) present in the data.  Unfortunately, residual
-delays and rates are common on international baselines, and we have to deal
-with them to be able to correct residual phase errors before imaging. Below we
-first describe the origin and timescales to be expected for delays and rates in
-LOFAR HBA data. Then we discuss how to use VLBI self-calibration techniques
-(i.e. fringe-fitting) to remove desidual rates and delays from the data.
+delays and rates are common on international baselines, and we have to deal with
+them to be able to correct residual phase errors before imaging. Below we first
+describe the origin and timescales to be expected for delays and rates in LOFAR
+HBA data. Then we discuss how to use VLBI self-calibration techniques (i.e.
+fringe-fitting) to remove desidual rates and delays from the data.
 
 \subsubsection{Residual delays and rates}
+
 The phase of a single visibility depends on the time delay of the signal to reach two
 different stations. A given time delay will cause different phase-errors
 for different observing frequencies. We define the phase delay as
 $\tau_{\phi}=\phi / 2\pi\nu$. We clearly see that a delay between two
 stations will produce a phase slope as funtion of frequency, which is also 
 visible in the data, see e.g. Fig. \ref{fig:J0958Hprefring}.
+
 \begin{figure*}[htbp]
 \centering
 \subfigure[Before fringe fitting]{
@@ -462,6 +454,7 @@ it should be for a point source.
 
 Residual delays can arise due to multiple effects which are not accurately modeled in the LOFAR correlator, 
 for example:
+
 \begin{itemize}
 \item Errors in station positions or target source positions
 \item Instrumental effects (e.g. atomic clock drifts)
@@ -472,23 +465,22 @@ correlation were perfect, all stations would see a delay offset of zero for an
 isolated compact source, but deviations are produced by several factors. 
 
 Errors in station positions (and currently at a much lower level errors in the
-the Earth orientation parameters) produce residual delays on the order of $75$~ns,
-varying with a 24~h periodicity. These errors can be expected to be greatly reduced 
-in the near future.  
-Errors in the {\em a priori} centroid position (for example from low-frequency
-catalogues, with a typical error of a few arcseconds) and/or extended structure
-on subarcsecond scales, introduce an additional delay.  The maximum baseline
-between an international station and the LOFAR core (the correlator reference
-point) is 700 km (see Table~\ref{tab:baselines}); a positional error of
-1.5$^{\prime\prime}$ will lead to a residual delay of $\sim$15 ns on this
-baseline.
+Earth orientation parameters) produce residual delays on the order of $75$~ns,
+varying with a 24~h periodicity. These errors can be expected to be greatly
+reduced in the near future.  Errors in the {\em a priori} centroid position (for
+example from low-frequency catalogues, with a typical error of a few arcseconds)
+and/or extended structure on subarcsecond scales, introduce an additional delay.
+The maximum baseline between an international station and the LOFAR core (the
+correlator reference point) is 700~km (see Table~\ref{tab:baselines}); a
+positional error of 1.5$^{\prime\prime}$ will lead to a residual delay of
+$\sim$15 ns on this baseline.
 
 Instabilities in the rubidium clocks used at the international stations (the
 core stations share a single clock) can produce delay rates up to 20 ns per 20
 min, which corresponds to about a radian per minute at 150~MHz
-\citep{vanhaarlem13}.  
-In total, non-dispersive delays of up to $\sim100$~ns and delay
-rates of up to $\sim$20~ns~h$^{-1}$ are expected.  
+\citep{vanhaarlem13}.  In total, non-dispersive delays of up to $\sim100$~ns are expected.  
+
+% and delay rates of up to $\sim$20~ns~h$^{-1}$ 
 
 The ionospheric contribution to the delay changes as a function of time,
 position, and zenith angle.  The magnitude of the changes depend on the Total
@@ -497,17 +489,11 @@ ion}=c^{2}r_{\rm e}/(2\pi\nu^{2})\times {\rm TEC}$, being $c$ the speed of
 light, $r_{\rm e}$ the classical electron radius, and $\nu$ the observed
 frequency. The TEC, usually measured in TEC Units (1${\rm
 TECU}=10^{16}$~electrons~m$^{-2}$), can be estimated using models derived from
-observations of GPS satellites.  
-%Models are available from different
-%institutes, such as the Jet Propulsion Laboratory (JPL), the Center for Orbit
-%Determination in Europe (CODE), the ESOC Ionosphere Monitoring Facility (ESA),
-%or the Royal Observatory of Belgium GNSS, among others. 
-The models contain
-information on the vertical total electron content (VTEC) during an
-observations. We note that the TEC values above the stations are a lower limit
-of the slant ionospheric contribution that depends on the source elevation at
-each station. More details can be found in, for instance, \cite{nigl07} and
-\cite{sotomayor13a}.
+observations of GPS satellites.  The models contain information on the vertical
+total electron content (VTEC) during an observations. We note that the TEC
+values above the stations are a lower limit of the slant ionospheric
+contribution that depends on the source elevation at each station. More details
+can be found in, for instance, \cite{nigl07} and \cite{sotomayor13a}.
 
 Although the VTEC follows a 24-h trend strongly correlated with the Sun
 elevation, the short-term (10--60 minute) variations between the widely
@@ -520,15 +506,17 @@ or 1~m wavelength, of bright and compact pulsars at different angular
 separations to obtain a rough estimate of the delay difference between sources
 separated 1--5~degrees at elevations of 50--80$^{\circ}$. As a first
 approximation we estimated that the dispersive delay difference between sources
-at different lines of sight should be about 5~ns per degree of separation, for
-a source elevation of 60$^{\circ}$.
+at different lines of sight should be about 5~ns per degree of separation, for a
+source elevation of 60$^{\circ}$.
 
 Finally, the determination of the delays will be limited by the brightness of
 the source used to calibrate them, and the sensitivity of the station. In
-summary, in a normal observation phase uncertainties are caused by source
-position and structure errors, differential ionosphere, uncorrected
-instrumental delays, and noise. Table~\ref{tab:expecteddelay} summarises the
-main contributions and the time scale in which they change. 
+summary, in a normal observation the total contribution of delay to phase
+changes are caused by source position and structure errors, differential
+ionosphere, uncorrected instrumental delays, and noise. Delays of up to several
+hundreds of ns  and delay rates of up to $\sim$20~ns~h$^{-1}$ are expected.
+Table~\ref{tab:expecteddelay} summarises the main contributions and the time
+scale in which they change. 
 
 %-----------------------------------------------------------------------------
 \begin{table}
@@ -616,14 +604,14 @@ If we require a minimum signal to noise ratio of 5 for fringe-fitting,
 this means we need a calibrator brighter than 200\,mJy.
 
 It is possible to use even weaker calibrators by forming a combined station of
-all the core stations, resulting in a very sensitive station wieh an SEFD of
+all the core stations, resulting in a very sensitive station with an SEFD of
 $\sim$65~Jy (see Sect. \ref{sect:ts001}).  The theoretical 1$\sigma$ baseline
 sensitivity of an international station to the phased-up core station, given
 3~MHz of bandwidth and 4 minutes of observing time, is hence 8~mJy in a single
 polarisation.  Given this increase in sensitivity, sources with flux densities
-as low as 50~mJy could in theory be used as delay/rate calibrators. 
-However, in practice the sensitivity may be reduced by, for example, failing
-tiles, imperfect station calibration and correlated (astronomical) noise. Also,
+as low as 50~mJy could in theory be used as delay/rate calibrators.  However, in
+practice the sensitivity may be reduced by, for example, failing tiles,
+imperfect station calibration and correlated (astronomical) noise. Also,
 solution intervals shorter than 4 minutes could be required under suboptimal
 ionospheric conditions. Therefore, 50\,mJy should be considered a lower limit,
 in practice a flux density of more than 100\,mJy at subarcsecond scales may be
@@ -651,13 +639,13 @@ be located $\lesssim$1 degree from the secondary calibrator/target field to
 give acceptable calibration under most circumstances. Exploration of the
 distribution of compact sources at 140~MHz has shown that the density of
 calibrators on the sky could be enough to overcome this restriction
-\citep{moldon15}. This leads to the one calibration advantage of International
-LOFAR compared to cm~VLBI; since the beam of an International LOFAR station is
+\citep{moldon15}. This leads to one calibration advantage of International LOFAR
+compared to cm~VLBI; since the beam of an International LOFAR station is
 $\gtrsim$2 degrees across, the calibrator may easily be observed simultaneously
 with the target source. Note however that care has to be taken when averaging
 the data to not reduce amplitudes severely by smearing, see Sect.
 \ref{sect:smearing}.  This can for example be avoided by using the
-\emph{shift+averaging procedure}, see Sect. \ref{sect:shift}.
+\emph{shift+averaging} procedure, see Sect. \ref{sect:shift}.
 
 
 \begin{figure*}[htbp]
@@ -735,9 +723,9 @@ For a complete International LOFAR calibration we require different calibrators
 aimed to correct specific parts of the data. First, we need a very bright and
 well known source with a stable flux density that is used to set the flux scale.
 Although there are no good high resolution models for this kind of sources, we
-can still found bright calibrators to set the flux scale of the short-baseline
+can still find bright calibrators to set the flux scale of the short-baseline
 part of the array, what we call the Dutch array calibrators. Some examples of
-this $>30--100$~Jy can be 3C196 or 3C84, among others. The Dutch calibrator can
+this $>30-100$~Jy can be 3C196 or 3C84, among others. The Dutch calibrator can
 be considerably far away from the target field. In the future we expect to have
 better high resolution models of these sources so the amplitudes of all stations
 could be corrected with the same calibrator. Second, we need compact and
@@ -749,19 +737,19 @@ calibrator\footnote{A secondary calibrator is often referred to as an
 ``in-beam'' calibrator in VLBI if it is close enough to the target source to be
 observed contemporaneously} closer to the target source. This second phase-only
 calibration is used to refine the calibration errors that result from the
-spatial or temporal interpolation of the primary solutions.  Ideally, the
+spatial (and temporal) interpolation of the primary solutions.  Ideally, the
 secondary calibrator should be at $\sim$arcmin separations from the target
-source.  Because this is a problem with fewer degrees of freedom, lower
-signal-to-noise ratio (S/N) data can be used.  Additionally, because the bulk
+source.  Because solving for phases is a problem with fewer degrees of freedom
+than fringe fitting, lower S/N data can be used.  Additionally, because the bulk
 delay has already been removed the residual delays should be small and even more
 bandwidth can be combined in a single solution for a further improvement in S/N.
-A secondary calibrator can therefore be considerably fainter (usually $\sim$1-10
-mJy). If bright enough, the target source can be used to derive this correction.
-This typical VLBI calibration strategy is illustrated in
-Figure~\ref{fig:calstrategy}. In comparison with a typical VLBI strategy, a
+A secondary calibrator can therefore be considerably fainter (usually
+$\gtrsim$5~mJy). If bright enough, the target source can be used to derive this
+correction.  This typical calibration strategy is illustrated in
+Figure~\ref{fig:calstrategy}. In comparison with a typical cm-VLBI strategy a
 LOFAR observation can be more efficient because the size of the LOFAR station
-beam (see Table~\ref{tab:res}) is large enough that probably the primary and the
-secondary calibrators are can be observed simultaneously.
+beam (see Table~\ref{tab:res}) is large enough that the primary and the
+secondary calibrators are observed simultaneously.
 
 \begin{figure*}[] %figure1
 \center 
@@ -783,8 +771,8 @@ left panel).}
 
 When preparing an International LOFAR observation one should take into account
 the different calibrators needed, considering that primary and secondary
-compact calibrators are currently unknown. Probably, a small part of the
-observation should be aimed to identify calibrators \cite{moldon15} proposed
+compact calibrators are currently unknown. Probably a small part of the
+observation should be aimed to identify calibrators. \cite{moldon15} proposed
 the following approach for an International LOFAR observation: 
 
 \begin{enumerate}
@@ -824,12 +812,11 @@ The calibration of International LOFAR data is not fundamentally different from
 any other radio interferometric data, although special care should be taken
 regarding, for example, the phase calibration using VLBI techniques. However,
 there are some particular practical considerations that could help the observer
-to reduce this type of data. A detailed description of the particular steps and
-software that can be used to reduce these data can be found in The LOFAR
-Imaging
+to reduce this type of data. A detailed description of the steps and software
+that can be used to reduce these data can be found in The LOFAR Imaging
 Cookbook\footnote{\url{http://www.astron.nl/radio-observatory/lofar/lofar-imaging-cookbook}}.
-In this section we list some hints and useful procedures that are useful when planning and
-reducing International LOFAR data.
+In this section we list some hints and useful procedures that are needed when
+planning and reducing International LOFAR data.
 
 
 \subsection{Optimising use of available bandwidth}\label{sec:bandwidth}
@@ -873,7 +860,7 @@ object before averaging.  After correlation, the full-resolution visibility
 dataset can be shifted and averaged multiple times, to the positions of all the
 target sources and possibly to one or more nearby calibrators. Starting in
 cycle four, it will be possible to request shifting and averaging of data to
-multiple phase centers within a beam as a part of a normal observation.
+multiple phase centres within a beam as a part of a normal observation.
 
 \subsection{Finding calibrators}\label{findcalib}
 
@@ -889,7 +876,7 @@ the VLSS, at 74~MHz, 4~m wavelength \citep{lane12a}, the WENSS catalogue at
 Snapshot Sky Survey (MSSS), which comes from LOFAR observations \citep{heald14}.
 Also, compact calibrators at mas scales detected with cm-VLBI are probably also
 compact at LOFAR frequencies. Although there is a strong correlation, a cm-VLBI
-calibrator may not be suitable for LOFAR in case it is variable or if they have
+calibrator may not be suitable for LOFAR in case it is variable or if it has
 inverted or gigahertz peaked spectra. An updated list of cm-VLBI calibrators
 covering the whole sky can be found in \url{http://astrogeo.org/rfc/}.
 
@@ -907,8 +894,8 @@ about 2$^{\circ}$, especially towards the Galactic Center.
 
 \subsection{Form a combined station}
 \label{sect:ts001}
-When studying the very compact structures, the shortest baselines do not add
-much interesting information but those data slow down the calibration process.
+When studying very compact structures, the shortest baselines do not add
+much interesting information while they slow down the calibration process.
 The core stations can be added to form a coherent ``tied station'' (TS001) that
 keeps the total core sensitivity on the long baselines to the international
 stations.  Since the core stations are under similar atmospheric conditions and
@@ -923,7 +910,7 @@ One important benefit of having a tied station is that it works as a very
 sensitive station. This tied-array station aids in the derivation of calibration
 solutions to the international stations with FRING, and can be used as a
 reference station. We note that a tied-station formed by adding the whole core
-has a very small (5\% amplitude loss at 30$''$ distance from phase center) field
+has a very small (5\% amplitude loss at 30$''$ distance from phase centre) field
 of view. Although this is rarely a problem for deriving FRING solutions, care is
 needed if using such combined data to image extended objects.
 
