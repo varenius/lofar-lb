@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.6.30)  27 FEB 2015 09:15
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.6.30)  27 FEB 2015 11:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -493,22 +493,22 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
 File: figures/J0958Hdelays-crop.pdf Graphic file (type pdf)
 
 <use figures/J0958Hdelays-crop.pdf>
-Package pdftex.def Info: figures/J0958Hdelays-crop.pdf used on input line 643.
+Package pdftex.def Info: figures/J0958Hdelays-crop.pdf used on input line 649.
 (pdftex.def)             Requested size: 249.67291pt x 110.16258pt.
 
 <figures/J0958Hrates-crop.pdf, id=361, 517.935pt x 232.87pt>
 File: figures/J0958Hrates-crop.pdf Graphic file (type pdf)
 
 <use figures/J0958Hrates-crop.pdf>
-Package pdftex.def Info: figures/J0958Hrates-crop.pdf used on input line 645.
+Package pdftex.def Info: figures/J0958Hrates-crop.pdf used on input line 651.
 (pdftex.def)             Requested size: 249.67291pt x 112.25601pt.
 
 <figures/J0958Hfringpsol-crop.pdf, id=362, 517.935pt x 232.87pt>
 File: figures/J0958Hfringpsol-crop.pdf Graphic file (type pdf)
 
 <use figures/J0958Hfringpsol-crop.pdf>
-Package pdftex.def Info: figures/J0958Hfringpsol-crop.pdf used on input line 64
-7.
+Package pdftex.def Info: figures/J0958Hfringpsol-crop.pdf used on input line 65
+3.
 (pdftex.def)             Requested size: 249.67291pt x 112.25601pt.
  [11] [12 <./figures/J0958Hdelays-crop.pdf> <./figures/J0958Hrates-crop.pdf> <.
 /figures/J0958Hfringpsol-crop.pdf>]
@@ -516,26 +516,26 @@ Package pdftex.def Info: figures/J0958Hfringpsol-crop.pdf used on input line 64
 File: figures/radplot.png Graphic file (type png)
 
 <use figures/radplot.png>
-Package pdftex.def Info: figures/radplot.png used on input line 696.
+Package pdftex.def Info: figures/radplot.png used on input line 706.
 (pdftex.def)             Requested size: 332.89723pt x 385.53317pt.
  [13] [14 <./figures/radplot.png>]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `htbp') on input line 758.
+               Default added (so using `htbp') on input line 768.
 
 <figures/vlbi_sketch.pdf, id=392, 420.5307pt x 207.92181pt>
 File: figures/vlbi_sketch.pdf Graphic file (type pdf)
 
 <use figures/vlbi_sketch.pdf>
-Package pdftex.def Info: figures/vlbi_sketch.pdf used on input line 761.
+Package pdftex.def Info: figures/vlbi_sketch.pdf used on input line 771.
 (pdftex.def)             Requested size: 332.89723pt x 164.60223pt.
- [15 <./figures/vlbi_sketch.pdf>] [16] [17]
+ [15] [16 <./figures/vlbi_sketch.pdf>] [17]
 [18] (./chapter13.bbl) [19] (./chapter13.aux) ) 
 Here is how much of TeX's memory you used:
- 3571 strings out of 493304
- 48361 string characters out of 6139871
- 124771 words of memory out of 5000000
- 6918 multiletter control sequences out of 15000+600000
+ 3572 strings out of 493304
+ 48378 string characters out of 6139871
+ 125448 words of memory out of 5000000
+ 6919 multiletter control sequences out of 15000+600000
  46454 words of font info for 104 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  38i,10n,27p,2443b,272s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -550,7 +550,7 @@ live/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
 rw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8
 a.pfb>
-Output written on chapter13.pdf (19 pages, 1701320 bytes).
+Output written on chapter13.pdf (19 pages, 1702756 bytes).
 PDF statistics:
  450 PDF objects out of 1000 (max. 8388607)
  112 compressed objects within 2 object streams
