@@ -397,6 +397,8 @@ channel bandwidth is important.
 \section{Calibration of international LOFAR stations}
 In this section we describe, in general terms, how to calibrate phase
 and amplitudes of visibilites on baselines to international stations.
+Note that this strategy does also calibrate NL-stations, but using
+visibilites on baselines to international stations. 
 More detailed information can be found in the LOFAR imaging cookbook.
 
 \subsection{Phase calibration using international stations} 
@@ -674,14 +676,14 @@ with known flux density.
 
 For core and remote stations one can use, for example, standard flux density
 calibrators such as 3C196, or bright sources in low frequency catalogs such as
-MSSS \citep{heald14}. However, for international stations this is in general not
-possible because of the small spatial scales sampled by baselines to these stations. 
-The bright standard flux calibrators, e.g. 3C196, have a very complex
-structure at subarcsecond scales. If we had a good model of this structure at
-our frequency of observation, we could account for it in the calibration of the
-international stations. Work is being done to map well known flux density
-calibrators with high enough resolution, but until these models are available
-we have to rely on another boot-strapping technique. 
+MSSS \citep{heald14}. However, for international stations this is in general
+not possible because of the small spatial scales sampled by baselines to these
+stations.  The bright standard flux calibrators, e.g. 3C196, have a very
+complex structure at subarcsecond scales. If we had a good model of this
+structure at our frequency of observation, we could in principle account for it
+in the calibration of the international stations. Work is being done to map
+well known flux density calibrators with high enough resolution, but until
+these models are available we have to rely on another boot-strapping technique. 
 
 The current best approach is to include two calibrators in the observations: a
 well monitored flux density calibrator (for instance 3C196 or 3C84) and another
