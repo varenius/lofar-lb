@@ -704,7 +704,63 @@ sources in the field.}
 \end{figure*}
 
 \section{Observing strategy}
-\cite{moldon15} proposed the following approach for an International LOFAR observation: 
+
+For a complete International LOFAR calibration we require different calibrators
+aimed to correct specific parts of the data. First, we need a very bright and
+well known source with a stable flux density that is used to set the flux scale.
+Although there are no good high resolution models for this kind of sources, we
+can still found bright calibrators to set the flux scale of the short-baseline
+part of the array, what we call the Dutch array calibrators. Some examples of
+this $>30--100$~Jy can be 3C196 or 3C84, among others. The Dutch calibrator can
+be considerably far away from the target field. In the future we expect to have
+better high resolution models of these sources so the amplitudes of all stations
+could be corrected with the same calibrator. Second, we need compact and
+moderately bright (above 100--200~mJy) source at a separation of about 1 degree
+or less. This source, the primary calibrator, can be used to solve for
+non-dispersive delays of blocks of $\sim3$~MHz data. Finally, after application
+of the solutions from the primary calibrator it is common to use a secondary
+calibrator\footnote{A secondary calibrator is often referred to as an
+``in-beam'' calibrator in VLBI if it is close enough to the target source to be
+observed contemporaneously} closer to the target source. This second phase-only
+calibration is used to refine the calibration errors that result from the
+spatial or temporal interpolation of the primary solutions.  Ideally, the
+secondary calibrator should be at $\sim$arcmin separations from the target
+source.  Because this is a problem with fewer degrees of freedom, lower
+signal-to-noise ratio (S/N) data can be used.  Additionally, because the bulk
+delay has already been removed the residual delays should be small and even more
+bandwidth can be combined in a single solution for a further improvement in S/N.
+A secondary calibrator can therefore be considerably fainter (usually $\sim$1-10
+mJy). If bright enough, the target source can be used to derive this correction.
+This typical VLBI calibration strategy is illustrated in
+Figure~\ref{fig:calstrategy}. In comparison with a typical VLBI strategy, a
+LOFAR observation can be more efficient because the size of the LOFAR station
+beam (see Table~\ref{tab:res}) is large enough that probably the primary and the
+secondary calibrators are can be observed simultaneously.
+
+\begin{figure*}[] %figure1
+\center 
+%\resizebox{1.0\hsize}{!}{
+\includegraphics[width=\textwidth]{figures/vlbi_sketch.pdf}
+%}
+\caption{Typical calibration setup for cm VLBI (left) and International LOFAR
+(right).  Note that in some cases the target may itself function as the
+secondary calibrator.  A secondary calibrator is not always required for cm
+VLBI, but will almost always be needed for International LOFAR, unless the
+primary calibrator is fortuitously close.  The larger field of view of LOFAR
+means that both the primary and secondary calibrators will always be observed
+contemporaneously, unlike in cm VLBI, where nodding between the primary 
+calibrator and target is typically required (shown by the double arrow in the
+left panel).}
+\label{fig:calstrategy}
+\end{figure*}
+
+
+When preparing an International LOFAR observation one should take into account
+the different calibrators needed, considering that primary and secondary
+compact calibrators are currently unknown. Probably, a small part of the
+observation should be aimed to identify calibrators \cite{moldon15} proposed
+the following approach for an International LOFAR observation: 
+
 \begin{enumerate}
 \item Identify candidate primary calibrators up to separations of a few degrees 
     by using any of the criteria discussed in Sect.~5.3 in
@@ -734,44 +790,44 @@ to all International LOFAR observers, delivering a reduced data volume for
 long-baseline observations and enabling calibrated data to be more quickly
 produced.
 
-\subsection{Using two calibrators}
-
-For cm VLBI, the dispersive delay due to the ionosphere is small (and so are
-the changes with time), meaning that solution intervals of minutes and widths
-of tens to hundreds of MHz are generally permissible.  After application of the
-solutions from the primary calibrator it is common to use a secondary
-calibrator\footnote{A secondary calibrator is often referred to as an
-``in-beam'' calibrator in VLBI if it is close enough to the target source to be
-observed contemporaneously} closer to the target source (separation
-$\sim$arcmin), or to use the target source if it is bright enough for
-``self-calibration'', solving only for the phase (no delay or rate). This
-second phase-only calibration is used to refine the calibration errors that
-result from the spatial or temporal interpolation of the primary solutions.
-Because this is a problem with fewer degrees of freedom, lower signal-to-noise
-ratio (S/N) data can be used.  Additionally, because the bulk delay has already
-been removed, even more bandwidth can be combined in a single solution for a
-further improvement in S/N.  A secondary calibrator can therefore be
-considerably fainter (usually $\sim$1-10 mJy versus $>$100 mJy for a primary
-calibrator).  This typical VLBI calibration strategy is illustrated in
-Figure~\ref{fig:calstrategy}.
-
-\begin{figure*}[] %figure1
-\center
-%\resizebox{1.0\hsize}{!}{
-\includegraphics[width=\textwidth]{figures/vlbi_sketch.pdf}
-%}
-\caption{Typical calibration setup for cm VLBI (left) and International LOFAR
-(right).  Note that in some cases the target may itself function as the
-secondary calibrator.  A secondary calibrator is not always required for cm
-VLBI, but will almost always be needed for International LOFAR, unless the
-primary calibrator is fortuitously close.  The larger field of view of LOFAR
-means that both the primary and secondary calibrators will always be observed
-contemporaneously, unlike in cm VLBI, where nodding between the primary
-calibrator and target is typically required (shown by the double arrow in the
-left panel).}
-\label{fig:calstrategy}
-\end{figure*}
-
+%\subsection{Using two calibrators}
+%
+%For cm VLBI, the dispersive delay due to the ionosphere is small (and so are
+%the changes with time), meaning that solution intervals of minutes and widths
+%of tens to hundreds of MHz are generally permissible.  After application of the
+%solutions from the primary calibrator it is common to use a secondary
+%calibrator\footnote{A secondary calibrator is often referred to as an
+%``in-beam'' calibrator in VLBI if it is close enough to the target source to be
+%observed contemporaneously} closer to the target source (separation
+%$\sim$arcmin), or to use the target source if it is bright enough for
+%``self-calibration'', solving only for the phase (no delay or rate). This
+%second phase-only calibration is used to refine the calibration errors that
+%result from the spatial or temporal interpolation of the primary solutions.
+%Because this is a problem with fewer degrees of freedom, lower signal-to-noise
+%ratio (S/N) data can be used.  Additionally, because the bulk delay has already
+%been removed, even more bandwidth can be combined in a single solution for a
+%further improvement in S/N.  A secondary calibrator can therefore be
+%considerably fainter (usually $\sim$1-10 mJy versus $>$100 mJy for a primary
+%calibrator).  This typical VLBI calibration strategy is illustrated in
+%Figure~\ref{fig:calstrategy}.
+%
+%\begin{figure*}[] %figure1
+%\center
+%%\resizebox{1.0\hsize}{!}{
+%\includegraphics[width=\textwidth]{figures/vlbi_sketch.pdf}
+%%}
+%\caption{Typical calibration setup for cm VLBI (left) and International LOFAR
+%(right).  Note that in some cases the target may itself function as the
+%secondary calibrator.  A secondary calibrator is not always required for cm
+%VLBI, but will almost always be needed for International LOFAR, unless the
+%primary calibrator is fortuitously close.  The larger field of view of LOFAR
+%means that both the primary and secondary calibrators will always be observed
+%contemporaneously, unlike in cm VLBI, where nodding between the primary
+%calibrator and target is typically required (shown by the double arrow in the
+%left panel).}
+%\label{fig:calstrategy}
+%\end{figure*}
+%
 \subsection{Finding calibrators}\label{findcalib}
 
 Until a good catalogue of compact sources at MHz frequencies is available, it
@@ -779,7 +835,7 @@ is important to take into account that a science observation might require a
 preparatory search of calibrators. A fast method using the distribution of
 bandwidth between many sources (see Sect.~\ref{sec:bandwidth}) is described in
 \cite{moldon15}. A pre-selection based on a number of parameters from existing
-catalogues, such as the low-frequency spectral index, and the flux, ca be
+catalogues, such as the low-frequency spectral index, and the flux, can be
 performed to optimize the search. In particular the most useful catalogues are
 the VLSS, at 74~MHz, 4~m wavelength \citep{lane12a}, the WENSS catalogue at
 325~MHz, 92 cm wavelength \citep{rengelink97}, and specially The Multifrequency
