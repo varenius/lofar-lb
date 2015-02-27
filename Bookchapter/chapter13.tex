@@ -397,6 +397,8 @@ channel bandwidth is important.
 \section{Calibration of international LOFAR stations}
 In this section we describe, in general terms, how to calibrate phase
 and amplitudes of visibilites on baselines to international stations.
+Note that this strategy does also calibrate NL-stations, but using
+visibilites on baselines to international stations. 
 More detailed information can be found in the LOFAR imaging cookbook.
 
 \subsection{Phase calibration using international stations} 
@@ -606,12 +608,13 @@ $\sim$65~Jy (see Sect. \ref{sect:ts001}).  The theoretical 1$\sigma$ baseline
 sensitivity of an international station to the phased-up core station, given
 3~MHz of bandwidth and 4 minutes of observing time, is hence 8~mJy in a single
 polarisation.  Given this increase in sensitivity, sources with flux densities
-as low as 50~mJy could in theory be used as delay/rate calibrators. However, in
-practice the sensitivity may be reduced by failing tiles, imperfect station
-calibration and correlated (astronomical) noise.  Also, solution intervals
-shorter than 4 minutes could be required under suboptimal ionospheric
-conditions.  Therefore, 50~mJy should be considered a lower limit for a useful
-delay/rate calibrator flux density. 
+as low as 50~mJy could in theory be used as delay/rate calibrators. 
+However, in practice the sensitivity may be reduced by, for example, failing
+tiles, imperfect station calibration and correlated (astronomical) noise. Also,
+solution intervals shorter than 4 minutes could be required under suboptimal
+ionospheric conditions. Therefore, 50\,mJy should be considered a lower limit,
+in practice a flux density of more than 100\,mJy at subarcsecond scales may be
+needed.
 
 \subsubsection{What is a close enough calibrator?}
 In addition to being sufficiently bright, the delay/rate calibrator must be
@@ -673,14 +676,14 @@ with known flux density.
 
 For core and remote stations one can use, for example, standard flux density
 calibrators such as 3C196, or bright sources in low frequency catalogs such as
-MSSS \citep{heald14}. However, for international stations this is in general not
-possible because of the small spatial scales sampled by baselines to these stations. 
-The bright standard flux calibrators, e.g. 3C196, have a very complex
-structure at subarcsecond scales. If we had a good model of this structure at
-our frequency of observation, we could account for it in the calibration of the
-international stations. Work is being done to map well known flux density
-calibrators with high enough resolution, but until these models are available
-we have to rely on another boot-strapping technique. 
+MSSS \citep{heald14}. However, for international stations this is in general
+not possible because of the small spatial scales sampled by baselines to these
+stations.  The bright standard flux calibrators, e.g. 3C196, have a very
+complex structure at subarcsecond scales. If we had a good model of this
+structure at our frequency of observation, we could in principle account for it
+in the calibration of the international stations. Work is being done to map
+well known flux density calibrators with high enough resolution, but until
+these models are available we have to rely on another boot-strapping technique. 
 
 The current best approach is to include two calibrators in the observations: a
 well monitored flux density calibrator (for instance 3C196 or 3C84) and another

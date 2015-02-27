@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.8.23)  27 FEB 2015 11:59
+=======
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.6.30)  27 FEB 2015 11:46
+>>>>>>> 20bf02acab885941b7cc83c1edde52e498b1f20b
 entering extended mode
  %&-line parsing enabled.
 **chapter13.tex
@@ -400,24 +404,40 @@ Overfull \hbox (15.98567pt too wide) in paragraph at lines 358--382
 File: figures/J0958Hprefring-crop.pdf Graphic file (type pdf)
 
 <use figures/J0958Hprefring-crop.pdf>
+<<<<<<< HEAD
 <figures/J0958Hpostfring-crop.pdf, id=334, 680.5425pt x 523.9575pt>
 File: figures/J0958Hpostfring-crop.pdf Graphic file (type pdf)
 
 <use figures/J0958Hpostfring-crop.pdf>
 LaTeX Font Info:    Try loading font information for OMS+ptm on input line 451.
+=======
+Package pdftex.def Info: figures/J0958Hprefring-crop.pdf used on input line 434
+.
+(pdftex.def)             Requested size: 233.02704pt x 179.40639pt.
+
+<figures/J0958Hpostfring-crop.pdf, id=335, 680.5425pt x 523.9575pt>
+File: figures/J0958Hpostfring-crop.pdf Graphic file (type pdf)
+
+<use figures/J0958Hpostfring-crop.pdf>
+Package pdftex.def Info: figures/J0958Hpostfring-crop.pdf used on input line 43
+8.
+(pdftex.def)             Requested size: 233.02704pt x 179.40639pt.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 453.
+>>>>>>> 20bf02acab885941b7cc83c1edde52e498b1f20b
 
 
 (/usr/share/texmf-texlive/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 451.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 453.
  [7] [8 <./figures/J0958Hprefring-crop.pdf> <./figures/J0958Hpostfring-crop.pdf
 >] [9] [10]
 <figures/J0958Hdelays-crop.pdf, id=359, 520.94624pt x 229.85875pt>
 File: figures/J0958Hdelays-crop.pdf Graphic file (type pdf)
 
 <use figures/J0958Hdelays-crop.pdf>
+<<<<<<< HEAD
 <figures/J0958Hrates-crop.pdf, id=360, 517.935pt x 232.87pt>
 File: figures/J0958Hrates-crop.pdf Graphic file (type pdf)
 
@@ -434,10 +454,42 @@ File: figures/radplot.png Graphic file (type png)
 
 LaTeX Warning: No positions in optional float specifier.
                Default added (so using `htbp') on input line 750.
+=======
+Package pdftex.def Info: figures/J0958Hdelays-crop.pdf used on input line 652.
+(pdftex.def)             Requested size: 249.67291pt x 110.16258pt.
+
+<figures/J0958Hrates-crop.pdf, id=361, 517.935pt x 232.87pt>
+File: figures/J0958Hrates-crop.pdf Graphic file (type pdf)
+
+<use figures/J0958Hrates-crop.pdf>
+Package pdftex.def Info: figures/J0958Hrates-crop.pdf used on input line 654.
+(pdftex.def)             Requested size: 249.67291pt x 112.25601pt.
+
+<figures/J0958Hfringpsol-crop.pdf, id=362, 517.935pt x 232.87pt>
+File: figures/J0958Hfringpsol-crop.pdf Graphic file (type pdf)
+
+<use figures/J0958Hfringpsol-crop.pdf>
+Package pdftex.def Info: figures/J0958Hfringpsol-crop.pdf used on input line 65
+6.
+(pdftex.def)             Requested size: 249.67291pt x 112.25601pt.
+ [11] [12 <./figures/J0958Hdelays-crop.pdf> <./figures/J0958Hrates-crop.pdf> <.
+/figures/J0958Hfringpsol-crop.pdf>]
+<figures/radplot.png, id=384, 913.91437pt x 1058.45438pt>
+File: figures/radplot.png Graphic file (type png)
+
+<use figures/radplot.png>
+Package pdftex.def Info: figures/radplot.png used on input line 709.
+(pdftex.def)             Requested size: 332.89723pt x 385.53317pt.
+ [13] [14 <./figures/radplot.png>]
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `htbp') on input line 771.
+>>>>>>> 20bf02acab885941b7cc83c1edde52e498b1f20b
 
 <figures/vlbi_sketch.pdf, id=391, 420.5307pt x 207.92181pt>
 File: figures/vlbi_sketch.pdf Graphic file (type pdf)
 
+<<<<<<< HEAD
 <use figures/vlbi_sketch.pdf> [15 <./figures/vlbi_sketch.pdf>] [16] [17]
 [18] (./chapter13.bbl [19]) [20] (./chapter13.aux)
 
@@ -462,6 +514,33 @@ f-texlive/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-texlive/fonts/type
 1/urw/times/utmbi8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmr8a.
 pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmri8a.pfb>
 Output written on chapter13.pdf (20 pages, 1739269 bytes).
+=======
+<use figures/vlbi_sketch.pdf>
+Package pdftex.def Info: figures/vlbi_sketch.pdf used on input line 774.
+(pdftex.def)             Requested size: 332.89723pt x 164.60223pt.
+ [15] [16 <./figures/vlbi_sketch.pdf>] [17]
+[18] (./chapter13.bbl) [19] (./chapter13.aux) ) 
+Here is how much of TeX's memory you used:
+ 3572 strings out of 493304
+ 48378 string characters out of 6139871
+ 126448 words of memory out of 5000000
+ 6919 multiletter control sequences out of 15000+600000
+ 46454 words of font info for 104 fonts, out of 8000000 for 9000
+ 957 hyphenation exceptions out of 8191
+ 38i,10n,27p,2443b,272s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/f
+onts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8
+a.pfb>
+Output written on chapter13.pdf (19 pages, 1702864 bytes).
+>>>>>>> 20bf02acab885941b7cc83c1edde52e498b1f20b
 PDF statistics:
  450 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
