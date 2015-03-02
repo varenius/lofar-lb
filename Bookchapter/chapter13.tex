@@ -124,7 +124,7 @@ work is still needed to find the best approach.
 \begin{figure}
 %\sidecaption[t]
 \begin{center}
-\includegraphics[width=\textwidth]{figures/M82HIGH_FEATHER-crop.pdf}
+\includegraphics[width=\textwidth]{figures/chapter13_fig1.pdf}
 \caption{Combined high resolution and low resolution image of M82 illustrating
 the relative brightness between the compact and extended emission at 154\,MHz.
 The synthesized beam size of the International LOFAR image is
@@ -154,19 +154,10 @@ international LOFAR stations across Europe that provide maximum baselines up to
 extending the maximum baseline to $\sim$2000~km. Fig.~\ref{fig:stations} shows
 the distribution of stations already existing or currently under construction.
 
-%Observations with the LOFAR international stations are different from the Dutch
-%array observations in that the number of stations providing baselines above
-%120~km is scarce, yielding a less dense uv-coverage, that the instrument has a
-%reduced field of view (FoV), and that the atmospheric conditions above each
-%station are highly uncorrelated, making the phase calibration much more
-%delicate. Another (current) difference is that a catalogue of compact sources at
-%frequencies below 300~MHz does not exist, and no accurate models of the compact
-%structure of flux calibrators is available.
-
 \begin{figure}[t]
 %\sidecaption[t]
 \begin{center}
-\includegraphics[width=\textwidth]{figures/LOFAR_stations_map.jpg}
+\includegraphics[width=\textwidth]{figures/chapter13_fig2.jpg}
 \caption{LOFAR is composed by 24 core stations and 13 remote stations in the
 Netherlands, and 9 international stations (+3 under construction).}
 \label{fig:stations}
@@ -213,35 +204,13 @@ international stations.
 
 \begin{figure}[t]
 \begin{center}
-\includegraphics[width=\textwidth]{figures/uv_cov.png}
+\includegraphics[width=\textwidth]{figures/chapter13_fig3.png}
 \caption{$uv$ coverage for a 4-hr observation of a source at declination
 $+48^{\circ}$ with a single subband centred at 140~MHz. Only one visibility every 160 seconds is shown. The rectangles in the last three panels show the area covered by the previous panel. Visibilities corresponding to baselines with international
 stations are plotted in red.}
 \label{fig:uvcoverage}
 \end{center}
 \end{figure}
-
-%
-%\begin{table}
-%\caption{Current international LOFAR stations}             % title of Table
-%\label{tab:ilofarstations}      % is used to refer this table in the text
-%\centering                          % used for centering table
-%\begin{tabular}{l c c} 
-%\hline\hline
-%Station & Distance to  &  Corresponding resolution  \\
-%        & LOFAR core (km) &  at 140 MHz ($^{\prime\prime}$) \\
-%\hline
-%DE605  & 226  &  2.4  \\
-%DE601  & 266  &  2.0  \\
-%DE603  & 396  &  1.4  \\
-%DE604  & 419  &  1.3  \\
-%DE602  & 581  &  0.9  \\
-%SE607  & 594  &  0.9  \\
-%UK608  & 602  &  0.9  \\
-%FR606  & 700  &  0.8  \\
-%\hline                                   %inserts single line
-%\end{tabular}
-%\end{table}
 
 \subsection{Resolution and sensitivity}
 In general, the image resolution from interferometric data depends on the
@@ -384,18 +353,6 @@ channel bandwidth is important.
 \label{tab:res}}
 \end{table}
 
-
-%\section{Selection of calibrators and observational setup}
-%
-%TODO: Why do we need faint calibrators (small field of view)
-%TODO: Faint calibrators mean insufficient SNR to solve for phase
-%on each baseline.
-%TODO: To increase SNR, we can assume a constant (i.e. non-dispersive) delay,
-%and use VLBI techniques. REFER to section later
-%
-%TODO: How to find calibrators, 
-%TODO: Special: phasing up the core, considerations.
-
 \section{Calibration of international LOFAR stations}
 \label{sect:calibration}
 In this section we describe, in general terms, how to calibrate phase
@@ -434,11 +391,11 @@ visible in the data, see e.g. Fig. \ref{fig:J0958Hprefring}.
 \begin{figure*}[htbp]
 \centering
 \subfigure[Before fringe fitting]{
-    \includegraphics[width=0.7\textwidth]{figures/J0958Hprefring-crop.pdf}
+    \includegraphics[width=0.7\textwidth]{figures/chapter13_fig4a.png}
     \label{fig:J0958Hprefring}
 }
 \subfigure[After fringe fitting]{
-    \includegraphics[width=0.7\textwidth]{figures/J0958Hpostfring-crop.pdf}
+    \includegraphics[width=0.7\textwidth]{figures/chapter13_fig4b.pdf}
     \label{fig:J0958Hpostfring}
 }
 \caption{
@@ -647,14 +604,13 @@ the data to not reduce amplitudes severely by smearing, see Sect.
 \ref{sect:smearing}.  This can for example be avoided by using the
 \emph{shift+averaging} procedure, see Sect. \ref{sect:shift}.
 
-
 \begin{figure*}[htbp]
 \begin{center}
-\includegraphics[width=0.75\textwidth]{figures/J0958Hdelays-crop.pdf}
+\includegraphics[width=0.75\textwidth]{figures/chapter13_fig5a.pdf}
 %\label{fig:J0958Hdelays}
-\includegraphics[width=0.75\textwidth]{figures/J0958Hrates-crop.pdf}
+\includegraphics[width=0.75\textwidth]{figures/chapter13_fig5b.pdf}
 %\label{fig:J0958Hrates}
-\includegraphics[width=0.75\textwidth]{figures/J0958Hfringpsol-crop.pdf}
+\includegraphics[width=0.75\textwidth]{figures/chapter13_fig5c.pdf}
 %\label{fig:J0958Hfringphases}
 \caption{
 Delay (top), rate (middle) and phase(bottom) corrections derived for the source
@@ -707,7 +663,7 @@ amplitude scale.
 
 \begin{figure*}[htbp]
 \begin{center}
-\includegraphics[width=\textwidth]{figures/radplot.png}
+\includegraphics[width=\textwidth]{figures/chapter13_fig6.png}
 \caption{Amplitude (top) and phase (bottom) vs $uv$ distance for a calibrated
 dataset of J0958+6533. This calibrator has a very compact component of 0.5~Jy,
 mainly unresolved with the longest LOFAR baselines. We can see how the shorter
@@ -754,7 +710,7 @@ secondary calibrators are observed simultaneously.
 \begin{figure*}[] %figure1
 \center 
 %\resizebox{1.0\hsize}{!}{
-\includegraphics[width=\textwidth]{figures/vlbi_sketch.pdf}
+\includegraphics[width=\textwidth]{figures/chapter13_fig7.png}
 %}
 \caption{Typical calibration setup for cm VLBI (left) and International LOFAR
 (right).  Note that in some cases the target may itself function as the
@@ -767,7 +723,6 @@ calibrator and target is typically required (shown by the double arrow in the
 left panel).}
 \label{fig:calstrategy}
 \end{figure*}
-
 
 When preparing an International LOFAR observation one should take into account
 the different calibrators needed, considering that primary and secondary
@@ -804,7 +759,6 @@ to all International LOFAR observers, delivering a reduced data volume for
 long-baseline observations and enabling calibrated data to be more quickly
 produced.
 
-
 \section{Practical considerations}
 \label{sect:practical}
 
@@ -817,7 +771,6 @@ that can be used to reduce these data can be found in The LOFAR Imaging
 Cookbook\footnote{\url{http://www.astron.nl/radio-observatory/lofar/lofar-imaging-cookbook}}.
 In this section we list some hints and useful procedures that are needed when
 planning and reducing International LOFAR data.
-
 
 \subsection{Optimising use of available bandwidth}\label{sec:bandwidth}
 It is possible to distribute LOFAR bandwidth over a number of beams to
@@ -914,20 +867,6 @@ has a very small (5\% amplitude loss at 30$''$ distance from phase centre) field
 of view. Although this is rarely a problem for deriving FRING solutions, care is
 needed if using such combined data to image extended objects.
 
-%In Fig.~\ref{fig:CSvsTS} we show calibrated amplitudes and phases for some
-%baselines from some remote stations to a single core station and to the tied
-%station formed by coherently combining 23 core stations.
-
-%\begin{figure}
-%%\sidecaption[t]
-%\begin{center}
-%\includegraphics[width=\textwidth]{figures/amp_uv_CSRS_TSRS.png}
-%\caption{Amplitude (top) and phase (top) as a function of uv-distance for the
-%baselines between CS001 (left) and TS001 (right) to four remote stations.}
-%\label{fig:CSvsTS}
-%\end{center}
-%\end{figure}
-
 \subsection{Getting LOFAR data into AIPS}
 The task FRING in AIPS can be used to remove residual delays and rates in the
 data. However, AIPS requires that the data are in circular polarisation (LOFAR
@@ -961,7 +900,6 @@ missing subbands with fake data) and to have data present for all baselines (i.e
 by flagging instead of partially filtering antennas). 
 
 
-
 \begin{acknowledgement}
 This chapter and all the techniques and procedures described in it are based on
 the work and many useful contributions of the LOFAR long baselines working
@@ -970,8 +908,6 @@ Observatory, a facility of the National Science Foundation operated under
 cooperative agreement by Associated Universities, Inc.
 
 \end{acknowledgement}
-
-%\input{references01}
 
 \bibliographystyle{aa}
 \bibliography{chapter13}

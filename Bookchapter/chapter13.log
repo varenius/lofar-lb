@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.8.23)  27 FEB 2015 17:51
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.8.23)  2 MAR 2015 22:34
 entering extended mode
  %&-line parsing enabled.
 **chapter13.tex
@@ -369,93 +369,94 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 107.
 
-<figures/M82HIGH_FEATHER-crop.pdf, id=1, 476.78125pt x 380.42125pt>
-File: figures/M82HIGH_FEATHER-crop.pdf Graphic file (type pdf)
+<figures/chapter13_fig1.pdf, id=1, 476.78125pt x 380.42125pt>
+File: figures/chapter13_fig1.pdf Graphic file (type pdf)
 
-<use figures/M82HIGH_FEATHER-crop.pdf> [1
+<use figures/chapter13_fig1.pdf> [1
 
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<figures/LOFAR_stations_map.jpg, id=10, 1010.0937pt x 603.2136pt>
-File: figures/LOFAR_stations_map.jpg Graphic file (type jpg)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] <figures/chapter13_fig2.jp
+g, id=10, 1010.0937pt x 603.2136pt>
+File: figures/chapter13_fig2.jpg Graphic file (type jpg)
 
-<use figures/LOFAR_stations_map.jpg>
+<use figures/chapter13_fig2.jpg>
 LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 177.
- [2 <./figures/M82HIGH_FEATHER-crop.pdf>]
-<figures/uv_cov.png, id=315, 523.4757pt x 129.3633pt>
-File: figures/uv_cov.png Graphic file (type png)
- <use figures/uv_cov.png>
-[3 <./figures/LOFAR_stations_map.jpg>] [4 <./figures/uv_cov.png>] [5]
-Overfull \hbox (15.98567pt too wide) in paragraph at lines 360--384
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 168.
+ [2 <./figures/chapter13_fig1.pdf>]
+<figures/chapter13_fig3.png, id=315, 523.4757pt x 129.3633pt>
+File: figures/chapter13_fig3.png Graphic file (type png)
+
+<use figures/chapter13_fig3.png> [3 <./figures/chapter13_fig2.jpg>] [4 <./figur
+es/chapter13_fig3.png>] [5]
+Overfull \hbox (15.98567pt too wide) in paragraph at lines 329--353
  [][] 
  []
 
-[6] <figures/J0958Hprefring-crop.pdf, id=333, 680.5425pt x 523.9575pt>
-File: figures/J0958Hprefring-crop.pdf Graphic file (type pdf)
+[6] <figures/chapter13_fig4a.png, id=333, 680.5425pt x 523.9575pt>
+File: figures/chapter13_fig4a.png Graphic file (type png)
 
-<use figures/J0958Hprefring-crop.pdf>
-<figures/J0958Hpostfring-crop.pdf, id=334, 680.5425pt x 523.9575pt>
-File: figures/J0958Hpostfring-crop.pdf Graphic file (type pdf)
+<use figures/chapter13_fig4a.png>
+<figures/chapter13_fig4b.pdf, id=334, 680.5425pt x 523.9575pt>
+File: figures/chapter13_fig4b.pdf Graphic file (type pdf)
 
-<use figures/J0958Hpostfring-crop.pdf>
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 459.
+<use figures/chapter13_fig4b.pdf>
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 416.
 
 
 (/usr/share/texmf-texlive/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 459.
- [7] [8 <./figures/J0958Hprefring-crop.pdf> <./figures/J0958Hpostfring-crop.pdf
->] [9] [10] [11]
-<figures/J0958Hdelays-crop.pdf, id=362, 520.94624pt x 229.85875pt>
-File: figures/J0958Hdelays-crop.pdf Graphic file (type pdf)
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 416.
+ [7] [8 <./figures/chapter13_fig4a.png> <./figures/chapter13_fig4b.pdf>] [9] [1
+0] [11]
+<figures/chapter13_fig5a.pdf, id=362, 520.94624pt x 229.85875pt>
+File: figures/chapter13_fig5a.pdf Graphic file (type pdf)
 
-<use figures/J0958Hdelays-crop.pdf>
-<figures/J0958Hrates-crop.pdf, id=363, 517.935pt x 232.87pt>
-File: figures/J0958Hrates-crop.pdf Graphic file (type pdf)
+<use figures/chapter13_fig5a.pdf>
+<figures/chapter13_fig5b.pdf, id=363, 517.935pt x 232.87pt>
+File: figures/chapter13_fig5b.pdf Graphic file (type pdf)
 
-<use figures/J0958Hrates-crop.pdf>
-<figures/J0958Hfringpsol-crop.pdf, id=364, 517.935pt x 232.87pt>
-File: figures/J0958Hfringpsol-crop.pdf Graphic file (type pdf)
+<use figures/chapter13_fig5b.pdf>
+<figures/chapter13_fig5c.pdf, id=364, 517.935pt x 232.87pt>
+File: figures/chapter13_fig5c.pdf Graphic file (type pdf)
 
-<use figures/J0958Hfringpsol-crop.pdf>
-<figures/radplot.png, id=365, 913.91437pt x 1058.45438pt>
-File: figures/radplot.png Graphic file (type png)
+<use figures/chapter13_fig5c.pdf>
+<figures/chapter13_fig6.png, id=365, 913.91437pt x 1058.45438pt>
+File: figures/chapter13_fig6.png Graphic file (type png)
 
-<use figures/radplot.png> [12] [13 <./figures/J0958Hdelays-crop.pdf> <./figures
-/J0958Hrates-crop.pdf> <./figures/J0958Hfringpsol-crop.pdf>] [14 <./figures/rad
-plot.png (PNG copy)>]
+<use figures/chapter13_fig6.png> [12] [13 <./figures/chapter13_fig5a.pdf> <./fi
+gures/chapter13_fig5b.pdf> <./figures/chapter13_fig5c.pdf>] [14 <./figures/chap
+ter13_fig6.png (PNG copy)>]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `htbp') on input line 754.
+               Default added (so using `htbp') on input line 710.
 
-<figures/vlbi_sketch.pdf, id=391, 420.5307pt x 207.92181pt>
-File: figures/vlbi_sketch.pdf Graphic file (type pdf)
+<figures/chapter13_fig7.png, id=391, 420.5307pt x 207.92181pt>
+File: figures/chapter13_fig7.png Graphic file (type png)
 
-<use figures/vlbi_sketch.pdf> [15] [16 <./figures/vlbi_sketch.pdf>] [17]
-[18] [19] (./chapter13.bbl) [20] (./chapter13.aux) ) 
+<use figures/chapter13_fig7.png> [15] [16 <./figures/chapter13_fig7.png>]
+[17] [18] [19] (./chapter13.bbl) [20] (./chapter13.aux) ) 
 Here is how much of TeX's memory you used:
  2976 strings out of 495061
- 37954 string characters out of 1182621
- 107112 words of memory out of 3000000
+ 37909 string characters out of 1182621
+ 107111 words of memory out of 3000000
  6079 multiletter control sequences out of 15000+50000
  46454 words of font info for 104 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  29i,10n,27p,2443b,260s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf-texlive/f
-onts/enc/dvips/base/8r.enc}</usr/share/texmf-texlive/fonts/type1/public/amsfont
-s/cm/cmex10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10
-.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/s
-hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-
-texlive/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texmf-texliv
-e/fonts/type1/urw/symbol/usyr.pfb></usr/share/texmf-texlive/fonts/type1/urw/tim
-es/utmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmbi8a.pfb></usr
-/share/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-texlive
-/fonts/type1/urw/times/utmri8a.pfb>
-Output written on chapter13.pdf (20 pages, 1739288 bytes).
+{/usr/share/texmf-texl
+ive/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-texlive/fonts/type1/public/am
+sfonts/cm/cmex10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/c
+mmi10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></
+usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/t
+exmf-texlive/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texmf-t
+exlive/fonts/type1/urw/symbol/usyr.pfb></usr/share/texmf-texlive/fonts/type1/ur
+w/times/utmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmbi8a.pfb>
+</usr/share/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-te
+xlive/fonts/type1/urw/times/utmri8a.pfb>
+Output written on chapter13.pdf (20 pages, 1739268 bytes).
 PDF statistics:
  450 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

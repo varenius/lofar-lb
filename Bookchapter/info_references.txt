@@ -1,5 +1,0 @@
-
-THE THEORY OF INTERFEROMETRY AND APERTURE SYNTHESIS
-http://ned.ipac.caltech.edu/level5/March12/Middelberg/Middelberg2.html
-Good references to self-calibration and wide field.
-
