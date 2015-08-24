@@ -1,0 +1,2 @@
+This folder contains the locapi.py, code written by Neal Jackson to assist in
+LOFAR international baseline data reduction.
