@@ -212,10 +212,16 @@ if __name__ == "__main__":
     
     amps00 = numpy.zeros(0)
     amps11 = numpy.zeros(0)
+    arrayshape = (1)
     for station in stations:
         if 'CS' in station:
-            amps00 = numpy.append(amps00,StationGain(parmdbfile, station)['0:0'].amp)
-            amps11 = numpy.append(amps11,StationGain(parmdbfile, station)['1:1'].amp)
+            a00 = StationGain(parmdbfile, station)['0:0'].amp
+            a11 = StationGain(parmdbfile, station)['1:1'].amp
+            arrayshape = a00.shape
+            if numpy.count_nonzero(a00) > 0:
+                amps00 = numpy.append(amps00,a00)
+            if numpy.count_nonzero(a11) > 0:
+                amps11 = numpy.append(amps11,a11)
     
     intl00 = numpy.median(amps00)*3.75
     intl11 = numpy.median(amps11)*3.75
@@ -225,6 +231,10 @@ if __name__ == "__main__":
         if not 'CS' in station and not 'RS' in station:
             print "Updating: " + station
             sg = StationGain(parmdbfile, station)
+            if numpy.count_nonzero(sg['0:0'].amp) == 0:
+                sg['0:0'].real = numpy.ones(arrayshape)
             sg['0:0'].amp = sg['0:0'].amp*intl00
+            if numpy.count_nonzero(sg['1:1'].amp) == 0:
+                sg['1:1'].real = numpy.ones(arrayshape)
             sg['1:1'].amp = sg['1:1'].amp*intl11
             sg.writeout()
