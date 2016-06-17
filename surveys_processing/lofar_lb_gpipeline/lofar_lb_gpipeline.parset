@@ -11,14 +11,14 @@
 ! working_directory    = /data/scratch/coughlan/wd2/lofar_lb_gpipeline
 ! job_directory        = input.output.job_directory
 ! results_directory    = /data/scratch/coughlan/results
-! target_input_path    = /data/scratch/coughlan/targetdata #/data/scratch/deller/L401323
+! target_input_path    = /data/scratch/deller/L401323
 ! target_input_pattern = L*.MS
 ! phaseup_command      = {TS001:'CS*'}	# core stations or superterp?
 ! filter_command       = '!CS*&*'		# remove unwanted stations
 ! num_SBs_per_group	   = 12				# should be same as for prefactor run!. This is also the number of SBs per AIPS IF
 
 # location of existing calibration solutions
-! phase_sol_input_path           = /data/scratch/coughlan/test_parmdbs
+! phase_sol_input_path           = /data/scratch/coughlan/parmdb3
 ! phase_sol_input_pattern        = L*.instrument
 ! transfer_amp_clock_sols_script = /data/scratch/coughlan/lofar_lb_gpipeline/bin/transfer_amplitudes+clock+offset_toMS.py
 ! transfer_amp_clock_sols_store  = /data/scratch/deller/calibration-tables/prefacet-new
@@ -30,6 +30,7 @@
 ! ms2uvfits_path                 = ms2uvfits
 ! convert_to_circ_run_script     = /data/scratch/coughlan/lofar_lb_gpipeline/bin/execute_circ_pol_conv.py
 ! lin_to_circ_path               = /data/scratch/coughlan/lofar-lb/MSToCircular/simple2circ.py # could be simple2circ or mscorpol
+! flagging_strategy              = /opt/cep/lofar/lofar_versions/LOFAR-Release-2_16_4/lofar_build/install/gnu_opt/share/rfistrategies/HBAdefault
 
 # set this to True if you want the pipeline run to continue if single bands fail
 ! error_tolerance           =  False
@@ -69,11 +70,13 @@ ndppp_prep_cal.argument.msin.datacolumn        = DATA
 ndppp_prep_cal.argument.msin.baseline          = *&
 ndppp_prep_cal.argument.msout.datacolumn       = DATA
 ndppp_prep_cal.argument.msout.writefullresflag = False
-ndppp_prep_cal.argument.steps                  = [flag,flagamp]
+ndppp_prep_cal.argument.steps                  = [flag,flagamp,doflagging]
 ndppp_prep_cal.argument.flag.type              = preflagger
 ndppp_prep_cal.argument.flag.baseline          = [ CS013HBA* ]            # feel free to change that, but CS013 is usually bad.
 ndppp_prep_cal.argument.flagamp.type           = preflagger
 ndppp_prep_cal.argument.flagamp.amplmin        = 1e-30
+ndppp_prep_cal.argument.doflagging.type        = aoflagger
+ndppp_prep_cal.argument.doflagging.strategy    = {{ flagging_strategy }}
 
 # transfer solutions to MSs
 transfer_amp_clock_sols.control.type            = pythonplugin  
@@ -199,12 +202,14 @@ dppp_phaseup.argument.msin.datacolumn     = CORRECTED_DATA
 dppp_phaseup.argument.msin.missingdata    = True    #\ these two lines will make DPPP generate dummy data when
 dppp_phaseup.argument.msin.orderms        = False   #/ concatenating data
 dppp_phaseup.argument.msout.datacolumn    = DATA
-dppp_phaseup.argument.steps               = [shift,avg, adder, filter]
+dppp_phaseup.argument.steps               = [shift,avg, doflagging, adder, filter]
 dppp_phaseup.argument.shift.type          = phaseshift
 dppp_phaseup.argument.shift.phasecenter   = prep_dirs.output.cords
 dppp_phaseup.argument.avg.type            = squash
 dppp_phaseup.argument.avg.freqstep        = {{ shift_avg_freqstep }}
 dppp_phaseup.argument.avg.timestep        = {{ shift_avg_timestep }}
+dppp_phaseup.argument.doflagging.type     = aoflagger
+dppp_phaseup.argument.doflagging.strategy = {{ flagging_strategy }}
 dppp_phaseup.argument.adder.type          = stationadder
 dppp_phaseup.argument.adder.stations      = {{ phaseup_command }}
 dppp_phaseup.argument.filter.type         = filter
