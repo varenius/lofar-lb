@@ -2,6 +2,7 @@
 # Uses the results from prefactor
 # It needs the .npy amplitude and clock solutions to be placed in transfer_amp_clock_sols_store. They are not changed.
 # It needs the instrument tables to be placed in phase_sol_input_path. THESE ARE UPDATED IN PLACE AT THE MOMENT. BACK THEM UP FIRST!
+# Please report any probems at https://github.com/varenius/lofar-lb
 
 
 # parameters you will need to adjust.
@@ -12,12 +13,13 @@
 ! results_directory    = /data/scratch/coughlan/results
 ! target_input_path    = /data/scratch/coughlan/targetdata #/data/scratch/deller/L401323
 ! target_input_pattern = L*.MS
-! phaseup_command      = {TS001:'CS*'}
-! num_SBs_per_group	   = 1	# should be same as for prefactor run!
+! phaseup_command      = {TS001:'CS*'}	# core stations or superterp?
+! filter_command       = '!CS*&*'		# remove unwanted stations
+! num_SBs_per_group	   = 12				# should be same as for prefactor run!. This is also the number of SBs per AIPS IF
 
 # location of existing calibration solutions
-! phase_sol_input_path        = /data/scratch/coughlan/test_parmdbs
-! phase_sol_input_pattern     = L*.instrument
+! phase_sol_input_path           = /data/scratch/coughlan/test_parmdbs
+! phase_sol_input_pattern        = L*.instrument
 ! transfer_amp_clock_sols_script = /data/scratch/coughlan/lofar_lb_gpipeline/bin/transfer_amplitudes+clock+offset_toMS.py
 ! transfer_amp_clock_sols_store  = /data/scratch/deller/calibration-tables/prefacet-new
 
@@ -71,7 +73,7 @@ ndppp_prep_cal.argument.steps                  = [flag,flagamp]
 ndppp_prep_cal.argument.flag.type              = preflagger
 ndppp_prep_cal.argument.flag.baseline          = [ CS013HBA* ]            # feel free to change that, but CS013 is usually bad.
 ndppp_prep_cal.argument.flagamp.type           = preflagger
-ndppp_prep_cal.argument.flagamp.amplmin = 1e-30
+ndppp_prep_cal.argument.flagamp.amplmin        = 1e-30
 
 # transfer solutions to MSs
 transfer_amp_clock_sols.control.type            = pythonplugin  
@@ -109,15 +111,6 @@ match_files.control.mapfile_ms      =   ndppp_prep_cal.output.mapfile
 is_add_phase.control.type            = pythonplugin  
 is_add_phase.control.executable      = {{ is_phase_corr_script }}
 is_add_phase.argument.flags          = [ createmap_ps.output.mapfile , match_files.output.mapfile ]
-
-# Expand phase solution mapfiles to size of data
-#expand_mapfile.control.kind            =   plugin
-#expand_mapfile.control.type            =   ExpandSingle
-#expand_mapfile.control.mapfile_dir     =   input.output.mapfile_dir
-#expand_mapfile.control.filename        =   expand_mapfile.mapfile
-#expand_mapfile.control.mapfile_in      =   createmap_ps.output.mapfile
-#expand_mapfile.control.mapfile_comp    =   ndppp_prep_cal.output.mapfile
-#expand_mapfile.control.n_expand        =   {{ num_SBs_per_group }}
 
 # sort the target data into groups to match with the calibrator parsets
 make_group_map.control.kind            =   plugin
@@ -200,7 +193,6 @@ sortmap_tar.control.dir             =   prep_dirs.output.cdir
 dppp_phaseup.control.type                 = dppp
 dppp_phaseup.control.max_per_node         = 12                   # \ feel free to adjust these two values to match your system
 dppp_phaseup.control.environment          = {OMP_NUM_THREADS: 2} # / they should be reasonable for CEP3
-#dppp_phaseup.control.inputkey            = msin
 dppp_phaseup.argument.msin                = sortmap_tar.output.mapfile    # The input data.
 dppp_phaseup.control.mapfile_out          = sortmap_tar.output.groupmap # tell the pipeline to give the output useful names
 dppp_phaseup.argument.msin.datacolumn     = CORRECTED_DATA
@@ -216,7 +208,7 @@ dppp_phaseup.argument.avg.timestep        = {{ shift_avg_timestep }}
 dppp_phaseup.argument.adder.type          = stationadder
 dppp_phaseup.argument.adder.stations      = {{ phaseup_command }}
 dppp_phaseup.argument.filter.type         = filter
-dppp_phaseup.argument.filter.baseline     = '!CS*&*'
+dppp_phaseup.argument.filter.baseline     = {{ filter_command }}
 dppp_phaseup.argument.filter.remove       = True
   
 # Convert to circular polarisation (in place)
@@ -227,12 +219,6 @@ make_circ.argument.cpath          = {{ lin_to_circ_path }}
 make_circ.argument.do_mscorpol    = 0	# set to 1 if using mscorpol
 
 # Get a single ms from the entries just processed by mscorpol/simple2circ
-#maptosingle.control.kind            =   plugin
-#maptosingle.control.type            =   mapfileGroupToSingle
-#maptosingle.control.mapfile_dir     =   input.output.mapfile_dir
-#maptosingle.control.filename        =   maptosingle.mapfile
-#maptosingle.control.mapfile_in      =   dppp_phaseup.output.mapfile
-
 maptosingle.control.kind            =   plugin
 maptosingle.control.type            =   addMapfile
 maptosingle.control.cmdline.create  =   mapfile_all_to_one
@@ -245,7 +231,6 @@ maptosingle.control.mapfile_in      =   dppp_phaseup.output.mapfile
 fits.control.type                = pythonplugin  
 fits.control.executable          = {{ concat_fitsconvert_script }}
 fits.argument.flags              = [ maptosingle.output.mapfile ]
-#fits.argument.mapfile_to_concat  = sortmap_tar.output.groupmap
 fits.argument.ms2uvfits_path     = {{ ms2uvfits_path }}
 
 

@@ -1,0 +1,4 @@
+To do:
+Change Adam's plugin to ensure the original phase calibration instrument tables are not overwritten (write new ones to working directory)
+Add in standard locapi amp calibration functions
+Add Stephen's parseltongue fring function
