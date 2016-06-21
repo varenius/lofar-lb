@@ -70,13 +70,13 @@ ndppp_prep_cal.argument.msin.datacolumn        = DATA
 ndppp_prep_cal.argument.msin.baseline          = *&
 ndppp_prep_cal.argument.msout.datacolumn       = DATA
 ndppp_prep_cal.argument.msout.writefullresflag = False
-ndppp_prep_cal.argument.steps                  = [flag,flagamp,doflagging]
+ndppp_prep_cal.argument.steps                  = [flag,flagamp]
 ndppp_prep_cal.argument.flag.type              = preflagger
 ndppp_prep_cal.argument.flag.baseline          = [ CS013HBA* ]            # feel free to change that, but CS013 is usually bad.
 ndppp_prep_cal.argument.flagamp.type           = preflagger
 ndppp_prep_cal.argument.flagamp.amplmin        = 1e-30
-ndppp_prep_cal.argument.doflagging.type        = aoflagger
-ndppp_prep_cal.argument.doflagging.strategy    = {{ flagging_strategy }}
+#ndppp_prep_cal.argument.doflagging.type        = aoflagger
+#ndppp_prep_cal.argument.doflagging.strategy    = {{ flagging_strategy }}	# be careful using this on unaveraged data in case you run out of RAM
 
 # transfer solutions to MSs
 transfer_amp_clock_sols.control.type            = pythonplugin  
