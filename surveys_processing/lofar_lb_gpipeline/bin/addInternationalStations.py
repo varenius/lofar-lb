@@ -5,6 +5,7 @@ import sys
 import glob
 import pyrap.tables as pt
 import lofar.parmdb as pdb
+import copy
 
 ###Reading in the the parameters of target data with PYRAP and putting them into directories for further use ###
 ###Shamelessly borrowed from prefactor pipeline code ###
@@ -46,14 +47,14 @@ class ReadMs:
 	else: return self.freqpara
     def GetMSNamepara(self): return self.msname
     
-def main(parmdbfile, targetms):
+def main(parmdbfile, targetms, phaseonly = True):
 
     if not os.path.exists(parmdbfile):
         print "Parmdb file %s doesn't exist!" % parmdbfile
-        sys.exit()
+        return(1)
     if not os.path.exists(targetms):
         print "Target ms %s doesn't exist!" % targetms
-        sys.exit()
+        return(1)
     msinfo = ReadMs(targetms)
 
     # Open up the parmdb, get an example value
@@ -70,8 +71,12 @@ def main(parmdbfile, targetms):
     # Zero the phases of the example entry
     if examplevalue == None:
         print "Couldn't find an example entry"
-        sys.exit()
+        return(1)
+
     examplevalue['values'] = np.zeros(examplevalue['values'].shape)
+    if not(phaseonly):
+        examplevalue_ones = copy.deepcopy(examplevalue)
+        examplevalue_ones['values'] = np.ones(examplevalue_ones['values'].shape)
 
     # Add the necessary stations
     for antenna_id, antenna in enumerate(msinfo.stations):
@@ -82,23 +87,45 @@ def main(parmdbfile, targetms):
                                            stime=examplevalue['times'], 
                                            etime=examplevalue['timewidths'], 
                                            asStartEnd=False)
-            parname = "Gain:0:0:Phase:" + antenna
-            parmdb.addValues(parname,ValueHolder)
-            parname = "Gain:1:1:Phase:" + antenna
-            parmdb.addValues(parname,ValueHolder)
+
+            if phaseonly:
+                parmdb.addValues("Gain:0:0:Phase:" + antenna,ValueHolder)
+                parmdb.addValues("Gain:1:1:Phase:" + antenna,ValueHolder)
+            else:
+                ValueHolder_ones = parmdb.makeValue(values=examplevalue_ones['values'],
+                                           sfreq=examplevalue_ones['freqs'], 
+                                           efreq=examplevalue_ones['freqwidths'],
+                                           stime=examplevalue_ones['times'], 
+                                           etime=examplevalue_ones['timewidths'], 
+                                           asStartEnd=False)
+                parmdb.addValues("Gain:0:0:Real:" + antenna,ValueHolder_ones)
+                parmdb.addValues("Gain:0:0:Imag:" + antenna,ValueHolder)
+                parmdb.addValues("Gain:1:1:Real:" + antenna,ValueHolder_ones)
+                parmdb.addValues("Gain:1:1:Imag:" + antenna,ValueHolder)
+
     parmdb.flush()
     parmdb = 0
+
+    return(0)
 
 
 if __name__ == "__main__":
     # Check invocation
-    print sys.argv[0] + ": modifies a phase-only parmdb **in-place** to add international stations with unity gain and zero phase"
-    if not len(sys.argv) == 3:
-        print "Usage: %s <parmdbfile> <targetms>" % sys.argv[0]
+    print sys.argv[0] + ": modifies a phase-only or amp and phase parmdb **in-place** to add international stations with unity gain and zero phase"
+    if not (len(sys.argv) == 3 or len(sys.argv) == 4):
+        print "Usage: %s <parmdbfile> <targetms> <optional:1 for phaseonly parmdb, 0 for amp and phase>" % sys.argv[0]
         sys.exit()
 
     # Check that the target files exist
     parmdbfile = sys.argv[1]
     targetms = sys.argv[2]
-    main(parmdbfile, targetms)
+    if(len(sys.argv) == 4):
+        do_phase = int(sys.argv[3])
+        if do_phase == 1:
+            do_phase = True
+        else:
+            do_phase = False
+    else:
+        do_phase = True
+    main(parmdbfile, targetms, do_phase)
  

@@ -6,50 +6,80 @@
 
 
 # parameters you will need to adjust.
-! shift_avg_timestep   = 4   # averaging time step after shifting and phase up
-! shift_avg_freqstep   = 16  # averaging freq step after shifting and phase up
-! working_directory    = /data/scratch/coughlan/wd2/lofar_lb_gpipeline
-! job_directory        = input.output.job_directory
-! results_directory    = /data/scratch/coughlan/results
-! target_input_path    = /data/scratch/deller/L401323
-! target_input_pattern = L*.MS
-! phaseup_command      = {TS001:'CS*'}	# core stations or superterp?
-! filter_command       = '!CS*&*'		# remove unwanted stations
-! num_SBs_per_group	   = 12				# should be same as for prefactor run!. This is also the number of SBs per AIPS IF
+! shift_avg_timestep       = 4   # averaging time step after shifting and phase up. Make sure this is a sensible value!
+! shift_avg_freqstep       = 4   # averaging freq step after shifting and phase up
+! working_directory        = /mnt/home_cr/coughlan/lofar/gpipeline_testing/wd/lofar_lb_gpipeline
+! job_directory            = input.output.job_directory
+! results_directory        = /mnt/home_cr/coughlan/lofar/gpipeline_testing/results
+! target_input_path        = /mnt/home_cr/coughlan/lofar/gpipeline_testing/target
+! target_input_pattern     = L*.MS
+! phaseup_command          = {TS001:'CS*'}                                                                 # core stations or superterp?
+! filter_command           = '!CS*&*'		                                                           # remove unwanted stations
+! manual_targets           = True                                                                          # Set to true if you want to specify a target list manually, otherwise targets selected using LOBOS
+! manual_target_file       = /mnt/home_cr/coughlan/lofar/gpipeline_testing/targetlist.txt                  # only used if manual targets set to true
+! num_SBs_per_group        = 5	                                                                           # should be same as for prefactor run!. This is also the number of SBs per AIPS IF. Make sure it's a sensible number.
 
-# location of existing calibration solutions
+
+
+# If you're not using prefactor, you will need to specify these
+
+! cal_input_path           = /mnt/home_cr/coughlan/lofar/gpipeline_testing/fluxcal
+! cal_input_pattern        = L*.MS
+! cal_model                = /usr/share/pipeline/skymodels/3C147.skymodel
+
+
+# If you are using prefactor, you need to specify these. Note that, at the moment, the phase solution tables are updated in place. It might be a good idea to back them up first.
+
 ! phase_sol_input_path           = /data/scratch/coughlan/parmdb3
 ! phase_sol_input_pattern        = L*.instrument
 ! transfer_amp_clock_sols_script = /data/scratch/coughlan/lofar_lb_gpipeline/bin/transfer_amplitudes+clock+offset_toMS.py
 ! transfer_amp_clock_sols_store  = /data/scratch/deller/calibration-tables/prefacet-new
 
+
+
 # pathes to the scripts etc.
-! is_amp_corr_script             = /data/scratch/coughlan/lofar_lb_gpipeline/bin/updateISGains.py
-! is_phase_corr_script	   		 = /data/scratch/coughlan/lofar_lb_gpipeline/bin/addInternationalStations.py
-! concat_fitsconvert_script      = /data/scratch/coughlan/lofar_lb_gpipeline/bin/concat_fitsconvert.py
-! ms2uvfits_path                 = ms2uvfits
-! convert_to_circ_run_script     = /data/scratch/coughlan/lofar_lb_gpipeline/bin/execute_circ_pol_conv.py
-! lin_to_circ_path               = /data/scratch/coughlan/lofar-lb/MSToCircular/simple2circ.py # could be simple2circ or mscorpol
-! flagging_strategy              = /opt/cep/lofar/lofar_versions/LOFAR-Release-2_16_4/lofar_build/install/gnu_opt/share/rfistrategies/HBAdefault
+
+! is_amp_corr_script               = /mnt/home_cr/coughlan/lofar_software/lofar-lb/surveys_processing/lofar_lb_gpipeline/bin/updateISGains.py
+! add_is_script	   	           = /mnt/home_cr/coughlan/lofar_software/lofar-lb/surveys_processing/lofar_lb_gpipeline/bin/addInternationalStations.py
+! export_parmdb_script             = /mnt/home_cr/coughlan/lofar_software/lofar-lb/surveys_processing/lofar_lb_gpipeline/bin/export_parmdb.py
+! concat_fitsconvert_script        = /mnt/home_cr/coughlan/lofar_software/lofar-lb/surveys_processing/lofar_lb_gpipeline/bin/concat_fitsconvert.py
+! ms2uvfits_path                   = ms2uvfits
+! convert_to_circ_run_script       = /mnt/home_cr/coughlan/lofar_software/lofar-lb/surveys_processing/lofar_lb_gpipeline/bin/execute_circ_pol_conv.py
+! circ_converter_choice            = lin2circ
+! circ_converter_path              = /mnt/home_cr/coughlan/lofar_software/lofar-lb/MSToCircular/lin2circ.py #/mnt/home_cr/coughlan/lofar_software/lofar-lb/MSToCircular/simple2circ.py # could be simple2circ or mscorpol
+! flagging_strategy                = /usr/share/rfistrategies/HBAdefault
+! prepare_calibrator_model_script  = /mnt/home_cr/coughlan/lofar_software/lofar-lb/surveys_processing/lofar_lb_gpipeline/bin/prepare_calibrator_model.py
+pipeline.pluginpath  = /mnt/home_cr/coughlan/lofar_software/lofar-lb/surveys_processing/lofar_lb_gpipeline/plugins
+
 
 # set this to True if you want the pipeline run to continue if single bands fail
+
 ! error_tolerance           =  False
 
 
+# These are the steps to run. The one with transfer_amp_clock_sols assumes you're using prefactor, the other should be used otherwise
+
+#pipeline.steps=[createmap_target , ndppp_prep_target , transfer_amp_clock_sols, is_amp_gains, createmap_ps, match_files, is_add_phase, make_group_map, expand_mapfile, ndppp_apply_cal, main_loop]
+pipeline.steps=[createmap_target, ndppp_prep_target, createmap_cal, ndppp_prep_cal, maptosingle_prep_cal, prep_calmodel, expand_mapfile_cal,parmmap_cal,ndppp_amp_cal, export_parmdb, ndppp_apply_cal_noprefactor, main_loop]
 
 
-pipeline.steps=[createmap_target , ndppp_prep_cal , transfer_amp_clock_sols, is_amp_gains, createmap_ps, match_files, is_add_phase, make_group_map, expand_mapfile, ndppp_apply_cal, main_loop]
+
+
+
+
+
+
+
 
 
 
 #####################################################################################################################################################################
 #
 #
-#	Probably no need to edit below this line. You can edit pipeline.steps above to continue running from a certain place. You may also need to edit the statefile in the runtime directory
+#	Probably no need to edit below this line. You can edit pipeline.steps above to continue running from a certain place. You may also need to edit the statefile in the runtime directory (use the script for this!)
 #
 #
 #####################################################################################################################################################################
-
 
 # generate a mapfile of all the target data
 createmap_target.control.kind            =   plugin
@@ -61,27 +91,155 @@ createmap_target.control.folder          =   {{ target_input_path }}
 createmap_target.control.pattern         =   {{ target_input_pattern }}
 
 # run NDPPP on the target data
-ndppp_prep_cal.control.type                    = dppp
-ndppp_prep_cal.control.max_per_node            = 10                   # \ feel free to adjust these two values to match your system
-ndppp_prep_cal.control.environment             = {OMP_NUM_THREADS: 4} # / they should be reasonable for CEP3
-ndppp_prep_cal.control.error_tolerance         = {{ error_tolerance }}
-ndppp_prep_cal.argument.msin                   = createmap_target.output.mapfile    # The input data.
-ndppp_prep_cal.argument.msin.datacolumn        = DATA
-ndppp_prep_cal.argument.msin.baseline          = *&
-ndppp_prep_cal.argument.msout.datacolumn       = DATA
-ndppp_prep_cal.argument.msout.writefullresflag = False
-ndppp_prep_cal.argument.steps                  = [flag,flagamp]
-ndppp_prep_cal.argument.flag.type              = preflagger
-ndppp_prep_cal.argument.flag.baseline          = [ CS013HBA* ]            # feel free to change that, but CS013 is usually bad.
-ndppp_prep_cal.argument.flagamp.type           = preflagger
-ndppp_prep_cal.argument.flagamp.amplmin        = 1e-30
-#ndppp_prep_cal.argument.doflagging.type        = aoflagger
-#ndppp_prep_cal.argument.doflagging.strategy    = {{ flagging_strategy }}	# be careful using this on unaveraged data in case you run out of RAM
+ndppp_prep_target.control.type                    = dppp
+ndppp_prep_target.control.max_per_node            = 12                   # \ feel free to adjust these two values to match your system
+ndppp_prep_target.control.environment             = {OMP_NUM_THREADS: 2} # / they should be reasonable for CEP3
+ndppp_prep_target.control.error_tolerance         = {{ error_tolerance }}
+ndppp_prep_target.argument.msin                   = createmap_target.output.mapfile    # The input data.
+ndppp_prep_target.argument.msin.datacolumn        = DATA
+ndppp_prep_target.argument.msin.baseline          = *&
+ndppp_prep_target.argument.msout.datacolumn       = DATA
+ndppp_prep_target.argument.msout.writefullresflag = False
+ndppp_prep_target.argument.steps                  = [flag,flagamp]
+ndppp_prep_target.argument.flag.type              = preflagger
+ndppp_prep_target.argument.flag.baseline          = [ CS013HBA* ]            # feel free to change that, but CS013 is usually bad.
+ndppp_prep_target.argument.flagamp.type           = preflagger
+ndppp_prep_target.argument.flagamp.amplmin        = 1e-30
+#ndppp_prep_target.argument.doflagging.type        = aoflagger
+#ndppp_prep_target.argument.doflagging.strategy    = {{ flagging_strategy }}	# be careful using this on unaveraged data in case you run out of RAM
+
+
+#####################################################################################################################################################################
+#
+#
+#	The following steps are only run when not using Prefactor to do the initial amplitude/phase calibration
+#
+#
+#####################################################################################################################################################################
+
+# generate a mapfile of all the calibrator data
+createmap_cal.control.kind            =   plugin
+createmap_cal.control.type            =   createMapfile
+createmap_cal.control.method          =   mapfile_from_folder
+createmap_cal.control.mapfile_dir     =   input.output.mapfile_dir
+createmap_cal.control.filename        =   createmap_cal.mapfile
+createmap_cal.control.folder          =   {{ cal_input_path }}
+createmap_cal.control.pattern         =   {{ cal_input_pattern }}
+
+# run NDPPP on the calibrator data
+ndppp_prep_cal.control.type                 = dppp
+ndppp_prep_cal.control.max_per_node         = 12                   # \ feel free to adjust these two values to match your system
+ndppp_prep_cal.control.environment          = {OMP_NUM_THREADS: 2} # / they should be reasonable for CEP3
+ndppp_prep_cal.control.error_tolerance      = {{ error_tolerance }}
+ndppp_prep_cal.argument.msin                = createmap_cal.output.mapfile    # The input data.
+ndppp_prep_cal.argument.msin.datacolumn     = DATA
+ndppp_prep_cal.argument.msin.baseline       = *&
+ndppp_prep_cal.argument.msout.datacolumn    = DATA
+ndppp_prep_cal.argument.steps               = [filter,flag,flagamp]
+ndppp_prep_cal.argument.filter.baseline     = CS*&RS*			# keep only the core and remote baselines for calibration
+ndppp_prep_cal.argument.filter.remove       = True
+ndppp_prep_cal.argument.flag.type           = preflagger
+ndppp_prep_cal.argument.flag.baseline       = [ CS013HBA* ]            # feel free to change that, but CS013 is usually bad.
+ndppp_prep_cal.argument.flagamp.type        = preflagger
+ndppp_prep_cal.argument.flagamp.amplmin     = 1e-30
+
+# Get a single ms from the entries just processed
+maptosingle_prep_cal.control.kind            =   plugin
+maptosingle_prep_cal.control.type            =   addMapfile
+maptosingle_prep_cal.control.cmdline.create  =   mapfile_all_to_one
+maptosingle_prep_cal.control.mapfile_dir     =   input.output.mapfile_dir
+maptosingle_prep_cal.control.filename        =   maptosingle_prep_cal.mapfile
+maptosingle_prep_cal.control.mapfile_in      =   ndppp_prep_cal.output.mapfile
+
+# Create sourcedb model of calibrator
+prep_calmodel.control.type                     = pythonplugin  
+prep_calmodel.control.executable               = {{ prepare_calibrator_model_script }}
+prep_calmodel.argument.flags                   = [ maptosingle_prep_cal.output.mapfile ]
+prep_calmodel.argument.model                   = {{ cal_model }}
+prep_calmodel.argument.wd                      = {{ working_directory }}
+prep_calmodel.argument.makesourcedb_path       = makesourcedb
+
+# Expand mapfile to work on all calibrator subbands
+expand_mapfile_cal.control.kind            =   plugin
+expand_mapfile_cal.control.type            =   mapfileSingleToMany
+expand_mapfile_cal.control.mapfile_dir     =   input.output.mapfile_dir
+expand_mapfile_cal.control.filename        =   expand_mapfile_cal.mapfile
+expand_mapfile_cal.control.mapfile_in      =   prep_calmodel.output.modelfile.mapfile
+expand_mapfile_cal.control.mapfile_comp    =   ndppp_prep_cal.output.mapfile
+
+# generate mapfile with the parmDBs names
+parmmap_cal.control.kind               =  plugin
+parmmap_cal.control.type               =  createMapfile
+parmmap_cal.control.method             =  add_suffix_to_file
+parmmap_cal.control.mapfile_in         =  ndppp_prep_cal.output.mapfile
+parmmap_cal.control.add_suffix_to_file =  /instrument_amponly
+parmmap_cal.control.mapfile_dir        =  input.output.mapfile_dir
+parmmap_cal.control.filename           =  parmmap_cal.mapfile
+
+ndppp_amp_cal.control.type                       = dppp
+ndppp_amp_cal.control.max_per_node               = 12                   # \ feel free to adjust these two values to match your system
+ndppp_amp_cal.control.environment                = {OMP_NUM_THREADS: 2} # / they should be reasonable for CEP3
+ndppp_amp_cal.control.error_tolerance            = {{ error_tolerance }}
+ndppp_amp_cal.control.mapfile_out                = ndppp_prep_cal.output.mapfile
+ndppp_amp_cal.argument.msin                      = ndppp_prep_cal.output.mapfile    # The input data.
+ndppp_amp_cal.argument.msin.datacolumn           = DATA
+ndppp_amp_cal.argument.msout.datacolumn          = CORRECTED_DATA
+ndppp_amp_cal.argument.steps                     = [ampcal]
+#ndppp_amp_cal.argument.filter.baseline           = CS*&RS*
+ndppp_amp_cal.argument.ampcal.type               = gaincal
+ndppp_amp_cal.argument.ampcal.caltype            = diagonal
+ndppp_amp_cal.argument.ampcal.solint             = 1
+ndppp_amp_cal.argument.ampcal.nchan              = 0
+ndppp_amp_cal.argument.ampcal.maxiter            = 200
+ndppp_amp_cal.argument.ampcal.sources            = [*]
+ndppp_amp_cal.argument.ampcal.usebeammodel       = False
+ndppp_amp_cal.argument.ampcal.sourcedb           = expand_mapfile_cal.output.mapfile
+ndppp_amp_cal.argument.ampcal.parmdb             = parmmap_cal.output.mapfile
+ndppp_amp_cal.argument.ampcal.applysolution      = False
+
+# Take median of solutions and export for application to target
+export_parmdb.control.type                 = pythonplugin  
+export_parmdb.control.executable           = {{ export_parmdb_script }}
+export_parmdb.argument.flags               = [ parmmap_cal.output.mapfile , createmap_cal.output.mapfile ]	# use the original data to copy the participating international stations
+export_parmdb.argument.add_IS_script       = {{ add_is_script }}						# script to correct add the international stations
+export_parmdb.argument.correct_IS_script   = {{ is_amp_corr_script }}						# script to correct the international station amplitudes to something reasonable based on CS solutions
+export_parmdb.argument.wd                  = {{ working_directory }}
+
+# run NDPPP to apply the solutions to the target data
+ndppp_apply_cal_noprefactor.control.type                               = dppp
+ndppp_apply_cal_noprefactor.control.max_per_node                       = 10                   # \ feel free to adjust these two values to match your system
+ndppp_apply_cal_noprefactor.control.environment                        = {OMP_NUM_THREADS: 4} # / they should be reasonable for CEP3
+ndppp_apply_cal_noprefactor.control.error_tolerance                    = {{ error_tolerance }}
+ndppp_apply_cal_noprefactor.control.outputkey                          =  
+ndppp_apply_cal_noprefactor.argument.msin			       = ndppp_prep_target.output.mapfile
+ndppp_apply_cal_noprefactor.argument.msin.datacolumn                   = DATA
+ndppp_apply_cal_noprefactor.argument.msin.baseline                     = *&
+ndppp_apply_cal_noprefactor.argument.msout			       = .
+ndppp_apply_cal_noprefactor.argument.msout.datacolumn                  = CORRECTED_DATA
+ndppp_apply_cal_noprefactor.argument.msout.writefullresflag            = False
+ndppp_apply_cal_noprefactor.argument.steps                             = [applyAP, applytheBeam]
+ndppp_apply_cal_noprefactor.argument.applyAP.type                      = applycal
+ndppp_apply_cal_noprefactor.argument.applyAP.parmdb                    = export_parmdb.output.parmdbfile.mapfile
+ndppp_apply_cal_noprefactor.argument.applyAP.correction                = gain
+ndppp_apply_cal_noprefactor.argument.applyAP.updateweights             = false
+ndppp_apply_cal_noprefactor.argument.applytheBeam.type                 = applybeam
+ndppp_apply_cal_noprefactor.argument.applytheBeam.usechannelfreq       = true
+ndppp_apply_cal_noprefactor.argument.applytheBeam.invert               = true
+ndppp_apply_cal_noprefactor.argument.applytheBeam.beammode             = default
+
+
+#####################################################################################################################################################################
+#
+#
+#	These steps are run if Prefactor output is available
+#
+#
+#####################################################################################################################################################################
 
 # transfer solutions to MSs
 transfer_amp_clock_sols.control.type            = pythonplugin  
 transfer_amp_clock_sols.control.executable      = {{ transfer_amp_clock_sols_script }}
-transfer_amp_clock_sols.argument.msname         = ndppp_prep_cal.output.mapfile
+transfer_amp_clock_sols.argument.msname         = ndppp_prep_target.output.mapfile
 transfer_amp_clock_sols.argument.npdir          = {{ transfer_amp_clock_sols_store }}
 transfer_amp_clock_sols.argument.output         = outputkey
 
@@ -107,12 +265,12 @@ match_files.control.kind            =   plugin
 match_files.control.type            =   FindCorrespondingMS
 match_files.control.mapfile_dir     =   input.output.mapfile_dir
 match_files.control.filename        =   match_files.mapfile
-match_files.control.mapfile_grpd	=   createmap_ps.output.mapfile
-match_files.control.mapfile_ms      =   ndppp_prep_cal.output.mapfile
+match_files.control.mapfile_grpd    =   createmap_ps.output.mapfile
+match_files.control.mapfile_ms      =   ndppp_prep_target.output.mapfile
 
 # add international stations to phase solutions
 is_add_phase.control.type            = pythonplugin  
-is_add_phase.control.executable      = {{ is_phase_corr_script }}
+is_add_phase.control.executable      = {{ add_is_script }}
 is_add_phase.argument.flags          = [ createmap_ps.output.mapfile , match_files.output.mapfile ]
 
 # sort the target data into groups to match with the calibrator parsets
@@ -120,7 +278,7 @@ make_group_map.control.kind            =   plugin
 make_group_map.control.type            =   groupMapfileObsSB
 make_group_map.control.mapfile_dir     =   input.output.mapfile_dir
 make_group_map.control.filename        =   make_group_map.mapfile
-make_group_map.control.mapfile_in      =   ndppp_prep_cal.output.mapfile
+make_group_map.control.mapfile_in      =   ndppp_prep_target.output.mapfile
 make_group_map.control.numSB           =   {{ num_SBs_per_group }}
 make_group_map.control.NDPPPfill       =   True
 make_group_map.control.truncateLastSBs =   True   # This means that a excess subbands that don't make a full group get discarded
@@ -129,23 +287,23 @@ make_group_map.control.truncateLastSBs =   True   # This means that a excess sub
 expand_mapfile.control.kind            =   plugin
 expand_mapfile.control.type            =   mapfileSingleToGroup
 expand_mapfile.control.mapfile_dir     =   input.output.mapfile_dir
-expand_mapfile.control.filename        =   make_group_map.mapfile
+expand_mapfile.control.filename        =   expand_mapfile.mapfile
 expand_mapfile.control.mapfile_in      =   createmap_ps.output.mapfile
 expand_mapfile.control.mapfile_groups  =   make_group_map.output.mapfile
 
 # run NDPPP to apply the solutions to the target data
-ndppp_apply_cal.control.type                    = dppp
-ndppp_apply_cal.control.max_per_node            = 10                   # \ feel free to adjust these two values to match your system
-ndppp_apply_cal.control.environment             = {OMP_NUM_THREADS: 4} # / they should be reasonable for CEP3
-ndppp_apply_cal.control.error_tolerance         = {{ error_tolerance }}
-ndppp_apply_cal.control.outputkey           	=  
-ndppp_apply_cal.argument.msin					= ndppp_prep_cal.output.mapfile
-ndppp_apply_cal.argument.msin.datacolumn        = DATA
-ndppp_apply_cal.argument.msin.baseline          = *&
-ndppp_apply_cal.argument.msout					= .
-ndppp_apply_cal.argument.msout.datacolumn       = CORRECTED_DATA
-ndppp_apply_cal.argument.msout.writefullresflag = False
-ndppp_apply_cal.argument.steps                  = [applyAmp, applyClock, ApplyPhase, applytheBeam]
+ndppp_apply_cal.control.type                         = dppp
+ndppp_apply_cal.control.max_per_node                 = 10                   # \ feel free to adjust these two values to match your system
+ndppp_apply_cal.control.environment                  = {OMP_NUM_THREADS: 4} # / they should be reasonable for CEP3
+ndppp_apply_cal.control.error_tolerance              = {{ error_tolerance }}
+ndppp_apply_cal.control.outputkey           	     =  
+ndppp_apply_cal.argument.msin	                     = ndppp_prep_target.output.mapfile
+ndppp_apply_cal.argument.msin.datacolumn             = DATA
+ndppp_apply_cal.argument.msin.baseline               = *&
+ndppp_apply_cal.argument.msout                       = .
+ndppp_apply_cal.argument.msout.datacolumn            = CORRECTED_DATA
+ndppp_apply_cal.argument.msout.writefullresflag      = False
+ndppp_apply_cal.argument.steps                       = [applyAmp, applyClock, ApplyPhase, applytheBeam]
 ndppp_apply_cal.argument.applyAmp.type               = applycal
 ndppp_apply_cal.argument.applyAmp.parmdb             = transfer_amp_clock_sols.output.mapfile
 ndppp_apply_cal.argument.applyAmp.correction         = gain
@@ -158,10 +316,20 @@ ndppp_apply_cal.argument.ApplyPhase.type             = applycal
 ndppp_apply_cal.argument.ApplyPhase.parmdb           = expand_mapfile.output.mapfile
 ndppp_apply_cal.argument.ApplyPhase.correction       = gain
 ndppp_apply_cal.argument.ApplyPhase.updateweights    = false
-ndppp_apply_cal.argument.applytheBeam.type              = applybeam
-ndppp_apply_cal.argument.applytheBeam.usechannelfreq    = true
-ndppp_apply_cal.argument.applytheBeam.invert            = true
-ndppp_apply_cal.argument.applytheBeam.beammode          = default
+ndppp_apply_cal.argument.applytheBeam.type           = applybeam
+ndppp_apply_cal.argument.applytheBeam.usechannelfreq = true
+ndppp_apply_cal.argument.applytheBeam.invert         = true
+ndppp_apply_cal.argument.applytheBeam.beammode       = default
+
+
+#####################################################################################################################################################################
+#
+#
+#	This is the surveys pipeline, using LOBOS to find good targets
+#
+#
+#####################################################################################################################################################################
+
 
 # now loop through the target phase calibrator canditates
 
@@ -174,18 +342,20 @@ main_loop.control.loopsteps       = [prep_dirs,sortmap_tar, dppp_phaseup,make_ci
 prep_dirs.control.kind            =   plugin
 prep_dirs.control.type            =   TargetListToMapfileX
 prep_dirs.control.mapfile_dir     =   input.output.mapfile_dir
-prep_dirs.control.infile          =   ndppp_prep_cal.output.mapfile
+prep_dirs.control.infile          =   ndppp_prep_target.output.mapfile
 prep_dirs.control.filename        =   prep_dirs.mapfile
 prep_dirs.control.wd              =   {{ job_directory }}
 prep_dirs.control.nP              =   3	# default was three
 prep_dirs.control.counter         =   main_loop.output.counter
+prep_dirs.control.manual          =   {{ manual_targets }}
+prep_dirs.control.target_file     =   {{ manual_target_file }}
 
 # sort the target data into groups so that DPPP can concatenate them
 sortmap_tar.control.kind            =   plugin
 sortmap_tar.control.type            =   groupMapfileObsSBX
 sortmap_tar.control.mapfile_dir     =   input.output.mapfile_dir
 sortmap_tar.control.filename        =   sortmap_tar.mapfile
-sortmap_tar.control.mapfile_in      =   ndppp_prep_cal.output.mapfile
+sortmap_tar.control.mapfile_in      =   ndppp_prep_target.output.mapfile
 sortmap_tar.control.numSB           =   {{ num_SBs_per_group }}
 sortmap_tar.control.NDPPPfill       =   True
 sortmap_tar.control.truncateLastSBs =   True   # This means that a excess subbands that don't make a full group get discarded
@@ -220,8 +390,8 @@ dppp_phaseup.argument.filter.remove       = True
 make_circ.control.type            = pythonplugin  
 make_circ.control.executable      = {{ convert_to_circ_run_script }}
 make_circ.argument.flags          = [ dppp_phaseup.output.mapfile ]
-make_circ.argument.cpath          = {{ lin_to_circ_path }}
-make_circ.argument.do_mscorpol    = 0	# set to 1 if using mscorpol
+make_circ.argument.cpath          = {{ circ_converter_path }}
+make_circ.argument.mode           = {{ circ_converter_choice }}
 
 # Get a single ms from the entries just processed by mscorpol/simple2circ
 maptosingle.control.kind            =   plugin
