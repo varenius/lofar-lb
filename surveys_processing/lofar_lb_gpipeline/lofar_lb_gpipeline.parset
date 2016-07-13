@@ -1,23 +1,23 @@
 # Long baseline pipeline
 # Uses the results from prefactor
 # It needs the .npy amplitude and clock solutions to be placed in transfer_amp_clock_sols_store. They are not changed.
-# It needs the instrument tables to be placed in phase_sol_input_path. THESE ARE UPDATED IN PLACE AT THE MOMENT. BACK THEM UP FIRST!
+# It needs the instrument tables to be placed in phase_sol_input_path. These are now copied to the working directory before updating them (no need to back them up).
 # Please report any probems at https://github.com/varenius/lofar-lb
 
 
 # parameters you will need to adjust.
-! shift_avg_timestep       = 4   # averaging time step after shifting and phase up. Make sure this is a sensible value!
+! shift_avg_timestep       = 2   # averaging time step after shifting and phase up. Make sure this is a sensible value!
 ! shift_avg_freqstep       = 4   # averaging freq step after shifting and phase up
-! working_directory        = /mnt/home_cr/coughlan/lofar/gpipeline_testing/wd/lofar_lb_gpipeline
+! working_directory        = /mnt/home_cr/coughlan/lofar/DGTAU/long_baseline/lbgp/wd/lofar_lb_gpipeline
 ! job_directory            = input.output.job_directory
-! results_directory        = /mnt/home_cr/coughlan/lofar/gpipeline_testing/results
-! target_input_path        = /mnt/home_cr/coughlan/lofar/gpipeline_testing/target
-! target_input_pattern     = L*.MS
+! results_directory        = /mnt/home_cr/coughlan/lofar/DGTAU/long_baseline/lbgp/results
+! target_input_path        = /mnt/home_cr/coughlan/lofar/DGTAU/long_baseline/targetdata
+! target_input_pattern     = L192004*.MS
 ! phaseup_command          = {TS001:'CS*'}                                                                 # core stations or superterp?
-! filter_command           = '!CS*&*'		                                                           # remove unwanted stations
+! filter_command           = '!CS*&*'		                                                               # remove unwanted stations
 ! manual_targets           = True                                                                          # Set to true if you want to specify a target list manually, otherwise targets selected using LOBOS
-! manual_target_file       = /mnt/home_cr/coughlan/lofar/gpipeline_testing/targetlist.txt                  # only used if manual targets set to true
-! num_SBs_per_group        = 5	                                                                           # should be same as for prefactor run!. This is also the number of SBs per AIPS IF. Make sure it's a sensible number.
+! manual_target_file       = /mnt/home_cr/coughlan/lofar/DGTAU/long_baseline/lbgp/targetlist.txt           # only used if manual targets set to true
+! num_SBs_per_group        = 10	                                                                           # should be same as for prefactor run!. This is also the number of SBs per AIPS IF. Make sure it's a sensible number.
 
 
 
@@ -28,12 +28,13 @@
 ! cal_model                = /usr/share/pipeline/skymodels/3C147.skymodel
 
 
-# If you are using prefactor, you need to specify these. Note that, at the moment, the phase solution tables are updated in place. It might be a good idea to back them up first.
+# If you are using prefactor, you need to specify these.
 
-! phase_sol_input_path           = /data/scratch/coughlan/parmdb3
-! phase_sol_input_pattern        = L*.instrument
-! transfer_amp_clock_sols_script = /data/scratch/coughlan/lofar_lb_gpipeline/bin/transfer_amplitudes+clock+offset_toMS.py
-! transfer_amp_clock_sols_store  = /data/scratch/deller/calibration-tables/prefacet-new
+! phase_sol_input_path           = /mnt/home_cr/coughlan/lofar/DGTAU/long_baseline/lbgp/prefactor_sols
+! phase_sol_input_pattern        = L192004*.table
+! transfer_amp_clock_sols_script = /mnt/home_cr/coughlan/lofar_software/lofar-lb/surveys_processing/lofar_lb_gpipeline/bin/transfer_amplitudes+clock+offset_toMS.py
+! transfer_amp_clock_sols_store  = /mnt/home_cr/coughlan/lofar/DGTAU/long_baseline/lbgp/npy_sols/scan1
+! amp_sols_basename              = caldata_transfer
 
 
 
@@ -59,8 +60,8 @@ pipeline.pluginpath  = /mnt/home_cr/coughlan/lofar_software/lofar-lb/surveys_pro
 
 # These are the steps to run. The one with transfer_amp_clock_sols assumes you're using prefactor, the other should be used otherwise
 
-#pipeline.steps=[createmap_target , ndppp_prep_target , transfer_amp_clock_sols, is_amp_gains, createmap_ps, match_files, is_add_phase, make_group_map, expand_mapfile, ndppp_apply_cal, main_loop]
-pipeline.steps=[createmap_target, ndppp_prep_target, createmap_cal, ndppp_prep_cal, maptosingle_prep_cal, prep_calmodel, expand_mapfile_cal,parmmap_cal,ndppp_amp_cal, export_parmdb, ndppp_apply_cal_noprefactor, main_loop]
+pipeline.steps=[createmap_target , ndppp_prep_target , transfer_amp_clock_sols, is_amp_gains, createmap_ps,copy_sols, createmap_pstwo, match_files, is_add_phase, make_group_map, expand_mapfile, ndppp_apply_cal, main_loop]
+#pipeline.steps=[createmap_target, ndppp_prep_target, createmap_cal, ndppp_prep_cal, maptosingle_prep_cal, prep_calmodel, expand_mapfile_cal,parmmap_cal,ndppp_amp_cal, export_parmdb, ndppp_apply_cal_noprefactor, main_loop]
 
 
 
@@ -241,6 +242,7 @@ transfer_amp_clock_sols.control.type            = pythonplugin
 transfer_amp_clock_sols.control.executable      = {{ transfer_amp_clock_sols_script }}
 transfer_amp_clock_sols.argument.msname         = ndppp_prep_target.output.mapfile
 transfer_amp_clock_sols.argument.npdir          = {{ transfer_amp_clock_sols_store }}
+transfer_amp_clock_sols.store_basename          = {{ amp_sols_basename }}
 transfer_amp_clock_sols.argument.output         = outputkey
 
 # scale international amps of table
@@ -257,6 +259,23 @@ createmap_ps.control.filename        =   createmap_ps.mapfile
 createmap_ps.control.folder          =   {{ phase_sol_input_path }}
 createmap_ps.control.pattern         =   {{ phase_sol_input_pattern }}
 
+# copy the phase solutions to the working directory
+copy_sols.control.kind               =  recipe
+copy_sols.control.type               =  executable_args
+copy_sols.control.executable         =  /bin/cp
+copy_sols.control.max_per_node       =  20                                 # feel free to adjust this value to match your system
+copy_sols.control.mapfile_in         =  createmap_ps.output.mapfile
+copy_sols.control.inputkey           =  source
+copy_sols.control.arguments          =  [-r,source,{{ working_directory }}]
+
+# create a mapfile of the copied phase solution tables
+createmap_pstwo.control.kind            =   plugin
+createmap_pstwo.control.type            =   createMapfile
+createmap_pstwo.control.method          =   mapfile_from_folder
+createmap_pstwo.control.mapfile_dir     =   input.output.mapfile_dir
+createmap_pstwo.control.filename        =   createmap_pstwo.mapfile
+createmap_pstwo.control.folder          =   {{ working_directory }}
+createmap_pstwo.control.pattern         =   {{ phase_sol_input_pattern }}
 
 
 # Find appropriate MSs to match with phase solutions (which are probably from a group)
@@ -265,13 +284,13 @@ match_files.control.kind            =   plugin
 match_files.control.type            =   FindCorrespondingMS
 match_files.control.mapfile_dir     =   input.output.mapfile_dir
 match_files.control.filename        =   match_files.mapfile
-match_files.control.mapfile_grpd    =   createmap_ps.output.mapfile
+match_files.control.mapfile_grpd    =   createmap_pstwo.output.mapfile
 match_files.control.mapfile_ms      =   ndppp_prep_target.output.mapfile
 
 # add international stations to phase solutions
 is_add_phase.control.type            = pythonplugin  
 is_add_phase.control.executable      = {{ add_is_script }}
-is_add_phase.argument.flags          = [ createmap_ps.output.mapfile , match_files.output.mapfile ]
+is_add_phase.argument.flags          = [ createmap_pstwo.output.mapfile , match_files.output.mapfile ]
 
 # sort the target data into groups to match with the calibrator parsets
 make_group_map.control.kind            =   plugin
@@ -283,13 +302,14 @@ make_group_map.control.numSB           =   {{ num_SBs_per_group }}
 make_group_map.control.NDPPPfill       =   True
 make_group_map.control.truncateLastSBs =   True   # This means that a excess subbands that don't make a full group get discarded
 
-# match data with calibrator parsets
-expand_mapfile.control.kind            =   plugin
-expand_mapfile.control.type            =   mapfileSingleToGroup
-expand_mapfile.control.mapfile_dir     =   input.output.mapfile_dir
-expand_mapfile.control.filename        =   expand_mapfile.mapfile
-expand_mapfile.control.mapfile_in      =   createmap_ps.output.mapfile
-expand_mapfile.control.mapfile_groups  =   make_group_map.output.mapfile
+# match data with calibrator parsets. Watch out for dummies! (use custom version of plugin)
+expand_mapfile.control.kind               =   plugin
+expand_mapfile.control.type               =   mapfileSingleToGroupX
+expand_mapfile.control.mapfile_dir        =   input.output.mapfile_dir
+expand_mapfile.control.filename           =   expand_mapfile.mapfile
+expand_mapfile.control.mapfile_in         =   createmap_pstwo.output.mapfile
+expand_mapfile.control.mapfile_groups     =   make_group_map.output.mapfile
+expand_mapfile.control.ignore_dummies     =   True
 
 # run NDPPP to apply the solutions to the target data
 ndppp_apply_cal.control.type                         = dppp

@@ -4,6 +4,10 @@ import re
 from lofarpipe.support.data_map import DataMap
 from lofarpipe.support.data_map import DataProduct
 
+# This is an edited version of the Prefactor groupMapfileObsSB
+# It is used by the long baseline pipeline
+# Colm Coughlan, Alexander Drabent - May 2016
+
 
 # mandatory arguments:
 # cmdline for type of mapfile creation

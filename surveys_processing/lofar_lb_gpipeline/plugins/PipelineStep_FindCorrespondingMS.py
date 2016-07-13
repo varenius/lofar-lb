@@ -17,12 +17,14 @@ def find_nearest(array,value):
 
 def plugin_main(args, **kwargs):
     """
-    Takes in mapfile_in, containing many files, and returns only one
+    Find the measurement set closest to a given solution table, suitable for reading station names.
 
     Parameters
     ----------
-    mapfile_in : str
-        Name of the input mapfile to be trimmed back.
+    mapfile_ms : str
+        Mapfile of the measurement sets
+    mapfile_grpd : str
+        Mapfile of the (grouped) calibration tables
     mapfile_dir : str
         Directory for output mapfile
     filename: str
@@ -48,27 +50,30 @@ def plugin_main(args, **kwargs):
     iterator = DataMap.SkipIterator(data)
     num_list = []
     for value in iterator:
-		name = value.file
-		name = (name.split('SB'))[1]
-		name = (name.split('_'))[0]
-		name = (name.split('.'))[0]
-		num_list.append(int(name))
+        name = value.file
+        name = (name.split('SB'))[1]
+        name = (name.split('_'))[0]
+        name = (name.split('.'))[0]
+        num_list.append(int(name))
   
     iterator = DataMap.SkipIterator(groups) 
 
     map_out = DataMap([])
     for value in iterator:
-		name = value.file
-		name = (name.split('SB'))[1]
-		name = (name.split('_'))[0]
-		name = (name.split('.'))[0]
-		name = (name.split('gr'))[-1]	# in case of grouping!
-		num = int(name)
-		if num in num_list:
-			map_out.data.append(DataProduct(value.host, name_stem + name + name_end, value.skip ))
-		else:
-			num = find_nearest(num_list, num)	# if not an exact match, use the nearest
-			map_out.data.append(DataProduct(value.host, name_stem + str(num) + name_end, value.skip ))
+        name = value.file
+        name = (name.split('SB'))[1]
+        name = (name.split('_'))[0]
+        name = (name.split('.'))[0]
+        if( len(name.split('gr')) > 1 ):
+            name = (name.split('gr'))[-1]	# in case of grouping!
+            num = int((name.split('-'))[0]) * int((name.split('-'))[1])
+        else:
+            num = int(name)
+        if num in num_list:
+            map_out.data.append(DataProduct(value.host, name_stem + str(num).zfill(3)  + name_end, value.skip ))
+        else:
+            num = find_nearest(num_list, num)	# if not an exact match, use the nearest
+            map_out.data.append(DataProduct(value.host, name_stem + str(num).zfill(3)  + name_end, value.skip ))
 
     fileid = os.path.join(mapfile_dir, filename)
     map_out.save(fileid)

@@ -2,6 +2,11 @@ import os
 from lofarpipe.support.data_map import DataMap
 from lofarpipe.support.data_map import DataProduct
 
+# Edited version of the Single to Group plugin from Prefactor
+# Allows user to ignore or include dummy entries
+# Behaves like the standard plugin by default (should be backwards compatible)
+# Colm Coughlan, July 2016
+
 
 def plugin_main(args, **kwargs):
     """
@@ -20,6 +25,8 @@ def plugin_main(args, **kwargs):
         Directory for output mapfile
     filename: str
         Name of output mapfile
+    ignore_dummies: str (optional)
+        If true, do not count dummy entries when expanding
 
     Returns
     -------
@@ -30,6 +37,12 @@ def plugin_main(args, **kwargs):
     mapfile_dir = kwargs['mapfile_dir']
     filename = kwargs['filename']
 
+    try:
+        ignore_dummies = str(kwargs['ignore_dummies'])	# if the user has defined a dummy preference, follow it, otherwise count dummies as usual
+        ignore_dummies = ignore_dummies in ['true', 'True', '1', 'T', 't']
+    except:
+        ignore_dummies = False
+
     inmap = DataMap.load(kwargs['mapfile_in'])
     groupmap = MultiDataMap.load(kwargs['mapfile_groups'])
 
@@ -38,9 +51,16 @@ def plugin_main(args, **kwargs):
 
     map_out = DataMap([])
     inindex = 0
-    for groupID in xrange(len(groupmap)):
-        for fileID in xrange(len(groupmap[groupID].file)):
-            map_out.data.append(DataProduct(inmap[groupID].host, inmap[groupID].file, (inmap[groupID].skip or groupmap[groupID].skip) ))
+
+    if ignore_dummies:
+        for groupID in xrange(len(groupmap)):
+            for fileID in xrange(len(groupmap[groupID].file)):
+                if (groupmap[groupID].file)[fileID] != 'dummy_entry':
+                        map_out.data.append(DataProduct(inmap[groupID].host, inmap[groupID].file, (inmap[groupID].skip or groupmap[groupID].skip) ))
+    else:
+        for groupID in xrange(len(groupmap)):
+            for fileID in xrange(len(groupmap[groupID].file)):
+                map_out.data.append(DataProduct(inmap[groupID].host, inmap[groupID].file, (inmap[groupID].skip or groupmap[groupID].skip) ))
 
     fileid = os.path.join(mapfile_dir, filename)
     map_out.save(fileid)
