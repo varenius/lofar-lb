@@ -1,0 +1,295 @@
+#########################################################
+## LOFAR HBA long baseline calibration pipeline parset ##
+#########################################################
+# Please read the instructions and report bugs on: https://github.com/varenius/lofar-lb/tree/master/surveys_processing/lofar_lb_gpipeline
+
+# These are the steps to run.
+pipeline.steps = [createmap_target , ndppp_prep_target , transfer_amp_clock_sols, is_amp_gains, createmap_ps, copy_sols, createmap_pstwo, match_files, is_add_phase, ndppp_apply_cal, main_loop]
+
+# Parameter setup -- main directories
+! target_input_path              =   /data/scratch/drabent/targetdata                         # directory where the unaveraged data including long baselines is stored
+! phase_sol_input_path           =   /data/scratch/drabent/phase_sols                         # directory where the direction-independent phase solutions of the target field are stored
+! transfer_amp_clock_sols_store  =   /data/scratch/lb_bw/prefactor_solutions/cal_results      # directory where the amplitude and clock solutions of prefactor are stored (*.npy files)
+! working_directory              =   input.output.working_directory                           # internal directory, you probably don't need to adjust
+! job_directory                  =   input.output.job_directory                               # internal directory, you probably don't need to adjust
+! pipeline_directory             =   /data/scratch/drabent/lofar_lb_gpipeline                 # directory where you have stored the pipeline (scripts, plugins, etc.)
+! lofar_directory                =   $LOFARROOT                                               # directory of your LOFAR installation. Should be the same as in pipeline.cfg.
+
+# Parameter setup -- subdirectories
+pipeline.pluginpath              =   {{ pipeline_directory }}/plugins                         # internal directory, you probably don't need to adjust
+! scripts                        =   {{ pipeline_directory }}/bin                             # internal directory, you probably don't need to adjust
+
+### Parameter setup -- variables
+! shift_avg_timestep             =   8                                                        # averaging time step after shifting and phase up. Make sure this is a sensible value!
+! shift_avg_freqstep             =   4                                                        # averaging freq step after shifting and phase up
+! phaseup_command                =   {ST001:'CS*'}                                            # core stations or superterp?
+! filter_command                 =   '!CS*&*'                                                 # remove unwanted stations
+! target_input_pattern           =   L401323_SB35*.MS
+! phase_sol_input_pattern        =   L401323*phase.table
+! num_SBs_per_group              =   3                                                        # should be the same as for prefactor run! This is also the number of SBs per AIPS IF. Make sure it's a sensible number.
+! amp_sols_basename              =   caldata_transfer                                         # should be the same as for prefactor run!
+! max_per_node                   =   input.output.max_per_node
+
+! manual_targets                 =   True                                                     # Set to true if you want to specify a target list manually, otherwise targets selected using LOBOS                        
+! manual_target_file             =   /data/scratch/lb_bw/lbcs_manual_target_list.txt          # only used if manual targets set to true
+
+! error_tolerance                =   False                                                    # set this to True if you want the pipeline run to continue if single bands fail
+
+
+#####################################################################################################################################################################
+#
+#
+#	Probably no need to edit below this line. You can edit pipeline.steps above to continue running from a certain place. 
+#	You may also need to edit the statefile in the runtime directory (use the script for this!)
+#
+#
+#####################################################################################################################################################################
+
+# generate a mapfile of all the target data
+createmap_target.control.kind                     =   plugin
+createmap_target.control.type                     =   createMapfile
+createmap_target.control.method                   =   mapfile_from_folder
+createmap_target.control.mapfile_dir              =   input.output.mapfile_dir
+createmap_target.control.filename                 =   createmap_target.mapfile
+createmap_target.control.folder                   =   {{ target_input_path }}
+createmap_target.control.pattern                  =   {{ target_input_pattern }}
+
+# run NDPPP on the target data
+ndppp_prep_target.control.type                    =   dppp
+ndppp_prep_target.control.max_per_node            =   1                   # \ feel free to adjust these two values to match your system
+ndppp_prep_target.control.environment             =   {OMP_NUM_THREADS: 10} # / they should be reasonable for CEP3
+ndppp_prep_target.control.error_tolerance         =   {{ error_tolerance }}
+ndppp_prep_target.argument.msin                   =   createmap_target.output.mapfile    # The input data.
+ndppp_prep_target.argument.msin.datacolumn        =   DATA
+ndppp_prep_target.argument.msin.baseline          =   *&
+ndppp_prep_target.argument.msout.datacolumn       =   DATA
+ndppp_prep_target.argument.msout.writefullresflag =   False
+ndppp_prep_target.argument.steps                  =   [flag,flagamp]
+ndppp_prep_target.argument.flag.type              =   preflagger
+ndppp_prep_target.argument.flag.baseline          =   [ CS013HBA* ]            # feel free to change that, but CS013 is usually bad.
+ndppp_prep_target.argument.flagamp.type           =   preflagger
+ndppp_prep_target.argument.flagamp.amplmin        =   1e-30
+#ndppp_prep_target.argument.doflagging.type        = aoflagger
+#ndppp_prep_target.argument.doflagging.strategy    = {{ lofar_directory }}/share/rfistrategies/HBAdefault	# be careful using this on unaveraged data in case you run out of RAM
+
+#####################################################################################################################################################################
+#
+#
+#	Prefactor output is applied.
+#
+#
+#####################################################################################################################################################################
+
+# transfer solutions to MSs
+transfer_amp_clock_sols.control.type                 =   pythonplugin  
+transfer_amp_clock_sols.control.executable           =   {{ scripts }}/transfer_amplitudes+clock+offset_toMS.py
+transfer_amp_clock_sols.argument.msname              =   ndppp_prep_target.output.mapfile
+transfer_amp_clock_sols.argument.npdir               =   {{ transfer_amp_clock_sols_store }}
+transfer_amp_clock_sols.store_basename               =   {{ amp_sols_basename }}
+transfer_amp_clock_sols.argument.output              =   outputkey
+
+# scale international amps of table
+is_amp_gains.control.type                            =   pythonplugin  
+is_amp_gains.control.executable                      =   {{ scripts }}/updateISGains.py
+is_amp_gains.argument.flags                          =   [ transfer_amp_clock_sols.output.mapfile ]
+
+# create a mapfile of the phase solution tables
+createmap_ps.control.kind                            =   plugin
+createmap_ps.control.type                            =   createMapfile
+createmap_ps.control.method                          =   mapfile_from_folder
+createmap_ps.control.mapfile_dir                     =   input.output.mapfile_dir
+createmap_ps.control.filename                        =   createmap_ps.mapfile
+createmap_ps.control.folder                          =   {{ phase_sol_input_path }}
+createmap_ps.control.pattern                         =   {{ phase_sol_input_pattern }}
+
+# copy the phase solutions to the working directory
+copy_sols.control.kind                               =   recipe
+copy_sols.control.type                               =   executable_args
+copy_sols.control.executable                         =   /bin/cp
+copy_sols.control.max_per_node                       =   {{ max_per_node }}                                 # feel free to adjust this value to match your system
+copy_sols.control.mapfile_in                         =   createmap_ps.output.mapfile
+copy_sols.control.inputkey                           =   source
+copy_sols.control.arguments                          =   [-r,source,{{ job_directory }}]
+
+# create a mapfile of the copied phase solution tables
+createmap_pstwo.control.kind                         =   plugin
+createmap_pstwo.control.type                         =   createMapfile
+createmap_pstwo.control.method                       =   mapfile_from_folder
+createmap_pstwo.control.mapfile_dir                  =   input.output.mapfile_dir
+createmap_pstwo.control.filename                     =   createmap_pstwo.mapfile
+createmap_pstwo.control.folder                       =   {{ job_directory }}
+createmap_pstwo.control.pattern                      =   {{ phase_sol_input_pattern }}
+
+# Find appropriate MSs to match with phase solutions (which are probably from a group)
+# This is a custom plugin. It is matching the frequency information of the parmdbs with the corresponding measurement sets
+match_files.control.kind                             =   plugin
+match_files.control.type                             =   FindCorrespondingMSX
+match_files.control.mapfile_dir                      =   input.output.mapfile_dir
+match_files.control.filename                         =   match_files.mapfile
+match_files.control.mapfile_grpd                     =   createmap_pstwo.output.mapfile
+match_files.control.mapfile_ms                       =   ndppp_prep_target.output.mapfile
+
+# add international stations to phase solutions
+is_add_phase.control.type                            =   pythonplugin  
+is_add_phase.control.executable                      =   {{ scripts }}/addInternationalStations.py
+is_add_phase.control.mapfile_in                      =   match_files.output.tables
+is_add_phase.control.inputkey                        =   tables
+is_add_phase.argument.flags                          =   [ tables , match_files.output.mapfile ]
+
+# run NDPPP to apply the solutions to the target data
+ndppp_apply_cal.control.type                         =   dppp
+ndppp_apply_cal.control.max_per_node                 =   1                   # \ feel free to adjust these two values to match your system
+ndppp_apply_cal.control.environment                  =   {OMP_NUM_THREADS: 4} # / they should be reasonable for CEP3
+ndppp_apply_cal.control.error_tolerance              =   {{ error_tolerance }}
+ndppp_apply_cal.control.outputkey           	     =  
+ndppp_apply_cal.control.mapfile_in                   =   match_files.output.parmdbs
+ndppp_apply_cal.control.inputkey                     =   parmdbs
+ndppp_apply_cal.argument.msin	                     =   ndppp_prep_target.output.mapfile
+ndppp_apply_cal.argument.msin.datacolumn             =   DATA
+ndppp_apply_cal.argument.msin.baseline               =   *&
+ndppp_apply_cal.argument.msout                       =   .
+ndppp_apply_cal.argument.msout.datacolumn            =   CORRECTED_DATA
+ndppp_apply_cal.argument.msout.writefullresflag      =   False
+ndppp_apply_cal.argument.steps                       =   [applyAmp, applyClock, ApplyPhase, applytheBeam]
+ndppp_apply_cal.argument.applyAmp.type               =   applycal
+ndppp_apply_cal.argument.applyAmp.parmdb             =   transfer_amp_clock_sols.output.mapfile
+ndppp_apply_cal.argument.applyAmp.correction         =   gain
+ndppp_apply_cal.argument.applyAmp.updateweights      =   false
+ndppp_apply_cal.argument.applyClock.type             =   applycal
+ndppp_apply_cal.argument.applyClock.parmdb           =   transfer_amp_clock_sols.output.mapfile
+ndppp_apply_cal.argument.applyClock.correction       =   clock
+ndppp_apply_cal.argument.applyClock.updateweights    =   false
+ndppp_apply_cal.argument.ApplyPhase.type             =   applycal
+ndppp_apply_cal.argument.ApplyPhase.parmdb           =   parmdbs
+ndppp_apply_cal.argument.ApplyPhase.correction       =   gain
+ndppp_apply_cal.argument.ApplyPhase.updateweights    =   false
+ndppp_apply_cal.argument.applytheBeam.type           =   applybeam
+ndppp_apply_cal.argument.applytheBeam.usechannelfreq =   true
+ndppp_apply_cal.argument.applytheBeam.invert         =   true
+ndppp_apply_cal.argument.applytheBeam.beammode       =   default
+
+
+#####################################################################################################################################################################
+#
+#
+#	This is the surveys pipeline, using LOBOS to find good targets
+#
+#
+#####################################################################################################################################################################
+
+
+# now loop through the target phase calibrator canditates
+
+main_loop.control.kind                    =   loop
+main_loop.control.type                    =   conditional
+main_loop.control.loopcount               =   100
+main_loop.control.loopsteps               =   [prep_dirs, dppp_phaseup, make_circ, combine_target_map, sortmap_target, do_sortmap_maps, dppp_concat, maptosingle, fits]
+
+# Initialise file with all directions
+prep_dirs.control.kind                    =   plugin
+prep_dirs.control.type                    =   TargetListToMapfileX
+prep_dirs.control.mapfile_dir             =   input.output.mapfile_dir
+prep_dirs.control.infile                  =   ndppp_prep_target.output.mapfile
+prep_dirs.control.filename                =   prep_dirs.mapfile
+prep_dirs.control.wd                      =   {{ job_directory }}
+prep_dirs.control.nP                      =   3	# default was three
+prep_dirs.control.counter                 =   main_loop.output.counter
+prep_dirs.control.manual                  =   {{ manual_targets }}
+prep_dirs.control.target_file             =   {{ manual_target_file }}
+
+# shift, average and add up stations for tied array
+dppp_phaseup.control.type                 =   dppp
+dppp_phaseup.control.max_per_node         =   1  #12                   # \ feel free to adjust these two values to match your system
+dppp_phaseup.control.mapfile_out          =   prep_dirs.output.mapfile # tell the pipeline to give the output useful names
+dppp_phaseup.argument.msin                =   ndppp_prep_target.output.mapfile    # The input data.
+dppp_phaseup.argument.msin.datacolumn     =   CORRECTED_DATA
+dppp_phaseup.argument.msout.datacolumn    =   DATA
+dppp_phaseup.argument.msout.overwrite     =   True
+dppp_phaseup.argument.steps               =   [shift, avg, doflagging, adder, filter]
+dppp_phaseup.argument.shift.type          =   phaseshift
+dppp_phaseup.argument.shift.phasecenter   =   prep_dirs.output.cords
+dppp_phaseup.argument.avg.type            =   squash
+dppp_phaseup.argument.avg.freqstep        =   {{ shift_avg_freqstep }}
+dppp_phaseup.argument.avg.timestep        =   {{ shift_avg_timestep }}
+dppp_phaseup.argument.doflagging.type     =   aoflagger
+dppp_phaseup.argument.doflagging.strategy =   {{ lofar_directory }}/share/rfistrategies/HBAdefault
+dppp_phaseup.argument.adder.type          =   stationadder
+dppp_phaseup.argument.adder.stations      =   {{ phaseup_command }}
+dppp_phaseup.argument.filter.type         =   filter
+dppp_phaseup.argument.filter.baseline     =   {{ filter_command }}
+dppp_phaseup.argument.filter.remove       =   True
+dppp_phaseup.argument.numthreads	  =   6  ## this supersedes the control.environment
+
+# Convert to circular polarisation (in place)
+make_circ.control.type                    =   pythonplugin  
+make_circ.control.executable              =   {{ scripts }}/execute_circ_pol_conv.py
+make_circ.argument.flags                  =   [ dppp_phaseup.output.mapfile ]
+make_circ.argument.cpath                  =   {{ scripts }}/lin2circ.py
+make_circ.argument.mode                   =   lin2circ
+
+# combine all entries into one mapfile, for the sortmap script
+combine_target_map.control.kind           =   plugin
+combine_target_map.control.type           =   createMapfile
+combine_target_map.control.method         =   mapfile_all_to_one
+combine_target_map.control.mapfile_dir    =   input.output.mapfile_dir
+combine_target_map.control.filename       =   combine_tar_map.mapfile
+combine_target_map.control.mapfile_in     =   dppp_phaseup.output.mapfile
+
+# sort the target data by frequency into groups so that NDPPP can concatenate them
+sortmap_target.control.type               =   pythonplugin  
+sortmap_target.control.executable         =   {{ scripts }}/sort_times_into_freqGroups.py
+sortmap_target.argument.flags             =   [combine_target_map.output.mapfile]
+sortmap_target.argument.filename          =   sortmap_target
+sortmap_target.argument.mapfile_dir       =   input.output.mapfile_dir
+sortmap_target.argument.target_path       =   {{ job_directory }}
+sortmap_target.argument.numSB             =   {{ num_SBs_per_group }}
+sortmap_target.argument.NDPPPfill         =   True
+sortmap_target.argument.stepname          =   dpppconcat
+sortmap_target.argument.firstSB           =   None
+sortmap_target.argument.truncateLastSBs   =   True     # This means that a excess subbands that don't make a full group get discarded
+
+# convert the output of sortmap_target into usable mapfiles
+do_sortmap_maps.control.kind              =  plugin
+do_sortmap_maps.control.type              =  mapfilenamesFromMapfiles
+do_sortmap_maps.control.mapfile_groupmap  =  sortmap_target.output.groupmapfile.mapfile
+do_sortmap_maps.control.mapfile_datamap   =  sortmap_target.output.mapfile.mapfile
+
+# # sort the target data into groups so that DPPP can concatenate them
+# sortmap_tar.control.kind                  =   plugin
+# sortmap_tar.control.type                  =   groupMapfileObsSBX
+# sortmap_tar.control.mapfile_dir           =   input.output.mapfile_dir
+# sortmap_tar.control.filename              =   sortmap_tar.mapfile
+# sortmap_tar.control.mapfile_in            =   ndppp_prep_target.output.mapfile
+# sortmap_tar.control.numSB                 =   {{ num_SBs_per_group }}
+# sortmap_tar.control.NDPPPfill             =   True
+# sortmap_tar.control.truncateLastSBs       =   True   # This means that a excess subbands that don't make a full group get discarded
+# sortmap_tar.control.dir                   =   prep_dirs.output.cdir
+
+# simply concatenate the results from the previous step
+dppp_concat.control.type                  =   dppp
+dppp_concat.control.max_per_node          =   1  #12                   # \ feel free to adjust these two values to match your system
+dppp_concat.control.mapfiles_in           =   [do_sortmap_maps.output.datamap]
+dppp_concat.control.mapfile_out           =   do_sortmap_maps.output.groupmap # tell the pipeline to give the output useful names
+dppp_concat.control.inputkey              =   msin
+dppp_concat.argument.msin.datacolumn      =   DATA
+dppp_concat.argument.msin.missingdata     =   True    #\ these two lines will make DPPP generate dummy data when
+dppp_concat.argument.msin.orderms         =   False   #/ concatenating data
+dppp_concat.argument.msout.datacolumn     =   DATA
+dppp_concat.argument.msout.overwrite      =   True
+dppp_concat.argument.steps                =   []
+dppp_concat.argument.numthreads           =   6  ## this supersedes the control.environment
+
+
+# Get a single ms from the entries just processed by mscorpol/simple2circ
+maptosingle.control.kind                  =   plugin
+maptosingle.control.type                  =   addMapfile
+maptosingle.control.cmdline.create        =   mapfile_all_to_one
+maptosingle.control.mapfile_dir           =   input.output.mapfile_dir
+maptosingle.control.filename              =   maptosingle.mapfile
+maptosingle.control.mapfile_in            =   dppp_concat.output.mapfile
+
+# virtually concatenate rest of files and convert to FITS
+fits.control.type                         =   pythonplugin  
+fits.control.executable                   =   {{ scripts }}/concat_fitsconvert.py
+fits.argument.flags                       =   [ maptosingle.output.mapfile ]
+fits.argument.ms2uvfits_path              =   ms2uvfits
