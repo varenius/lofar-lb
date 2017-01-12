@@ -86,7 +86,7 @@ def plugin_main(args, **kwargs):
     	pass
 
     if len(data) != len(map_out):
-        raise ValueError('PipelineStep_FindCorrespondingMS: length of {0} and {1} differ'.format(kwargs['mapfile_ms'],os.path.join(mapfile_dir, filename + '_extend')))
+        raise ValueError('PipelineStep_FindCorrespondingMS: length of mapfiles mismatch. Probably there are some phase solution tables missing.')
 
 
     fileid = os.path.join(mapfile_dir, filename + '_parmdbs')
