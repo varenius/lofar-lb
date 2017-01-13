@@ -4,7 +4,7 @@
 # Please read the instructions and report bugs on: https://github.com/varenius/lofar-lb/tree/master/surveys_processing/lofar_lb_gpipeline
 
 # These are the steps to run.
-pipeline.steps = [createmap_target , ndppp_prep_target , transfer_amp_clock_sols, is_amp_gains, createmap_ps, copy_sols, createmap_pstwo, match_files, is_add_phase, ndppp_apply_cal, main_loop]
+pipeline.steps = [createmap_target , ndppp_prep_target , transfer_amp_clock_sols, is_amp_gains, createmap_ps, copy_sols, createmap_pstwo, match_files, is_add_phase, ndppp_apply_cal, main_loop, mapalldirections, alldirectionstoone, closure_phase]
 
 # Parameter setup -- main directories
 ! target_input_path              =   /data/scratch/drabent/targetdata                         # directory where the unaveraged data including long baselines is stored
@@ -24,9 +24,10 @@ pipeline.pluginpath              =   {{ pipeline_directory }}/plugins           
 ! shift_avg_freqstep             =   4                                                        # averaging freq step after shifting and phase up
 ! phaseup_command                =   {ST001:'CS*'}                                            # core stations or superterp?
 ! filter_command                 =   '!CS*&*'                                                 # remove unwanted stations
-! target_input_pattern           =   L401323_SB35*.MS
+! closure_phase_stations         =   'DE601;DE605;ST001'                                      # list of stations used to derive closure phases, separated by ;
+! target_input_pattern           =   L401323_SB*.MS
 ! phase_sol_input_pattern        =   L401323*phase.table
-! num_SBs_per_group              =   3                                                        # should be the same as for prefactor run! This is also the number of SBs per AIPS IF. Make sure it's a sensible number.
+! num_SBs_per_group              =   10                                                       # should be the same as for prefactor run! This is also the number of SBs per AIPS IF. Make sure it's a sensible number.
 ! amp_sols_basename              =   caldata_transfer                                         # should be the same as for prefactor run!
 ! max_per_node                   =   input.output.max_per_node
 
@@ -254,17 +255,6 @@ do_sortmap_maps.control.type              =  mapfilenamesFromMapfiles
 do_sortmap_maps.control.mapfile_groupmap  =  sortmap_target.output.groupmapfile.mapfile
 do_sortmap_maps.control.mapfile_datamap   =  sortmap_target.output.mapfile.mapfile
 
-# # sort the target data into groups so that DPPP can concatenate them
-# sortmap_tar.control.kind                  =   plugin
-# sortmap_tar.control.type                  =   groupMapfileObsSBX
-# sortmap_tar.control.mapfile_dir           =   input.output.mapfile_dir
-# sortmap_tar.control.filename              =   sortmap_tar.mapfile
-# sortmap_tar.control.mapfile_in            =   ndppp_prep_target.output.mapfile
-# sortmap_tar.control.numSB                 =   {{ num_SBs_per_group }}
-# sortmap_tar.control.NDPPPfill             =   True
-# sortmap_tar.control.truncateLastSBs       =   True   # This means that a excess subbands that don't make a full group get discarded
-# sortmap_tar.control.dir                   =   prep_dirs.output.cdir
-
 # simply concatenate the results from the previous step
 dppp_concat.control.type                  =   dppp
 dppp_concat.control.max_per_node          =   1  #12                   # \ feel free to adjust these two values to match your system
@@ -279,7 +269,6 @@ dppp_concat.argument.msout.overwrite      =   True
 dppp_concat.argument.steps                =   []
 dppp_concat.argument.numthreads           =   6  ## this supersedes the control.environment
 
-
 # Get a single ms from the entries just processed by mscorpol/simple2circ
 maptosingle.control.kind                  =   plugin
 maptosingle.control.type                  =   addMapfile
@@ -293,3 +282,40 @@ fits.control.type                         =   pythonplugin
 fits.control.executable                   =   {{ scripts }}/concat_fitsconvert.py
 fits.argument.flags                       =   [ maptosingle.output.mapfile ]
 fits.argument.ms2uvfits_path              =   ms2uvfits
+
+#####################################################################################################################################################################
+#
+#
+#	This is the Long Baseline self-calibration pipeline
+#
+#
+#####################################################################################################################################################################
+
+## generate a mapfile of the target data of all directions and put it into a single file
+mapalldirections.control.kind             =   plugin
+mapalldirections.control.type             =   createMapfile
+mapalldirections.control.method           =   mapfile_from_folder
+mapalldirections.control.mapfile_dir      =   input.output.mapfile_dir
+mapalldirections.control.filename         =   mapalldirections.mapfile
+mapalldirections.control.folder           =   {{ job_directory }}
+mapalldirections.control.pattern          =   *.ms
+
+alldirectionstoone.control.kind           =   plugin
+alldirectionstoone.control.type           =   createMapfile
+alldirectionstoone.control.method         =   mapfile_all_to_one
+alldirectionstoone.control.mapfile_dir    =   input.output.mapfile_dir
+alldirectionstoone.control.filename       =   alldirectionstoone.mapfile
+alldirectionstoone.control.mapfile_in     =   mapalldirections.output.mapfile
+
+# derive the closure phase
+closure_phase.control.type                =   pythonplugin  
+closure_phase.control.executable          =   {{ scripts }}/closure.py
+closure_phase.argument.flags              =   [alldirectionstoone.output.mapfile, {{ closure_phase_stations }}]
+
+#####################################################################################################################################################################
+#
+#
+#	End of pipeline
+#
+#
+#####################################################################################################################################################################
