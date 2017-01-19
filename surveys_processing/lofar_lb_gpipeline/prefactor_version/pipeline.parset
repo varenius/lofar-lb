@@ -12,7 +12,7 @@ pipeline.steps = [createmap_target , ndppp_prep_target , transfer_amp_clock_sols
 ! transfer_amp_clock_sols_store  =   /data/scratch/lb_bw/prefactor_solutions/cal_results      # directory where the amplitude and clock solutions of prefactor are stored (*.npy files)
 ! working_directory              =   input.output.working_directory                           # internal directory, you probably don't need to adjust
 ! job_directory                  =   input.output.job_directory                               # internal directory, you probably don't need to adjust
-! pipeline_directory             =   /data/scratch/drabent/lofar_lb_gpipeline                 # directory where you have stored the pipeline (scripts, plugins, etc.)
+! pipeline_directory             =   $PWD                                                     # directory where you have stored the pipeline (scripts, plugins, etc.)
 ! lofar_directory                =   $LOFARROOT                                               # directory of your LOFAR installation. Should be the same as in pipeline.cfg.
 
 # Parameter setup -- subdirectories
