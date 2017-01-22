@@ -70,8 +70,9 @@ ndppp_prep_target.argument.flag.type              =   preflagger
 ndppp_prep_target.argument.flag.baseline          =   [ CS013HBA* ]            # feel free to change that, but CS013 is usually bad.
 ndppp_prep_target.argument.flagamp.type           =   preflagger
 ndppp_prep_target.argument.flagamp.amplmin        =   1e-30
-#ndppp_prep_target.argument.doflagging.type        = aoflagger
-#ndppp_prep_target.argument.doflagging.strategy    = {{ lofar_directory }}/share/rfistrategies/HBAdefault	# be careful using this on unaveraged data in case you run out of RAM
+ndppp_prep_target.argument.doflagging.type        =   aoflagger
+ndppp_prep_target.argument.doflagging.strategy    =   {{ lofar_directory }}/share/rfistrategies/HBAdefault	# be careful using this on unaveraged data in case you run out of RAM
+ndppp_prep_target.argument.doflagging.memoryperc  =   50  ## this should be updated based on max_per_node (i.e., should go down as max_per_node increases)
 
 #####################################################################################################################################################################
 #
@@ -206,14 +207,15 @@ dppp_phaseup.argument.msin                =   ndppp_prep_target.output.mapfile  
 dppp_phaseup.argument.msin.datacolumn     =   CORRECTED_DATA
 dppp_phaseup.argument.msout.datacolumn    =   DATA
 dppp_phaseup.argument.msout.overwrite     =   True
-dppp_phaseup.argument.steps               =   [shift, avg, doflagging, adder, filter]
+#dppp_phaseup.argument.steps               =   [shift, avg, doflagging, adder, filter]
+dppp_phaseup.argument.steps               =   [shift, avg, adder, filter]
 dppp_phaseup.argument.shift.type          =   phaseshift
 dppp_phaseup.argument.shift.phasecenter   =   prep_dirs.output.cords
 dppp_phaseup.argument.avg.type            =   squash
 dppp_phaseup.argument.avg.freqstep        =   {{ shift_avg_freqstep }}
 dppp_phaseup.argument.avg.timestep        =   {{ shift_avg_timestep }}
-dppp_phaseup.argument.doflagging.type     =   aoflagger
-dppp_phaseup.argument.doflagging.strategy =   {{ lofar_directory }}/share/rfistrategies/HBAdefault
+#dppp_phaseup.argument.doflagging.type     =   aoflagger
+#dppp_phaseup.argument.doflagging.strategy =   {{ lofar_directory }}/share/rfistrategies/HBAdefault
 dppp_phaseup.argument.adder.type          =   stationadder
 dppp_phaseup.argument.adder.stations      =   {{ phaseup_command }}
 dppp_phaseup.argument.filter.type         =   filter
