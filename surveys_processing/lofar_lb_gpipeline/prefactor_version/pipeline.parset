@@ -85,6 +85,7 @@ ndppp_prep_target.argument.doflagging.memoryperc  =   50  ## this should be upda
 # transfer solutions to MSs
 transfer_amp_clock_sols.control.type                 =   pythonplugin  
 transfer_amp_clock_sols.control.executable           =   {{ scripts }}/transfer_amplitudes+clock+offset_toMS.py
+transfer_amp_clock_sols.control.error_tolerance      =   {{ error_tolerance }}
 transfer_amp_clock_sols.argument.msname              =   ndppp_prep_target.output.mapfile
 transfer_amp_clock_sols.argument.npdir               =   {{ transfer_amp_clock_sols_store }}
 transfer_amp_clock_sols.store_basename               =   {{ amp_sols_basename }}
@@ -93,6 +94,7 @@ transfer_amp_clock_sols.argument.output              =   outputkey
 # scale international amps of table
 is_amp_gains.control.type                            =   pythonplugin  
 is_amp_gains.control.executable                      =   {{ scripts }}/updateISGains.py
+is_amp_gains.control.error_tolerance                 =   {{ error_tolerance }}
 is_amp_gains.argument.flags                          =   [ transfer_amp_clock_sols.output.mapfile ]
 
 # create a mapfile of the phase solution tables
@@ -143,10 +145,10 @@ ndppp_apply_cal.control.type                         =   dppp
 ndppp_apply_cal.control.max_per_node                 =   1                   # \ feel free to adjust these two values to match your system
 ndppp_apply_cal.control.environment                  =   {OMP_NUM_THREADS: 4} # / they should be reasonable for CEP3
 ndppp_apply_cal.control.error_tolerance              =   {{ error_tolerance }}
-ndppp_apply_cal.control.outputkey           	     =  
+ndppp_apply_cal.control.outputkey                    =  
 ndppp_apply_cal.control.mapfile_in                   =   match_files.output.parmdbs
 ndppp_apply_cal.control.inputkey                     =   parmdbs
-ndppp_apply_cal.argument.msin	                     =   ndppp_prep_target.output.mapfile
+ndppp_apply_cal.argument.msin                        =   ndppp_prep_target.output.mapfile
 ndppp_apply_cal.argument.msin.datacolumn             =   DATA
 ndppp_apply_cal.argument.msin.baseline               =   *&
 ndppp_apply_cal.argument.msout                       =   .
@@ -202,6 +204,7 @@ prep_dirs.control.target_file             =   {{ manual_target_file }}
 # shift, average and add up stations for tied array
 dppp_phaseup.control.type                 =   dppp
 dppp_phaseup.control.max_per_node         =   1  #12                   # \ feel free to adjust these two values to match your system
+dppp_phaseup.control.error_tolerance      =   {{ error_tolerance }}
 dppp_phaseup.control.mapfile_out          =   prep_dirs.output.mapfile # tell the pipeline to give the output useful names
 dppp_phaseup.argument.msin                =   ndppp_prep_target.output.mapfile    # The input data.
 dppp_phaseup.argument.msin.datacolumn     =   CORRECTED_DATA
@@ -221,11 +224,12 @@ dppp_phaseup.argument.adder.stations      =   {{ phaseup_command }}
 dppp_phaseup.argument.filter.type         =   filter
 dppp_phaseup.argument.filter.baseline     =   {{ filter_command }}
 dppp_phaseup.argument.filter.remove       =   True
-dppp_phaseup.argument.numthreads	  =   6  ## this supersedes the control.environment
+dppp_phaseup.argument.numthreads          =   6  ## this supersedes the control.environment
 
 # Convert to circular polarisation (in place)
 make_circ.control.type                    =   pythonplugin  
 make_circ.control.executable              =   {{ scripts }}/execute_circ_pol_conv.py
+make_circ.control.error_tolerance         =   {{ error_tolerance }}
 make_circ.argument.flags                  =   [ dppp_phaseup.output.mapfile ]
 make_circ.argument.cpath                  =   {{ scripts }}/lin2circ.py
 make_circ.argument.mode                   =   lin2circ
@@ -260,6 +264,7 @@ do_sortmap_maps.control.mapfile_datamap   =  sortmap_target.output.mapfile.mapfi
 # simply concatenate the results from the previous step
 dppp_concat.control.type                  =   dppp
 dppp_concat.control.max_per_node          =   1  #12                   # \ feel free to adjust these two values to match your system
+dppp_concat.control.error_tolerance       =   {{ error_tolerance }}
 dppp_concat.control.mapfiles_in           =   [do_sortmap_maps.output.datamap]
 dppp_concat.control.mapfile_out           =   do_sortmap_maps.output.groupmap # tell the pipeline to give the output useful names
 dppp_concat.control.inputkey              =   msin
