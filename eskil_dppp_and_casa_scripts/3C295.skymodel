@@ -1,0 +1,7 @@
+# (Name, Type, Ra, Dec, I, ReferenceFrequency='130.0e6', SpectralIndex='[]') = format
+# Skymodel file. May be used to obtain a "sourcedb" using the LOFAR tool
+# "makesourcedb in=3C147.skymodel out=3C147.sourcedb"
+# Only used to align phases of stations (e.g. core) before summing them
+3C295, POINT, 14:11:20.5, +52.12.10, 1.0
+#3C147, POINT, 05:42:36.1, +49.51.07, 1.0
+#3C196, POINT, 08:13:36.0, +48.13.03, 1.0

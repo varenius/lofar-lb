@@ -1,0 +1,101 @@
+# This is an example from project LC5_020, where I have copied text from the
+# LTA archive summary page. This info is used to link the LOFAR observation IDs
+# (L-numbers) to the source names, as well as associate 3C-calibration scans
+# with taget/delay cal beams
+# Column numbers are reflected in the two write.py files.
+1       LC5_020     2017-05-15  1128+5925/24.3/TP   n/a     432396  635289  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 22:20:10     1060.0  show
+2       LC5_020     2017-05-15  1127+5841/24.2/TP   n/a     432394  635288  16  4   1   Preprocessing Pipeline  Preprocessing only  1   161 / 162   2016-02-23 22:46:11     1060.0  show
+3       LC5_020     2017-05-15  ARP299/24.1/TP  n/a     432392  635287  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 10:11:51     851.0   show
+4       LC5_020     2017-05-15  3C295/24/CPC    n/a     432388  635281  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 05:34:03     220.0   show
+5       LC5_020     2017-05-15  1128+5925/23.3/TP   n/a     432384  635278  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 21:54:10     1421.0  show
+6       LC5_020     2017-05-15  1127+5841/23.2/TP   n/a     432382  635277  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 23:12:10     1341.0  show
+7       LC5_020     2017-05-15  ARP299/23.1/TP  n/a     432380  635276  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 23:38:10     1291.0  show
+8       LC5_020     2017-05-15  3C295/23/CPC    n/a     432376  635270  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 05:04:02     200.0   show
+9       LC5_020     2017-05-15  1128+5925/22.3/TP   n/a     432372  635267  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 13:14:10     701.0   show
+10      LC5_020     2017-05-15  1127+5841/22.2/TP   n/a     432370  635266  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 00:04:10     1011.0  show
+11      LC5_020     2017-05-15  ARP299/22.1/TP  n/a     432368  635265  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 00:30:10     871.0   show
+12      LC5_020     2017-05-15  3C295/22/CPC    n/a     432364  635259  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 04:34:02     210.0   show
+13      LC5_020     2017-05-15  1128+5925/21.3/TP   n/a     432360  635256  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 00:56:10     820.0   show
+14      LC5_020     2017-05-15  1127+5841/21.2/TP   n/a     432358  635255  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 01:22:11     980.0   show
+15      LC5_020     2017-05-15  ARP299/21.1/TP  n/a     432356  635254  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 01:48:10     820.0   show
+16      LC5_020     2017-05-15  3C295/21/CPC    n/a     432352  635248  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 04:04:03     250.0   show
+17      LC5_020     2017-05-15  1128+5925/20.3/TP   n/a     432348  635245  16  4   1   Preprocessing Pipeline  Preprocessing only  1   161 / 162   2016-02-24 02:14:10     911.0   show
+18      LC5_020     2017-05-15  1127+5841/20.2/TP   n/a     432346  635244  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 13:17:10     1191.0  show
+19      LC5_020     2017-05-15  ARP299/20.1/TP  n/a     432344  635243  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 12:56:11     1110.0  show
+20      LC5_020     2017-05-15  3C295/20/CPC    n/a     432340  635237  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 03:34:02     211.0   show
+21      LC5_020     2017-05-15  1128+5925/19.3/TP   n/a     432336  635234  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 12:35:11     1220.0  show
+22      LC5_020     2017-05-15  1127+5841/19.2/TP   n/a     432334  635233  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 12:14:11     1150.0  show
+23      LC5_020     2017-05-15  ARP299/19.1/TP  n/a     432332  635232  16  4   1   Preprocessing Pipeline  Preprocessing only  1   161 / 162   2016-02-24 11:53:10     1301.0  show
+24      LC5_020     2017-05-15  3C295/19/CPC    n/a     432328  635226  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 03:04:02     230.0   show
+25      LC5_020     2017-05-15  1128+5925/18.3/TP   n/a     432324  635223  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 11:32:10     1020.0  show
+26      LC5_020     2017-05-15  1127+5841/18.2/TP   n/a     432322  635222  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 11:11:10     721.0   show
+27      LC5_020     2017-05-15  ARP299/18.1/TP  n/a     432320  635221  16  4   1   Preprocessing Pipeline  Preprocessing only  1   161 / 162   2016-02-24 10:50:10     690.0   show
+28      LC5_020     2017-05-15  3C295/18/CPC    n/a     432316  635215  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 02:34:02     210.0   show
+29      LC5_020     2017-05-15  1128+5925/17.3/TP   n/a     432312  635212  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 10:29:10     1111.0  show
+30      LC5_020     2017-05-15  1127+5841/17.2/TP   n/a     432310  635211  16  4   1   Preprocessing Pipeline  Preprocessing only  1   161 / 162   2016-02-23 21:28:11     1020.0  show
+31      LC5_020     2017-05-15  ARP299/17.1/TP  n/a     432308  635210  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 10:08:10     770.0   show
+32      LC5_020     2017-05-15  3C295/17/CPC    n/a     432304  635204  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 02:04:02     270.0   show
+33      LC5_020     2017-05-15  1128+5925/16.3/TP   n/a     432300  635201  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 09:47:10     691.0   show
+34      LC5_020     2017-05-15  1127+5841/16.2/TP   n/a     432298  635200  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 09:26:10     781.0   show
+35      LC5_020     2017-05-15  ARP299/16.1/TP  n/a     432296  635199  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 03:06:10     781.0   show
+36      LC5_020     2017-05-15  3C295/16/CPC    n/a     432292  635193  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 01:34:02     220.0   show
+37      LC5_020     2017-05-15  1128+5925/15.3/TP   n/a     432288  635190  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 09:05:10     1120.0  show
+38      LC5_020     2017-05-15  1127+5841/15.2/TP   n/a     432286  635189  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 08:44:10     1561.0  show
+39      LC5_020     2017-05-15  ARP299/15.1/TP  n/a     432284  635188  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 08:44:10     1461.0  show
+40      LC5_020     2017-05-15  3C295/15/CPC    n/a     432280  635182  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 01:04:02     200.0   show
+41      LC5_020     2017-05-15  1128+5925/14.3/TP   n/a     432276  635179  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 08:18:11     770.0   show
+42      LC5_020     2017-05-15  1127+5841/14.2/TP   n/a     432274  635178  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 07:52:11     910.0   show
+43      LC5_020     2017-05-15  ARP299/14.1/TP  n/a     432272  635177  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 07:26:10     881.0   show
+44      LC5_020     2017-05-15  3C295/14/CPC    n/a     432268  635171  16  4   1   Preprocessing Pipeline  Preprocessing only  1   161 / 162   2016-02-23 00:34:03     200.0   show
+45      LC5_020     2017-05-15  1128+5925/13.3/TP   n/a     432264  635168  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 07:00:10     761.0   show
+46      LC5_020     2017-05-15  1127+5841/13.2/TP   n/a     432262  635167  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 06:34:10     741.0   show
+47      LC5_020     2017-05-15  ARP299/13.1/TP  n/a     432260  635166  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 06:08:10     850.0   show
+48      LC5_020     2017-05-15  3C295/13/CPC    n/a     432256  635160  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 00:04:02     210.0   show
+49      LC5_020     2017-05-15  1128+5925/12.3/TP   n/a     432252  635157  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 05:42:11     1140.0  show
+50      LC5_020     2017-05-15  1127+5841/12.2/TP   n/a     432250  635156  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 05:16:10     761.0   show
+51      LC5_020     2017-05-15  ARP299/12.1/TP  n/a     432248  635155  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 04:50:10     731.0   show
+52      LC5_020     2017-05-15  3C295/12/CPC    n/a     432244  635149  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 23:34:02     220.0   show
+53      LC5_020     2017-05-15  1128+5925/11.3/TP   n/a     432240  635146  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 04:24:10     681.0   show
+54      LC5_020     2017-05-15  1127+5841/11.2/TP   n/a     432238  635145  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 03:58:10     751.0   show
+55      LC5_020     2017-05-15  ARP299/11.1/TP  n/a     432236  635144  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 03:32:11     720.0   show
+56      LC5_020     2017-05-15  3C295/11/CPC    n/a     432232  635138  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 23:04:02     281.0   show
+57      LC5_020     2017-05-15  1128+5925/10.3/TP   n/a     432228  635135  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 02:40:10     1111.0  show
+58      LC5_020     2017-05-15  1127+5841/10.2/TP   n/a     432226  635134  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 14:32:11     720.0   show
+59      LC5_020     2017-05-15  ARP299/10.1/TP  n/a     432224  635133  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 13:40:10     781.0   show
+60      LC5_020     2017-05-15  3C295/10/CPC    n/a     432220  635127  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 22:34:02     320.0   show
+61      LC5_020     2017-05-15  1128+5925/9.3/TP    n/a     432216  635124  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 14:58:10     1211.0  show
+62      LC5_020     2017-05-15  1127+5841/9.2/TP    n/a     432214  635123  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 15:24:10     770.0   show
+63      LC5_020     2017-05-15  ARP299/9.1/TP   n/a     432212  635122  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 15:50:11     800.0   show
+64      LC5_020     2017-05-15  3C295/9/CPC     n/a     432208  635116  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 22:04:02     400.0   show
+65      LC5_020     2017-05-15  1128+5925/8.3/TP    n/a     432204  635113  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 16:16:10     791.0   show
+66      LC5_020     2017-05-15  1127+5841/8.2/TP    n/a     432202  635112  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 16:42:10     751.0   show
+67      LC5_020     2017-05-15  ARP299/8.1/TP   n/a     432200  635111  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 17:08:11     760.0   show
+68      LC5_020     2017-05-15  3C295/8/CPC     n/a     432196  635105  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 21:34:02     421.0   show
+69      LC5_020     2017-05-15  1128+5925/7.3/TP    n/a     432192  635102  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 17:34:10     911.0   show
+70      LC5_020     2017-05-15  1127+5841/7.2/TP    n/a     432190  635101  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 14:06:10     700.0   show
+71      LC5_020     2017-05-15  ARP299/7.1/TP   n/a     432188  635100  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 18:00:10     911.0   show
+72      LC5_020     2017-05-15  3C295/7/CPC     n/a     432184  635094  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 21:04:03     430.0   show
+73      LC5_020     2017-05-15  1128+5925/6.3/TP    n/a     432180  635091  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 18:26:11     1070.0  show
+74      LC5_020     2017-05-15  1127+5841/6.2/TP    n/a     432178  635090  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 18:52:10     1401.0  show
+75      LC5_020     2017-05-15  ARP299/6.1/TP   n/a     432176  635089  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 19:18:10     1121.0  show
+76      LC5_020     2017-05-15  3C295/6/CPC     n/a     432172  635083  16  4   1   Preprocessing Pipeline  Preprocessing only  1   160 / 162   2016-02-22 20:34:02     250.0   show
+77      LC5_020     2017-05-15  1128+5925/5.3/TP    n/a     432168  635080  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 19:44:10     931.0   show
+78      LC5_020     2017-05-15  1127+5841/5.2/TP    n/a     432166  635079  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 20:10:11     950.0   show
+79      LC5_020     2017-05-15  ARP299/5.1/TP   n/a     432164  635078  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 20:36:11     920.0   show
+80      LC5_020     2017-05-15  3C295/5/CPC     n/a     432160  635072  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 20:04:03     390.0   show
+81      LC5_020     2017-05-15  1128+5925/4.3/TP    n/a     432156  635069  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 21:02:10     941.0   show
+82      LC5_020     2017-05-15  1127+5841/4.2/TP    n/a     432154  635068  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 11:30:10     831.0   show
+83      LC5_020     2017-05-15  ARP299/4.1/TP   n/a     432152  635067  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 13:10:11     1301.0  show
+84      LC5_020     2017-05-15  3C295/4/CPC     n/a     432148  635061  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 19:34:03     300.0   show
+85      LC5_020     2017-05-15  1128+5925/3.3/TP    n/a     432144  635058  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 10:58:08     701.0   show
+86      LC5_020     2017-05-15  1127+5841/3.2/TP    n/a     432142  635057  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 11:19:08     811.0   show
+87      LC5_020     2017-05-15  ARP299/3.1/TP   n/a     432140  635056  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 10:25:10     1041.0  show
+88      LC5_020     2017-05-15  3C295/3/CPC     n/a     432136  635050  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 19:04:03     190.0   show
+89      LC5_020     2017-05-15  1128+5925/2.3/TP    n/a     432132  635047  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 10:08:39     780.0   show
+90      LC5_020     2017-05-15  1127+5841/2.2/TP    n/a     432130  635046  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 10:29:39     1031.0  show
+91      LC5_020     2017-05-15  ARP299/2.1/TP   n/a     432128  635045  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-24 12:52:10     1181.0  show
+92      LC5_020     2017-05-15  3C295/2/CPC     n/a     432124  635039  16  4   1   Preprocessing Pipeline  Preprocessing only  1   161 / 162   2016-02-22 18:34:02     220.0   show
+93      LC5_020     2017-05-15  1128+5925/1.3/TP    n/a     432120  635036  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 11:56:11     1010.0  show
+94      LC5_020     2017-05-15  1127+5841/1.2/TP    n/a     432118  635035  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 12:22:11     730.0   show
+95      LC5_020     2017-05-15  ARP299/1.1/TP   n/a     432116  635034  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-23 12:48:10     791.0   show
+96      LC5_020     2017-05-15  3C295/1/CPC     n/a     432112  635028  16  4   1   Preprocessing Pipeline  Preprocessing only  1   162     2016-02-22 18:04:02     210.0   show
